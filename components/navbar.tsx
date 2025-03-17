@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import Image from "next/image"
 
 const navigation = [
   { name: "Inicio", href: "/" },
@@ -21,7 +22,8 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-lato font-bold text-primary">Kaleidoscope</span>
+            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt="Logotipo Kaleidoscope color negro" width="400" height="200">
+              {/*<span className="text-2xl font-lato font-bold text-primary">Kaleidoscope</span>*/}</Image>
             </Link>
           </div>
 
