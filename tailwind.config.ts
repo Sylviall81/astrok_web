@@ -22,7 +22,7 @@ const config: Config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: "#4a3f74", // Originales: Azul violáceo profundo "#595C88"
-        secondary: "#b1b6b6", // Azul grisáceo oscuro "#2C4454"
+        secondary: "#B1B6B6", // Azul grisáceo oscuro "#2C4454"
         accent: "#AA9CB8", // Lila suave
         "neutral-light": "#f2f2f2", // Gris claro
         "neutral-dark": "#000309", // Casi negro

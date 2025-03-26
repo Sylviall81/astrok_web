@@ -9,7 +9,7 @@ export default function HeroSection() {
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-lato font-bold text-stone-200 mb-6 leading-tight">
-            Explora tu universo interior a través del lenguaje de los astros
+            Descubre tu universo interior gracias al poder de la astrología.
           </h1>
           <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
           Astrología Psicologica como guía para el autodescubrimiento, la claridad y el propósito.
