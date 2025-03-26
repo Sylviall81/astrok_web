@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Instagram, Facebook } from "lucide-react"
+import { Instagram, Facebook, Youtube } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -32,15 +32,15 @@ export default function Footer() {
                 <Facebook className="h-6 w-6" />
                 <span className="sr-only">Facebook</span>
               </a>
-              {/*<a
-                href="https://twitter.com"
+              <a
+                href="https://www.youtube.com/@kaleidoscopeastrologiapsic6012"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
               >
-                <Twitter className="h-6 w-6" />
+                <Youtube className="h-6 w-6" />
                 <span className="sr-only">Twitter</span>
-              </a>*/}
+              </a>
             </div>
           </div>
 

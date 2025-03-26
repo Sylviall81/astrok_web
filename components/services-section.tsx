@@ -1,82 +1,49 @@
 "use client"
 
-import { useState, useRef } from "react"
-import ServiceCard from "./service-card"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-
-// Datos de ejemplo para los servicios principales
-const mainServices = [
-  {
-    title: "Carta Natal",
-    description: "Un análisis profundo de tu mapa natal que revela tus potenciales, desafíos y propósito de vida.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "carta-natal",
-  },
-  {
-    title: "Revolución Solar",
-    description: "Descubre las energías y oportunidades que te acompañarán durante tu próximo año solar.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "revolucion-solar",
-  },
-  {
-    title: "Sinastría",
-    description: "Análisis de compatibilidad que explora la dinámica entre dos personas a nivel astrológico.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "sinastria",
-  },
-]
-
-// Datos de ejemplo para otros productos
-const otherProducts = [
-  {
-    title: "Pack Integral",
-    description: "Combinación de carta natal y revolución solar para una visión completa de tu momento actual.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "pack-integral",
-  },
-  {
-    title: "Astro-Report",
-    description: "Informe astrológico detallado en formato PDF con interpretaciones personalizadas.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "astro-report",
-  },
-  {
-    title: "Tránsitos Anuales",
-    description: "Análisis de los movimientos planetarios y su influencia en tu vida durante todo el año.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "transitos-anuales",
-  },
-  {
-    title: "Consulta Temática",
-    description: "Sesión enfocada en un área específica: relaciones, carrera, propósito de vida, etc.",
-    image: "/placeholder.svg?height=300&width=400",
-    slug: "consulta-tematica",
-  },
-]
+import { useState, useEffect, useRef } from "react";
+import ServiceCard from "./service-card";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getServices } from '@/lib/services';
+import { Service } from '@/data/services';  // Importa la interfaz Service
 
 export default function ServicesSection() {
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const [services, setServices] = useState<Service[]>([]); //  Especificamos el tipo correctamente
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchServices() {
+      const data = await getServices();
+      setServices(data); // Ahora TypeScript sabe que es un array de Service
+      setLoading(false);
+    }
+    fetchServices();
+  }, []);
+
+const featuredServices = services.slice(0, 3);  // Toma los 3 primeros
+const otherServices = services.slice(3); // Toma los restantes
+
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const scroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const { scrollWidth, clientWidth } = sliderRef.current
-      const scrollAmount = clientWidth * 0.8
-      const maxScroll = scrollWidth - clientWidth
+      const { scrollWidth, clientWidth } = sliderRef.current;
+      const scrollAmount = clientWidth * 0.8;
+      const maxScroll = scrollWidth - clientWidth;
 
       const newPosition =
         direction === "right"
           ? Math.min(scrollPosition + scrollAmount, maxScroll)
-          : Math.max(scrollPosition - scrollAmount, 0)
+          : Math.max(scrollPosition - scrollAmount, 0);
 
       sliderRef.current.scrollTo({
         left: newPosition,
         behavior: "smooth",
-      })
+      });
 
-      setScrollPosition(newPosition)
+      setScrollPosition(newPosition);
     }
-  }
+  };
 
   return (
     <section className="py-16 md:py-24">
@@ -88,61 +55,68 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        {/* Servicios principales */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {mainServices.map((service) => (
+        {loading ? (
+  <p className="text-center">Cargando servicios...</p>
+) : (
+  <>
+    {/* Servicios principales */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+      {featuredServices.map((service) => (
+        <ServiceCard
+          key={service.slug}
+          title={service.title}
+          description={service.description}
+          image={service.image}
+          slug={service.slug}
+        />
+      ))}
+    </div>
+
+    {/* Slider con otros productos */}
+    <div className="mb-4">
+      <h3 className="text-2xl font-lato font-semibold text-primary mb-6">Otros Productos</h3>
+    </div>
+
+    <div className="relative">
+      <button
+        onClick={() => scroll("left")}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
+        aria-label="Anterior"
+        disabled={scrollPosition === 0}
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+
+      <div
+        ref={sliderRef}
+        className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {otherServices.map((product) => (
+          <div key={product.slug} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
             <ServiceCard
-              key={service.slug}
-              title={service.title}
-              description={service.description}
-              image={service.image}
-              slug={service.slug}
+              title={product.title}
+              description={product.description}
+              image={product.image}
+              slug={product.slug}
             />
-          ))}
-        </div>
-
-        {/* Slider con otros productos */}
-        <div className="mb-4">
-          <h3 className="text-2xl font-lato font-semibold text-primary mb-6">Otros Productos</h3>
-        </div>
-
-        <div className="relative">
-          <button
-            onClick={() => scroll("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
-            aria-label="Anterior"
-            disabled={scrollPosition === 0}
-          >
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-
-          <div
-            ref={sliderRef}
-            className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
-            {otherProducts.map((product) => (
-              <div key={product.slug} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-                <ServiceCard
-                  title={product.title}
-                  description={product.description}
-                  image={product.image}
-                  slug={product.slug}
-                />
-              </div>
-            ))}
           </div>
-
-          <button
-            onClick={() => scroll("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
-            aria-label="Siguiente"
-          >
-            <ChevronRight className="h-6 w-6" />
-          </button>
-        </div>
+        ))}
       </div>
-    </section>
-  )
-}
 
+      <button
+        onClick={() => scroll("right")}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
+        aria-label="Siguiente"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
+    </div>
+  </>
+)}  {/* <-- Aquí cerramos correctamente el bloque */}
+
+        
+      </div>
+    </section>)
+  
+}
