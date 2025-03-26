@@ -2,12 +2,14 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Menu, X } from "lucide-react"
 
 const navigation = [
   { name: "Inicio", href: "/" },
   { name: "Servicios", href: "/servicios" },
   { name: "Sobre Mí", href: "/sobre-mi" },
+  //{ name: "Cursos", href: "/cursos" },
   { name: "Blog", href: "/blog" },
   { name: "Contacto", href: "/contacto" },
 ]
@@ -21,7 +23,9 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <span className="text-2xl font-lato font-bold text-primary">Kaleidoscope</span>
+              <span>
+              <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt= "website black and white logo" width={400} height={25}/>
+              </span>
             </Link>
           </div>
 
