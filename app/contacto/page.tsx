@@ -19,7 +19,7 @@ export default function ContactPage() {
               <div className="bg-neutral-light p-6 rounded-lg mb-8">
                 <h3 className="text-xl font-lato font-semibold text-primary mb-3">Información de contacto</h3>
                 <p className="text-neutral-dark mb-2">Email: info@kaleidoscope.com</p>
-                <p className="text-neutral-dark mb-2">WhatsApp: +34 123 456 789</p>
+                <a href="https://wa.me/+34628840747"><p className="text-neutral-dark mb-2">WhatsApp: +34 628 840 747</p></a>
                 <p className="text-neutral-dark">Horario de atención: Lunes a Viernes, 10:00 - 18:00</p>
               </div>
 
