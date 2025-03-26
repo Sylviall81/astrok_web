@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Instagram, Facebook, Twitter } from "lucide-react"
 
 export default function Footer() {
@@ -7,14 +8,14 @@ export default function Footer() {
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-xl font-lato font-semibold text-primary mb-4">Kaleidoscope</h3>
+            
+            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt= "website black and white logo" width={400} height={25}/>
             <p className="text-neutral-dark mb-4 max-w-md">
-              Un espacio de astrología psicológica enfocada en el autodescubrimiento, la integración y la claridad a
-              través de la astrología junguiana.
+              Astrología psicológica como guía hacia el autodescubrimiento,la claridad y el propósito.
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://instagram.com"
+                href="https://www.instagram.com/kaleidoscopebcn/#"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
@@ -23,7 +24,7 @@ export default function Footer() {
                 <span className="sr-only">Instagram</span>
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/Kaleidoscopebcn/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
@@ -31,7 +32,7 @@ export default function Footer() {
                 <Facebook className="h-6 w-6" />
                 <span className="sr-only">Facebook</span>
               </a>
-              <a
+              {/*<a
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -39,7 +40,7 @@ export default function Footer() {
               >
                 <Twitter className="h-6 w-6" />
                 <span className="sr-only">Twitter</span>
-              </a>
+              </a>*/}
             </div>
           </div>
 
@@ -77,8 +78,8 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-lato font-semibold text-primary mb-4">Contacto</h4>
             <ul className="space-y-2">
-              <li className="text-neutral-dark">Email: info@kaleidoscope.com</li>
-              <li className="text-neutral-dark">WhatsApp: +34 123 456 789</li>
+              <li className="text-neutral-dark">Email: kaleidoscopebcn@gmail.com</li>
+              <li className="text-neutral-dark">WhatsApp: +34 628 840 747</li>
             </ul>
           </div>
         </div>

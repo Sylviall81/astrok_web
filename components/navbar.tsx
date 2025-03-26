@@ -2,13 +2,15 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
 import Image from "next/image"
+import { Menu, X } from "lucide-react"
+
 
 const navigation = [
   { name: "Inicio", href: "/" },
   { name: "Servicios", href: "/servicios" },
   { name: "Sobre Mí", href: "/sobre-mi" },
+  //{ name: "Cursos", href: "/cursos" },
   { name: "Blog", href: "/blog" },
   { name: "Contacto", href: "/contacto" },
 ]
