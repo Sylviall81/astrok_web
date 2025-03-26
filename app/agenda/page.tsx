@@ -3,12 +3,26 @@
 import { useEffect } from "react"
 import Script from "next/script"
 
+interface Calendly {
+  initInlineWidget: (options: {
+    url: string
+    parentElement: HTMLElement | null
+    prefill?: object
+    utm?: object
+  }) => void
+}
+
+declare global {
+  interface Window {
+    Calendly?: Calendly
+  }
+}
+
 export default function BookingPage() {
   useEffect(() => {
-    // Inicializar Calendly cuando el componente se monta
     const initCalendly = () => {
-      if ((window as any).Calendly) {
-        ;(window as any).Calendly.initInlineWidget({
+      if (window.Calendly) {
+        window.Calendly.initInlineWidget({
           url: "https://calendly.com/d/abc-123/consulta-astrologica",
           parentElement: document.getElementById("calendly-embed"),
           prefill: {},
@@ -17,14 +31,12 @@ export default function BookingPage() {
       }
     }
 
-    // Si Calendly ya está cargado, inicializar
-    if ((window as any).Calendly) {
+    if (window.Calendly) {
       initCalendly()
     }
 
     return () => {
-      // Limpiar Calendly cuando el componente se desmonta
-      if ((window as any).Calendly) {
+      if (window.Calendly) {
         const calendlyElements = document.getElementsByClassName("calendly-inline-widget")
         while (calendlyElements.length > 0) {
           calendlyElements[0].remove()
@@ -131,8 +143,8 @@ export default function BookingPage() {
         src="https://assets.calendly.com/assets/external/widget.js"
         strategy="lazyOnload"
         onLoad={() => {
-          if ((window as any).Calendly) {
-            ;(window as any).Calendly.initInlineWidget({
+          if (window.Calendly) {
+            window.Calendly.initInlineWidget({
               url: "https://calendly.com/d/abc-123/consulta-astrologica",
               parentElement: document.getElementById("calendly-embed"),
               prefill: {},
@@ -144,4 +156,3 @@ export default function BookingPage() {
     </section>
   )
 }
-
