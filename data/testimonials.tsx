@@ -26,14 +26,19 @@ export const testimonials = [
     },
     {
       name:"Ana Valeria T.",
-      text: '"Gracias Syl!! Me está sirviendo mucho esta interpretación. Es una manera de conocerme y aceptarme aún más. Gracias Por todo! Por compartir tus conocimientos y tu amistad.La mejor Astróloga!!! "',
+      text: '"Gracias Syl!! Me está sirviendo mucho esta interpretación. Es una manera de conocerme y aceptarme aún más. Gracias Por todo, por compartir tus conocimientos y tu amistad. La mejor Astróloga!!!"',
       rating: 5,
       
   },
   {
-    name:"Ana Valeria T.",
-    text: '""',
+    name:"Renata C.",
+    text: '"La lectura de mi carta natal fue reveladora. Me ayudó a comprender patrones que he repetido durante años y a encontrar claridad sobre mi propósito."',
     rating: 5,
+},
+{
+  name:"Carlos S.",
+  text: '"La sinastría que hice para mi hijo adolescente y yo me dio herramientas para mejorar nuestra comunicación y entender nuestras diferencias desde una nueva perspectiva. Podemos conectar ahora desde un lugar mas sano y eso ha mejorado nuestra relación"',
+  rating: 5,
 },
 
   ]
