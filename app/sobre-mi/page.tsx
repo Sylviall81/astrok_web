@@ -35,7 +35,7 @@ export default function AboutPage() {
               <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Enfoque</h2>
               <p>
                 Mi aproximación a la astrología es integradora y orientada al crecimiento personal. No creo en la
-                astrología determinista que te dice "lo que va a pasar", sino en aquella que te ayuda a comprender tus
+                astrología determinista con decretos y predicciones limitantes, sino en aquella que te ayuda a comprender tus
                 patrones, desafíos y potenciales para que puedas tomar decisiones conscientes.
               </p>
               <p>
