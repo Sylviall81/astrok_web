@@ -3,7 +3,8 @@ export interface Service {
     title: string;
     description: string;
     image: string;
-    slug: string,
+    slug: string;
+    price: string;
 
   }
 
@@ -22,6 +23,7 @@ export const mainServices: Service[] = [
         description: "Un análisis profundo de tu mapa natal que revela tus potenciales, desafíos y propósito de vida.",
         image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743008690/2_a4xfny.png",
         slug: "carta-natal",
+        price: "140€",
       },
     {
         id: "02",
@@ -29,6 +31,7 @@ export const mainServices: Service[] = [
       description: "Descubre las energías y oportunidades que te acompañarán durante tu próximo año solar.",
       image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743008691/3_xzp1pc.png",
       slug: "revolucion-solar",
+      price: "110€",
     },
 
     {
@@ -37,6 +40,7 @@ export const mainServices: Service[] = [
         description: "Combinación de carta natal y revolución solar para una visión completa de tu momento actual.",
         image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743008687/6_uwymgy.png",
         slug: "pack-integral",
+        price: "170€",
       },
     
     {
@@ -45,6 +49,7 @@ export const mainServices: Service[] = [
       description: "Análisis de compatibilidad que explora la dinámica entre dos personas a nivel astrológico.",
       image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743008686/5_iupav5.png",
       slug: "sinastria",
+      price: "120€",
     },
     
       {
@@ -53,6 +58,7 @@ export const mainServices: Service[] = [
         description: "Informe astrológico detallado en formato PDF con interpretaciones personalizadas.",
         image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743008686/4_msaduw.png",
         slug: "astro-report",
+        price: "85€",
       },
     //   {
     //     id: "06",
@@ -67,6 +73,7 @@ export const mainServices: Service[] = [
         description: "Sesión enfocada en un área específica: relaciones, carrera, propósito de vida, etc.",
         image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743014929/Portadas_web_tq8opq.png",
         slug: "carta-infantil",
+        price: "130€",
       },
       {
         id: "08",
@@ -74,6 +81,7 @@ export const mainServices: Service[] = [
         description: "Sesión enfocada en un área específica: relaciones, carrera, propósito de vida, etc.",
         image: "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743014929/Portadas_web8_ax0oe7.png",
         slug: "cursos",
+        price: "120€",
       },
       
   ]
