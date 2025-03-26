@@ -2,29 +2,9 @@
 
 import { useState, useEffect } from "react"
 import TestimonialCard from "./testimonial-card"
+import {testimonials} from "@/data/testimonials"
 
-const testimonials = [
-  {
-    name: "Laura Martínez",
-    text: "La lectura de mi carta natal fue reveladora. Me ayudó a comprender patrones que he repetido durante años y a encontrar claridad sobre mi propósito.",
-    rating: 5,
-  },
-  {
-    name: "Carlos Rodríguez",
-    text: "La sinastría que hicimos mi pareja y yo nos dio herramientas para mejorar nuestra comunicación y entender nuestras diferencias desde una nueva perspectiva.",
-    rating: 5,
-  },
-  {
-    name: "Ana García",
-    text: "El análisis de mi revolución solar me preparó para afrontar los retos del año con una nueva actitud. Muy recomendable para momentos de transición.",
-    rating: 4,
-  },
-  {
-    name: "Miguel Sánchez",
-    text: "Increíble la precisión con la que describió aspectos de mi personalidad que ni yo mismo había reconocido. Una experiencia transformadora.",
-    rating: 5,
-  },
-]
+
 
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)

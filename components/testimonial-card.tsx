@@ -13,7 +13,7 @@ export default function TestimonialCard({ name, text, image, rating }: Testimoni
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center mb-4">
         <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-          <Image src={image || "/placeholder.svg?height=50&width=50"} alt={name} fill className="object-cover" />
+          <Image src={image || "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743017765/profile_bcarey.webp"} alt={name} fill className="object-cover" />
         </div>
         <div>
           <h4 className="font-lato font-semibold text-primary">{name}</h4>

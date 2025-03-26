@@ -12,7 +12,7 @@ export default function HeroSection() {
             Descubre tu universo interior gracias al poder de la astrología.
           </h1>
           <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
-          Astrología Psicologica como guía para el autodescubrimiento, la claridad y el propósito.
+          Astrología Psicológica como guía para el autodescubrimiento, la claridad y el propósito.
           </p>
           <Link href="/agenda" className="btn-primary text-lg px-8 py-4">
             Agenda tu sesión
