@@ -20,12 +20,12 @@ export default function Navbar() {
     <nav className="bg-white shadow-sm">
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt="Logotipo Kaleidoscope color negro" width="400" height="200">
-              {/*<span className="text-2xl font-lato font-bold text-primary">Kaleidoscope</span>*/}</Image>
-            </Link>
-          </div>
+           <div className="flex items-center">
+              <Link href="/" className="flex items-center">
+              <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt="Logotipo Kaleidoscope color negro" width="400" height="200">
+                {/*<span className="text-2xl font-lato font-bold text-primary">Kaleidoscope</span>*/}</Image>
+              </Link>
+            </div>
 
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-8">
@@ -38,10 +38,12 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
+           
             <Link href="/agenda" className="btn-primary">
               Agenda tu sesión
             </Link>
           </div>
+
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
