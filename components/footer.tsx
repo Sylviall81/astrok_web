@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Instagram, Facebook, Twitter } from "lucide-react"
+import { Instagram, Facebook } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
             
             <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt= "website black and white logo" width={400} height={25}/>
             <p className="text-neutral-dark mb-4 max-w-md">
-              Astrología psicológica como guía hacia el autodescubrimiento,la claridad y el propósito.
+            Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
             </p>
             <div className="flex space-x-4">
               <a
