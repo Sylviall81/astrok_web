@@ -13,23 +13,18 @@ export default function AboutSection() {
 
           <div>
             <h2 className="section-title">Sobre Mí</h2>
-            <h2 className="section-subtitle"> Soy Sylvia, bienvenid@ a mi web</h2>
+            
+            <h3 className="section-subtitle"> Soy Sylvia y te doy la bienvenida a mi web,</h3>
+            
             <p className="text-neutral-dark mb-6">
-              Utilizo la Astrología Psicológica como principal herramienta para el autoconocimiento, la aceptación y desarrollo de 
-              una personalidad mas integrada y plena.
-              
-              En mis sesiones, la Carta Natal es la guía hacia el re-encuentro con emociones y necesidades silenciadas, personajes internos 
-              largamente ignorados y, al mismo tiempo, una ventana hacia el descubrimiento de nuevos talentos y capacidades creativas. 
-              
-              Con más de 7 años de experiencia traduciendo el lenguaje de las estrellas, 
-              he acompañado a mas de XX personas a transitar momentos de cambio e incertidumbre, guiandolos a re-conectar con su fortaleza interna,
-              su confianza y sabiduría interior.
-              
-              
+            Mi trabajo como astróloga es traducir el lenguaje simbólico de las estrellas para acompañarte en la comprensión de tu propia historia. 
+            No entrego respuestas cerradas, ni certezas absolutas, sino herramientas para que explores tu camino con mayor claridad.   
+            </p>
+            <p className="text-neutral-dark mb-6">
+            Desde una mirada informada en astrología y psicología, te impulso a conectar con tu fuerza y resiliencia, sin discursos condescendientes ni fórmulas prefabricadas. Cada carta natal es única, como cada proceso personal.
             </p>
             <p className="text-neutral-dark mb-8">
-              Con más de 7 años de experiencia, he guiado a cientos de personas en su viaje de autodescubrimiento,
-              ayudándoles a comprender sus patrones, desafíos y dones únicos reflejados en su carta natal.
+            Durante más de 7 años de experiencia, he orientado a cientos de personas en su camino de autodescubrimiento, facilitando la comprensión de sus patrones, desafíos y dones únicos reflejados en su mapa natal.
             </p>
             <Link href="/sobre-mi" className="btn-secondary">
               Conoce más sobre mi enfoque
