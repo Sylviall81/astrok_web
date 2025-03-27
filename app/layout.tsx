@@ -1,23 +1,9 @@
 import type React from "react"
 import "./globals.css"
 import type { Metadata } from "next"
-import { Lato, Lora } from "next/font/google"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import WhatsAppButton from "@/components/whatsapp-button"
-
-const lato = Lato({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-lato",
-  display: "swap",
-})
-
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-lora",
-  display: "swap",
-})
+import { Navbar } from "@/components/navbar"
+import { ThemeProvider } from "@/components/theme-provider"
+//import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Kaleidoscope | Astrología Psicológica",
@@ -31,14 +17,17 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={`${lato.variable} ${lora.variable}`}>
-      <body className="min-h-screen flex flex-col bg-white text-neutral-dark">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+    <html lang="es" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <Navbar />
+          <main>{children}</main>
+          {/*<Toaster />*/}
+        </ThemeProvider>
       </body>
     </html>
   )
 }
+
+
 

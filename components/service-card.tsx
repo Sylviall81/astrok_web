@@ -1,5 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
+import { Button } from "@/components/ui/button"
+import { ShoppingCart } from "lucide-react"
 
 interface ServiceCardProps {
   title: string
@@ -23,6 +25,12 @@ export default function ServiceCard({ title, description, image, slug }: Service
         >
           Saber más →
         </Link>
+        <Button onClick={() => onAddToCart(product)} className="w-full bg-primary hover:bg-primary/90">
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Añadir al carrito
+                </Button>
+
+
       </div>
     </div>
   )
