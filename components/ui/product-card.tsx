@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart } from "lucide-react"
 import type { Product } from "@/lib/supabase"
+import Link from "next/link"
+
 
 interface ProductCardProps {
   product: Product
@@ -36,9 +38,17 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       <CardContent>
         <p className="text-sm text-muted-foreground line-clamp-3">{product.description}</p>
         {product.duration && <p className="mt-2 text-sm font-medium">Duración: {product.duration} minutos</p>}
+        <Link
+          href={`/tienda/${product.slug}`}
+          className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+        >
+          Saber más →
+        </Link>
         <p className="mt-4 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
+       
       </CardContent>
       <CardFooter>
+  
         <Button onClick={() => onAddToCart(product)} className="w-full bg-primary hover:bg-primary/90">
           <ShoppingCart className="mr-2 h-4 w-4" />
           Añadir al carrito

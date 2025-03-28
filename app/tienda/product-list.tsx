@@ -5,7 +5,7 @@ import type { Product } from "@/lib/supabase"
 import { ProductCard } from "@/components/ui/product-card"
 import { clientSupabase } from "@/lib/supabase"
 //import { useToast } from "@/hooks/use-toast"
-//import { v4 as uuidv4 } from "uuid"
+import { v4 as uuidv4 } from "uuid"
 
 interface ProductListProps {
   products: Product[]

@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Instagram, Facebook, Youtube } from "lucide-react"
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="bg-neutral-light py-12">
       <div className="container-custom">

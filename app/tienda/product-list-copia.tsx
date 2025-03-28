@@ -12,7 +12,7 @@ interface ProductListProps {
 
 export function ProductList({ products }: ProductListProps) {
   const [categories, setCategories] = useState<string[]>([])
-  const { toast } = useToast()
+  //const { toast } = useToast()
   const supabase = clientSupabase()
 
   // Extraer categorías únicas de los productos

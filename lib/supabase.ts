@@ -11,6 +11,7 @@ export type Product = {
   duration: number | null
   created_at: string
   updated_at: string
+  slug: string
 }
 
 export type CartItem = {

@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 //import { Toaster } from "@/components/ui/toaster"
+import {Footer} from "@/components/footer"
 
 export const metadata: Metadata = {
   title: "Kaleidoscope | Astrología Psicológica",
@@ -23,6 +24,7 @@ export default function RootLayout({
           <Navbar />
           <main>{children}</main>
           {/*<Toaster />*/}
+          <Footer/>
         </ThemeProvider>
       </body>
     </html>

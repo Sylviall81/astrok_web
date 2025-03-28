@@ -1,26 +1,30 @@
-"use client"
+'use client'
 
 import { useState, useEffect, useRef } from "react";
 import ServiceCard from "./service-card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getServices } from '@/lib/services';
-import { Service } from '@/data/services';  // Importa la interfaz Service
+import { serverSupabase } from "@/lib/supabase"
+import { ProductList } from "@/app/tienda/product-list"
+import type { Product } from "@/lib/supabase"
+import { ProductCard } from "@/components/ui/product-card"
+import { ChevronLeft, ChevronRight } from "lucide-react";// Importa la interfaz Service
+
+import getProducts from "@/lib/products"
+
+
 
 export default function ServicesSection() {
-  const [services, setServices] = useState<Service[]>([]); //  Especificamos el tipo correctamente
+
+ 
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchServices() {
-      const data = await getServices();
-      setServices(data); // Ahora TypeScript sabe que es un array de Service
-      setLoading(false);
-    }
-    fetchServices();
-  }, []);
+  console.log(products);
+ 
 
-const featuredServices = services.slice(0, 3);  // Toma los 3 primeros
-const otherServices = services.slice(3); // Toma los restantes
+ 
+//quizas aqui puedes usar ProductList
+const featuredServices = products.slice(0, 3);  // Toma los 3 primeros
+const otherServices = products.slice(3); // Toma los restantes
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -59,14 +63,16 @@ const otherServices = services.slice(3); // Toma los restantes
   <p className="text-center">Cargando servicios...</p>
 ) : (
   <>
+
+<ProductList products={products} />
     {/* Servicios principales */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-      {featuredServices.map((service) => (
+      {featuredServices.map((product) => (
         <ServiceCard
-          key={service.slug}
-          title={service.title}
-          description={service.description}
-          image={service.image}
+          key={product.slug}
+          title={product.name}
+          description={product.description}
+          image={product.image_url}
           slug={service.slug}
         />
       ))}
