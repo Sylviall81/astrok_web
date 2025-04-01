@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient, SupabaseClient } from "@supabase/supabase-js"
 
 // Tipos para nuestras tablas
 export type Product = {
@@ -43,22 +43,50 @@ export type OrderItem = {
   product?: Product
 }
 
+/*
 // Creamos un cliente de Supabase para el lado del cliente
-const createClientSide = () => {
+// const createClientSide = () => {
+//   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+//   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+//   return createClient(supabaseUrl, supabaseAnonKey)
+// }*/
+
+//cliente lado cliente creado x chat con tipos // Creamos un cliente de Supabase para el lado del cliente con tipos generados
+const createClientSide = (): SupabaseClient<{
+  product: Product;
+  cart_item: CartItem;
+  order: Order;
+  order_item: OrderItem;
+}> => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   return createClient(supabaseUrl, supabaseAnonKey)
 }
 
-// Cliente de Supabase para el lado del servidor
-const createServerSide = () => {
+// // Cliente de Supabase para el lado del servidor
+// const createServerSide = () => {
+//   const supabaseUrl = process.env.SUPABASE_URL!
+//   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+//   return createClient(supabaseUrl, supabaseServiceKey)
+// }
+
+const createServerSide = (): SupabaseClient<{
+  product: Product;
+  cart_item: CartItem;
+  order: Order;
+  order_item: OrderItem;
+}> => {
   const supabaseUrl = process.env.SUPABASE_URL!
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
   return createClient(supabaseUrl, supabaseServiceKey)
 }
 
+
 // Singleton para el cliente del lado del cliente
-let clientSideInstance: ReturnType<typeof createClient> | null = null
+//let clientSideInstance: ReturnType<typeof createClient> | null = null
+
+// Singleton para el cliente del lado del cliente Chatgpt
+let clientSideInstance: ReturnType<typeof createClientSide> | null = null
 
 export const clientSupabase = () => {
   if (clientSideInstance) return clientSideInstance

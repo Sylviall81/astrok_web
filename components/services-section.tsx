@@ -1,22 +1,24 @@
 'use client'
-
+import { useProducts } from "@/context/products-context"
 import { useState, useEffect, useRef } from "react";
 import ServiceCard from "./service-card";
-import { serverSupabase } from "@/lib/supabase"
-import { ProductList } from "@/app/tienda/product-list"
-import type { Product } from "@/lib/supabase"
-import { ProductCard } from "@/components/ui/product-card"
+///import { serverSupabase } from "@/lib/supabase"
+//import { ProductList } from "@/app/tienda/product-list"
+//import type { Product } from "@/lib/supabase"
+//import { ProductCard } from "@/components/ui/product-card"
 import { ChevronLeft, ChevronRight } from "lucide-react";// Importa la interfaz Service
 
-import getProducts from "@/lib/products"
+//import getProducts from "@/lib/products"
 
 
 
 export default function ServicesSection() {
 
+  const { products } = useProducts()
+
  
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [products, setProducts] = useState([]);
+  // const [loading, setLoading] = useState(true);
 
   console.log(products);
  
@@ -59,12 +61,12 @@ const otherServices = products.slice(3); // Toma los restantes
           </p>
         </div>
 
-        {loading ? (
+        {/* {loading ? (
   <p className="text-center">Cargando servicios...</p>
-) : (
+) : ( */}
   <>
 
-<ProductList products={products} />
+
     {/* Servicios principales */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
       {featuredServices.map((product) => (
@@ -119,7 +121,7 @@ const otherServices = products.slice(3); // Toma los restantes
       </button>
     </div>
   </>
-)}  {/* <-- Aquí cerramos correctamente el bloque */}
+}  {/* <-- Aquí cerramos correctamente el bloque */}
 
         
       </div>

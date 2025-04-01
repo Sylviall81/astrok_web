@@ -5,6 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 //import { Toaster } from "@/components/ui/toaster"
 import {Footer} from "@/components/footer"
+import { ProductsProvider } from "@/context/products-context"
 
 export const metadata: Metadata = {
   title: "Kaleidoscope | Astrología Psicológica",
@@ -21,10 +22,12 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <ProductsProvider>
           <Navbar />
           <main>{children}</main>
           {/*<Toaster />*/}
           <Footer/>
+          </ProductsProvider>
         </ThemeProvider>
       </body>
     </html>
