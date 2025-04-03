@@ -91,7 +91,7 @@ const config: Config = {
         lora: ["var(--font-lora)"],
       },
       backgroundImage: {
-        "sri-yantra-pattern": "url('/images/sri-yantra-pattern.svg')",
+        "sri-yantra-pattern": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/v1743672005/Captura_desde_2025-04-03_11-16-58_u49afq.png')",
       },
     },
   },

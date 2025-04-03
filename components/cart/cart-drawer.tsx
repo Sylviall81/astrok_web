@@ -8,93 +8,115 @@ import { CartItem } from "./cart-item"
 import type { CartItem as CartItemType, Product } from "@/lib/supabase"
 import { clientSupabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
-//import { useToast } from "@/app/hooks/use-toast"
+import { useNotification } from "@/context/notification-context"
 
 export function CartDrawer() {
   const [cartItems, setCartItems] = useState<(CartItemType & { product: Product })[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  //const { toast } = useToast()
+  const { showNotification } = useNotification()
   const supabase = clientSupabase()
-
-  const fetchCartItems = async () => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    if (!session) {
-      // Si no hay sesión, usamos el carrito local
-      const localCart = JSON.parse(localStorage.getItem("cart") || "[]")
-      setCartItems(localCart)
-      return
-    }
-
-    const { data, error } = await supabase
-      .from("cart_items")
-      .select("*, product:products(*)")
-      .eq("user_id", session.user.id)
-
-    if (error) {
-      console.error("Error fetching cart items:", error)
-      return
-    }
-
-    setCartItems(data || [])
-  }
 
   useEffect(() => {
     if (isOpen) {
-      fetchCartItems()
+      const fetchItems = async () => {
+        try {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession()
+
+          if (!session) {
+            // Si no hay sesión, usamos el carrito local
+            try {
+              const localCartString = localStorage.getItem("cart")
+              const localCart = localCartString ? JSON.parse(localCartString) : []
+              setCartItems(localCart)
+            } catch (err) {
+              console.error("Error parsing local cart:", err)
+              setCartItems([])
+            }
+            return
+          }
+
+          const { data, error } = await supabase
+            .from("cart_items")
+            .select("*, product:products(*)")
+            .eq("user_id", session.user.id)
+
+          if (error) {
+            console.error("Error fetching cart items:", error)
+            setCartItems([])
+            return
+          }
+
+          setCartItems(data || [])
+        } catch (err) {
+          console.error("Error in fetchCartItems:", err)
+          setCartItems([])
+        }
+      }
+
+      fetchItems()
     }
-  }, [isOpen])
+  }, [isOpen, supabase])
 
   const handleUpdateQuantity = async (id: string, quantity: number) => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
 
-    if (!session) {
-      // Actualizar carrito local
-      const localCart = JSON.parse(localStorage.getItem("cart") || "[]")
-      const updatedCart = localCart.map((item: any) => (item.id === id ? { ...item, quantity } : item))
-      localStorage.setItem("cart", JSON.stringify(updatedCart))
-      setCartItems(updatedCart)
-      return
+      if (!session) {
+        // Actualizar carrito local
+        const localCartString = localStorage.getItem("cart")
+        const localCart = localCartString ? JSON.parse(localCartString) : []
+        const updatedCart = localCart.map((item: any) => (item.id === id ? { ...item, quantity } : item))
+        localStorage.setItem("cart", JSON.stringify(updatedCart))
+        setCartItems(updatedCart)
+        return
+      }
+
+      const { error } = await supabase.from("cart_items").update({ quantity }).eq("id", id)
+
+      if (error) {
+        console.error("Error updating cart item:", error)
+        return
+      }
+
+      setCartItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)))
+    } catch (err) {
+      console.error("Error in handleUpdateQuantity:", err)
     }
-
-    const { error } = await supabase.from("cart_items").update({ quantity }).eq("id", id)
-
-    if (error) {
-      console.error("Error updating cart item:", error)
-      return
-    }
-
-    setCartItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)))
   }
 
   const handleRemoveItem = async (id: string) => {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
+    try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
 
-    if (!session) {
-      // Eliminar del carrito local
-      const localCart = JSON.parse(localStorage.getItem("cart") || "[]")
-      const updatedCart = localCart.filter((item: any) => item.id !== id)
-      localStorage.setItem("cart", JSON.stringify(updatedCart))
-      setCartItems(updatedCart)
-      return
+      if (!session) {
+        // Eliminar del carrito local
+        const localCartString = localStorage.getItem("cart")
+        const localCart = localCartString ? JSON.parse(localCartString) : []
+        const updatedCart = localCart.filter((item: any) => item.id !== id)
+        localStorage.setItem("cart", JSON.stringify(updatedCart))
+        setCartItems(updatedCart)
+        return
+      }
+
+      const { error } = await supabase.from("cart_items").delete().eq("id", id)
+
+      if (error) {
+        console.error("Error removing cart item:", error)
+        return
+      }
+
+      setCartItems((prev) => prev.filter((item) => item.id !== id))
+    } catch (err) {
+      console.error("Error in handleRemoveItem:", err)
     }
-
-    const { error } = await supabase.from("cart_items").delete().eq("id", id)
-
-    if (error) {
-      console.error("Error removing cart item:", error)
-      return
-    }
-
-    setCartItems((prev) => prev.filter((item) => item.id !== id))
   }
 
   const calculateTotal = () => {
@@ -113,23 +135,19 @@ export function CartDrawer() {
   const handleCheckout = async () => {
     setIsLoading(true)
 
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-
-    if (!session) {
-      toast({
-        title: "Inicia sesión",
-        description: "Debes iniciar sesión para completar la compra",
-        variant: "destructive",
-      })
-      setIsLoading(false)
-      setIsOpen(false)
-      router.push("/login")
-      return
-    }
-
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession()
+
+      if (!session) {
+        showNotification("error", "Inicia sesión", "Debes iniciar sesión para completar la compra")
+        setIsLoading(false)
+        setIsOpen(false)
+        router.push("/login")
+        return
+      }
+
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: {
@@ -143,6 +161,10 @@ export function CartDrawer() {
         }),
       })
 
+      if (!response.ok) {
+        throw new Error("Error en la respuesta del servidor")
+      }
+
       const data = await response.json()
 
       if (data.url) {
@@ -150,13 +172,9 @@ export function CartDrawer() {
       } else {
         throw new Error("No checkout URL returned")
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating checkout session:", error)
-      toast({
-        title: "Error",
-        description: "No se pudo procesar el pago. Inténtalo de nuevo.",
-        variant: "destructive",
-      })
+      showNotification("error", "Error", "No se pudo procesar el pago. Inténtalo de nuevo.")
     } finally {
       setIsLoading(false)
     }

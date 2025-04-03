@@ -12,6 +12,7 @@ export type Product = {
   created_at: string
   updated_at: string
   slug: string
+  is_featured: boolean
 }
 
 export type CartItem = {

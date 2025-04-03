@@ -1,44 +1,66 @@
-// context/ProductsContext.ts
-'use client'
+"use client"
 
-import { createContext, useContext, useState, ReactNode } from "react"
-import { Product } from "@/lib/supabase"
+import type React from "react"
+
+import { createContext, useContext, useState, useEffect } from "react"
+import type { Product } from "@/lib/supabase"
+import { clientSupabase } from "@/lib/supabase"
 
 interface ProductsContextType {
   products: Product[]
-  setProducts: (products: Product[]) => void
-  cart: any[]
-  addToCart: (product: Product) => void
-  removeFromCart: (productId: string) => void
+  loading: boolean
+  error: string | null
 }
 
-const ProductsContext = createContext<ProductsContextType | undefined>(undefined)
+const ProductsContext = createContext<ProductsContextType>({
+  products: [],
+  loading: true,
+  error: null,
+})
 
-export const ProductsProvider = ({ children }: { children: ReactNode }) => {
+export const ProductsProvider = ({ children }: { children: React.ReactNode }) => {
   const [products, setProducts] = useState<Product[]>([])
-  const [cart, setCart] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const addToCart = (product: Product) => {
-    setCart((prevCart) => [...prevCart, product])
-  }
+  useEffect(() => {
+    console.log("🟢 ProductsProvider montado") // 👉 Verifica si el Provider se está ejecutando
 
-  const removeFromCart = (productId: string) => {
-    setCart((prevCart) => prevCart.filter(item => item.id !== productId))
-  }
+    const fetchProducts = async () => {
+      const supabase = clientSupabase()
+      console.log("🔵 Fetching products from Supabase...") // 👉 Antes de llamar a Supabase
+
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .order("created_at", { ascending: true }) // Luego los más antiguos?
+
+        if (error) {
+          console.error("🔴 Supabase error:", error.message) // 👉 Si hay un error en la consulta
+          setError(error.message)
+        } else {
+          console.log("🟢 Productos obtenidos:", data) // 👉 Si la consulta funciona
+          setProducts(data || [])
+        }
+      } catch (err: any) {
+        console.error("🔴 Fetch failed:", err.message) // 👉 Error inesperado
+        setError(err.message || "Failed to fetch products")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProducts()
+  }, [])
 
   return (
-    <ProductsContext.Provider value={{ products, setProducts, cart, addToCart, removeFromCart }}>
-      {/* Proporcionamos el contexto de productos y carrito a los componentes hijos */}
+    <ProductsContext.Provider value={{ products, loading, error }}>
       {children}
     </ProductsContext.Provider>
-    
   )
 }
 
-export const useProducts = (): ProductsContextType => {
-  const context = useContext(ProductsContext)
-  if (!context) {
-    throw new Error("useProducts must be used within a ProductsProvider")
-  }
-  return context
-}
+
+export const useProducts = () => useContext(ProductsContext)
+

@@ -4,8 +4,7 @@ import { useState } from "react"
 import type { Product } from "@/lib/supabase"
 import { ProductCard } from "@/components/ui/product-card"
 import { clientSupabase } from "@/lib/supabase"
-//import { useToast } from "@/hooks/use-toast"
-import { v4 as uuidv4 } from "uuid"
+import { useNotification } from "@/context/notification-context"
 
 interface ProductListProps {
   products: Product[]
@@ -13,7 +12,7 @@ interface ProductListProps {
 
 export function ProductList({ products }: ProductListProps) {
   const [categories, setCategories] = useState<string[]>([])
-  //const { toast } = useToast()
+  const { showNotification } = useNotification()
   const supabase = clientSupabase()
 
   // Extraer categorías únicas de los productos
@@ -29,6 +28,11 @@ export function ProductList({ products }: ProductListProps) {
     setCategories((prev) => (prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]))
   }
 
+  // Generamos un ID único sin depender de uuid
+  const generateId = () => {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+  }
+
   const handleAddToCart = async (product: Product) => {
     const {
       data: { session },
@@ -36,80 +40,76 @@ export function ProductList({ products }: ProductListProps) {
 
     if (!session) {
       // Si no hay sesión, guardamos en localStorage
-      const localCart = JSON.parse(localStorage.getItem("cart") || "[]")
+      try {
+        const localCartString = localStorage.getItem("cart")
+        const localCart = localCartString ? JSON.parse(localCartString) : []
 
-      // Verificar si el producto ya está en el carrito
-      const existingItemIndex = localCart.findIndex((item: any) => item.product.id === product.id)
+        // Verificar si el producto ya está en el carrito
+        const existingItemIndex = localCart.findIndex((item: any) => item.product.id === product.id)
 
-      if (existingItemIndex >= 0) {
-        // Incrementar cantidad
-        localCart[existingItemIndex].quantity += 1
-      } else {
-        // Añadir nuevo item
-        localCart.push({
-          id: uuidv4(),
-          product,
-          quantity: 1,
-        })
+        if (existingItemIndex >= 0) {
+          // Incrementar cantidad
+          localCart[existingItemIndex].quantity += 1
+        } else {
+          // Añadir nuevo item
+          localCart.push({
+            id: generateId(),
+            product,
+            quantity: 1,
+          })
+        }
+
+        localStorage.setItem("cart", JSON.stringify(localCart))
+
+        showNotification("success", "Añadido al carrito", `${product.name} se ha añadido a tu carrito`)
+      } catch (err) {
+        console.error("Error managing local cart:", err)
+        showNotification("error", "Error", "No se pudo añadir al carrito")
       }
-
-      localStorage.setItem("cart", JSON.stringify(localCart))
-
-      toast({
-        title: "Añadido al carrito",
-        description: `${product.name} se ha añadido a tu carrito`,
-      })
-
       return
     }
 
-    // Si hay sesión, guardamos en Supabase
-    const { data: existingItem } = await supabase
-      .from("cart_items")
-      .select()
-      .eq("user_id", session.user.id)
-      .eq("product_id", product.id)
-      .single()
-
-    if (existingItem) {
-      // Incrementar cantidad
-      const { error } = await supabase
+    try {
+      // Si hay sesión, guardamos en Supabase
+      const { data: existingItem } = await supabase
         .from("cart_items")
-        .update({ quantity: existingItem.quantity + 1 })
-        .eq("id", existingItem.id)
+        .select()
+        .eq("user_id", session.user.id)
+        .eq("product_id", product.id)
+        .single()
 
-      if (error) {
-        console.error("Error updating cart item:", error)
-        toast({
-          title: "Error",
-          description: "No se pudo actualizar el carrito",
-          variant: "destructive",
-        })
-        return
-      }
-    } else {
-      // Añadir nuevo item
-      const { error } = await supabase.from("cart_items").insert({
-        user_id: session.user.id,
-        product_id: product.id,
-        quantity: 1,
-      })
+      if (existingItem) {
+        // Incrementar cantidad
+        const { error } = await supabase
+          .from("cart_items")
+          .update({ quantity: existingItem.quantity + 1 })
+          .eq("id", existingItem.id)
 
-      if (error) {
-        console.error("Error adding to cart:", error)
-        toast({
-          title: "Error",
-          description: "No se pudo añadir al carrito",
-          variant: "destructive",
+        if (error) {
+          console.error("Error updating cart item:", error)
+          showNotification("error", "Error", "No se pudo actualizar el carrito")
+          return
+        }
+      } else {
+        // Añadir nuevo item
+        const { error } = await supabase.from("cart_items").insert({
+          user_id: session.user.id,
+          product_id: product.id,
+          quantity: 1,
         })
-        return
+
+        if (error) {
+          console.error("Error adding to cart:", error)
+          showNotification("error", "Error", "No se pudo añadir al carrito")
+          return
+        }
       }
+
+      showNotification("success", "Añadido al carrito", `${product.name} se ha añadido a tu carrito`)
+    } catch (err) {
+      console.error("Error in handleAddToCart:", err)
+      showNotification("error", "Error", "No se pudo añadir al carrito")
     }
-
-    toast({
-      title: "Añadido al carrito",
-      description: `${product.name} se ha añadido a tu carrito`,
-    })
   }
 
   return (
