@@ -1,10 +1,5 @@
-
 import { serverSupabase } from "@/lib/supabase"
 import { ProductList } from "./product-list"
-import { Product } from "@/lib/supabase"
-import { clientSupabase } from "@/lib/supabase"
-import { useNotification } from "@/context/notification-context"
-import { useProducts } from "@/context/products-context"
 import Link from "next/link"
 
 
@@ -13,25 +8,25 @@ export const metadata = {
   description: "Descubre nuestros servicios de astrología psicológica y productos para tu autodescubrimiento.",
 }
 
-// async function getProducts() {
-//   try {
-//     const supabase = serverSupabase()
-//     const { data, error } = await supabase.from("products").select("*").order("name")
+async function getProducts() {
+  try {
+    const supabase = serverSupabase()
+    const { data, error } = await supabase.from("products").select("*").order("name")
 
-//     if (error) {
-//       console.error("Error fetching products:", error)
-//       return []
-//     }
+    if (error) {
+      console.error("Error fetching products:", error)
+      return []
+    }
 
-//     return data || []
-//   } catch (err) {
-//     console.error("Error in getProducts:", err)
-//     return []
-//   }
-// }
+    return data || []
+  } catch (err) {
+    console.error("Error in getProducts:", err)
+    return []
+  }
+}
 
 export default async function ShopPage() {
-  const { products, loading, error } = useProducts()
+  const products = await getProducts()
 
   return (
     <section className="py-16 md:py-24">

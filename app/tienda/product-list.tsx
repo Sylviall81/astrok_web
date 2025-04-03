@@ -112,6 +112,8 @@ export function ProductList({ products }: ProductListProps) {
     }
   }
 
+  console.log("filteredProducts", filteredProducts)
+
   return (
     <div>
       {uniqueCategories.length > 0 && (
