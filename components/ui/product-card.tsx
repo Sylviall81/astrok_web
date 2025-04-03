@@ -39,7 +39,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <p className="text-sm text-muted-foreground line-clamp-3">{product.description}</p>
         {product.duration && <p className="mt-2 text-sm font-medium">Duración: {product.duration} minutos</p>}
         <Link
-          href={`/tienda/${product.slug}`}
+          href={`/servicios/${product.slug}`}
           className="text-primary font-lato font-semibold hover:text-accent transition-colors"
         >
           Saber más →

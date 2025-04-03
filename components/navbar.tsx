@@ -45,11 +45,11 @@ export function Navbar() {
           <Link href="/" className="text-muted-foreground hover:text-foreground">
             Inicio
           </Link>
+          {/* <Link href="/servicios" className="text-muted-foreground hover:text-foreground">
+            Servicios
+          </Link> */}
           <Link href="/servicios" className="text-muted-foreground hover:text-foreground">
             Servicios
-          </Link>
-          <Link href="/tienda" className="text-muted-foreground hover:text-foreground">
-            Tienda
           </Link>
           <Link href="/blog" className="text-muted-foreground hover:text-foreground">
             Blog

@@ -1,156 +1,239 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import ShareButtons from "@/components/share-buttons"
+import { useParams } from "next/navigation"
+import { ArrowLeft, Clock, ShoppingCart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ShareButtons } from "@/components/share-button"
+import { useProducts } from "@/context/products-context"
+import { useNotification } from "@/context/notification-context"
+import { clientSupabase } from "@/lib/supabase"
+import type { Product } from "@/lib/supabase"
 
-// Datos de ejemplo para los servicios
-const services = {
-  "carta-natal": {
-    title: "Carta Natal",
-    description: "Un análisis profundo de tu mapa natal que revela tus potenciales, desafíos y propósito de vida.",
-    image: "/placeholder.svg?height=600&width=1200",
-    price: "120€",
-    duration: "90 minutos",
-    details: [
-      "Análisis completo de tu carta natal",
-      "Exploración de tus fortalezas y desafíos",
-      "Identificación de patrones y tendencias",
-      "Comprensión de tu propósito de vida",
-      "Grabación de la sesión",
-      "Informe PDF con tu carta natal",
-    ],
-    longDescription: `
-      La carta natal es un mapa del cielo en el momento exacto de tu nacimiento. Es como una fotografía cósmica que revela la posición de los planetas, signos y casas astrológicas que influyen en tu personalidad, talentos, desafíos y propósito de vida.
-      
-      En esta sesión, exploraremos en profundidad tu carta natal desde una perspectiva psicológica, ayudándote a comprender los patrones que has estado viviendo, tus dones innatos y cómo puedes alinear tu vida con tu verdadero propósito.
-      
-      La carta natal es especialmente útil cuando estás en un momento de búsqueda personal, cuando necesitas claridad sobre tu camino o cuando quieres comprender mejor tus patrones de comportamiento y relaciones.
-    `,
-  },
-  "revolucion-solar": {
-    title: "Revolución Solar",
-    description: "Descubre las energías y oportunidades que te acompañarán durante tu próximo año solar.",
-    image: "/placeholder.svg?height=600&width=1200",
-    price: "100€",
-    duration: "75 minutos",
-    details: [
-      "Análisis del mapa de tu año solar",
-      "Tendencias y oportunidades del año",
-      "Periodos favorables para diferentes áreas",
-      "Estrategias para aprovechar las energías",
-      "Grabación de la sesión",
-      "Informe PDF con tu revolución solar",
-    ],
-    longDescription: `
-      La Revolución Solar es un mapa astrológico que se calcula para el momento exacto en que el Sol regresa a la misma posición que ocupaba cuando naciste, lo que ocurre aproximadamente en tu cumpleaños cada año.
-      
-      Este mapa revela las energías, oportunidades y desafíos específicos que te acompañarán durante tu próximo año solar. Es como un "pronóstico personalizado" que te ayuda a navegar el año con mayor conciencia y preparación.
-      
-      En esta sesión, analizaremos las áreas de tu vida que estarán más activadas durante el año, los periodos más favorables para diferentes actividades y cómo puedes aprovechar al máximo las energías disponibles.
-      
-      La Revolución Solar es ideal para realizarla cerca de tu cumpleaños, como una forma de prepararte para tu nuevo ciclo anual.
-    `,
-  },
-  sinastria: {
-    title: "Sinastría",
-    description: "Análisis de compatibilidad que explora la dinámica entre dos personas a nivel astrológico.",
-    image: "/placeholder.svg?height=600&width=1200",
-    price: "150€",
-    duration: "120 minutos",
-    details: [
-      "Análisis de compatibilidad entre dos cartas natales",
-      "Exploración de la dinámica relacional",
-      "Identificación de fortalezas y desafíos en la relación",
-      "Estrategias para mejorar la comunicación",
-      "Grabación de la sesión",
-      "Informe PDF con el análisis de sinastría",
-    ],
-    longDescription: `
-      La Sinastría es un análisis astrológico que compara dos cartas natales para revelar la dinámica energética entre dos personas. Es como un mapa que muestra cómo se conectan e interactúan sus energías a nivel profundo.
-      
-      En esta sesión, exploraremos la compatibilidad entre ambas cartas, identificando las áreas de armonía natural, los desafíos potenciales y cómo pueden complementarse mutuamente para crear una relación más consciente y satisfactoria.
-      
-      Analizaremos aspectos como la comunicación, la atracción, los valores compartidos, los patrones emocionales y cómo pueden apoyarse mutuamente en su crecimiento personal.
-      
-      La Sinastría es ideal para parejas que desean profundizar en su comprensión mutua, para relaciones familiares complejas o para cualquier vínculo importante donde quieras entender mejor la dinámica relacional.
-    `,
-  },
-}
+export default function ProductDetailPage() {
+  const params = useParams()
+  const slug = params.slug as string
+  console.log(slug)
+  const { products, loading, error } = useProducts()
+  const [product, setProduct] = useState<Product | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const { showNotification } = useNotification()
+  const supabase = clientSupabase()
 
-export default function ServicePage({ params }: { params: { slug: string } }) {
-  const service = services[params.slug as keyof typeof services]
+  useEffect(() => {
+    const fetchProduct = async () => {
+      // Primero intentamos encontrar el producto en el contexto
+      const foundProduct = products.find((p) => p.slug === slug)
 
-  if (!service) {
+      if (foundProduct) {
+        setProduct(foundProduct)
+        setIsLoading(false)
+        return
+      }
+
+      // Si no está en el contexto o el contexto está cargando, lo buscamos directamente
+      try {
+        const { data, error } = await supabase.from("products").select("*").eq("id", slug).single()
+
+        if (error) {
+          throw error
+        }
+
+        setProduct(data)
+      } catch (err) {
+        console.log("Error fetching product:", err)
+        showNotification("error", "Error", "No se pudo cargar el producto")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchProduct()
+  }, [slug, products, showNotification, supabase])
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("es-ES", {
+      style: "currency",
+      currency: "EUR",
+    }).format(price)
+  }
+
+  // Generar un ID único sin depender de uuid
+  const generateId = () => {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+  }
+
+  const handleAddToCart = async () => {
+    if (!product) return
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+    if (!session) {
+      // Si no hay sesión, guardamos en localStorage
+      try {
+        const localCartString = localStorage.getItem("cart")
+        const localCart = localCartString ? JSON.parse(localCartString) : []
+
+        // Verificar si el producto ya está en el carrito
+        const existingItemIndex = localCart.findIndex((item: any) => item.product.id === product.id)
+
+        if (existingItemIndex >= 0) {
+          // Incrementar cantidad
+          localCart[existingItemIndex].quantity += 1
+        } else {
+          // Añadir nuevo item
+          localCart.push({
+            id: generateId(),
+            product,
+            quantity: 1,
+          })
+        }
+
+        localStorage.setItem("cart", JSON.stringify(localCart))
+
+        showNotification("success", "Añadido al carrito", `${product.name} se ha añadido a tu carrito`)
+      } catch (err) {
+        console.error("Error managing local cart:", err)
+        showNotification("error", "Error", "No se pudo añadir al carrito")
+      }
+      return
+    }
+
+    try {
+      // Si hay sesión, guardamos en Supabase
+      const { data: existingItem } = await supabase
+        .from("cart_items")
+        .select()
+        .eq("user_id", session.user.id)
+        .eq("product_id", product.id)
+        .single()
+
+      if (existingItem) {
+        // Incrementar cantidad
+        const { error } = await supabase
+          .from("cart_items")
+          .update({ quantity: existingItem.quantity + 1 })
+          .eq("id", existingItem.id)
+
+        if (error) throw error
+      } else {
+        // Añadir nuevo item
+        const { error } = await supabase.from("cart_items").insert({
+          user_id: session.user.id,
+          product_id: product.id,
+          quantity: 1,
+        })
+
+        if (error) throw error
+      }
+
+      showNotification("success", "Añadido al carrito", `${product.name} se ha añadido a tu carrito`)
+    } catch (err) {
+      console.error("Error in handleAddToCart:", err)
+      showNotification("error", "Error", "No se pudo añadir al carrito")
+    }
+  }
+
+  if (isLoading) {
     return (
-      <div className="container-custom py-16 text-center">
-        <h1 className="text-3xl font-lato font-semibold text-primary mb-6">Servicio no encontrado</h1>
-        <p className="mb-8">Lo sentimos, el servicio que buscas no está disponible.</p>
-        <Link href="/servicios" className="btn-primary">
-          Ver todos los servicios
+      <div className="container py-16 text-center">
+        <p>Cargando producto...</p>
+      </div>
+    )
+  }
+
+  if (!product) {
+    return (
+      <div className="container py-16 text-center">
+        <h1 className="text-3xl font-lato font-semibold text-primary mb-6">Producto no encontrado</h1>
+        <p className="mb-8">Lo sentimos, el producto que buscas no está disponible.</p>
+        <Link
+          href="/tienda"
+          className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          Ver todos los productos
         </Link>
       </div>
     )
   }
 
+  // Crear una URL para compartir
+  const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/tienda/${product.id}` : ""
+
   return (
-    <>
-      <section className="py-16 md:py-24">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl md:text-5xl font-lato font-bold text-primary mb-8">{service.title}</h1>
+    <section className="py-16">
+      <div className="container">
+        <Link href="/servicios" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Volver 
+        </Link>
 
-            <div className="relative h-[400px] rounded-lg overflow-hidden mb-10">
-              <Image src={service.image || "/placeholder.svg"} alt={service.title} fill className="object-cover" />
-            </div>
-
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <p className="text-2xl font-lato font-semibold text-primary">{service.price}</p>
-                <p className="text-gray-600">Duración: {service.duration}</p>
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="relative h-[400px] rounded-lg overflow-hidden">
+            {product.image_url ? (
+              <Image
+                src={product.image_url || "/placeholder.svg"}
+                alt={product.name}
+                fill
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-secondary/10">
+                <span className="text-secondary">Sin imagen</span>
               </div>
+            )}
+          </div>
 
-              <div className="flex space-x-4">
-                <Link href="/agenda" className="btn-primary">
-                  Reservar ahora
-                </Link>
-                <ShareButtons url={`https://kaleidoscope.com/servicios/${params.slug}`} title={service.title} />
+          <div>
+            <h1 className="text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
+
+            <div className="flex items-center mb-6">
+              <p className="text-2xl font-semibold text-primary">{formatPrice(product.price)}</p>
+              {product.duration && (
+                <div className="ml-4 flex items-center text-muted-foreground">
+                  <Clock className="mr-1 h-4 w-4" />
+                  <span>{product.duration} minutos</span>
+                </div>
+              )}
+            </div>
+
+            {product.category && (
+              <div className="mb-6">
+                <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+                  {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+                </span>
               </div>
+            )}
+
+            <div className="prose max-w-none mb-8">
+              <h2 className="text-xl font-semibold mb-2">Descripción</h2>
+              <p>{product.description}</p>
             </div>
 
-            <div className="prose prose-lg max-w-none mb-10">
-              <h2 className="text-2xl font-lato font-semibold text-primary mb-4">Descripción</h2>
-              {service.longDescription.split("\n\n").map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
-            </div>
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <Button onClick={handleAddToCart} className="bg-primary hover:bg-primary/90">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Añadir al carrito
+              </Button>
 
-            <div className="bg-neutral-light p-8 rounded-lg mb-10">
-              <h2 className="text-2xl font-lato font-semibold text-primary mb-6">¿Qué incluye?</h2>
-              <ul className="space-y-3">
-                {service.details.map((detail, index) => (
-                  <li key={index} className="flex items-start">
-                    <svg
-                      className="h-6 w-6 text-primary mr-2 flex-shrink-0"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="text-center">
-              <Link href="/agenda" className="btn-primary inline-block">
-                Reservar sesión
+              <Link href="/agenda" passHref>
+                <Button variant="outline">Reservar sesión</Button>
               </Link>
+            </div>
+
+            <div className="flex items-center justify-between border-t pt-6">
+              <span className="text-sm text-muted-foreground">Compartir:</span>
+              <ShareButtons url={shareUrl} title={product.name} />
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }
 
