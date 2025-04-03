@@ -34,7 +34,7 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
         const { data, error } = await supabase
           .from("products")
           .select("*")
-          .order("created_at", { ascending: true }) // Luego los más antiguos?
+          .order("created_at", { ascending:false }) // Luego los más antiguos?
 
         if (error) {
           console.error("🔴 Supabase error:", error.message) // 👉 Si hay un error en la consulta
