@@ -1,31 +1,35 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart } from "lucide-react"
-import type { Product } from "@/lib/supabase"
-import Link from "next/link"
-
+import type { WCProduct } from "@/lib/woocomerce"
 
 interface ProductCardProps {
-  product: Product
-  onAddToCart: (product: Product) => void
+  product: WCProduct
+  onAddToCart: (product: WCProduct) => void
 }
 
 export function ProductCard({ product, onAddToCart }: ProductCardProps) {
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: string) => {
     return new Intl.NumberFormat("es-ES", {
       style: "currency",
       currency: "EUR",
-    }).format(price)
+    }).format(parseFloat(price))
   }
+
+  const imagen = product.images?.[0]?.src || "/placeholder.svg"
+
+  const stripHtml = (html: string) =>
+    html.replace(/<[^>]*>/g, "").trim()
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <div className="relative h-48 bg-muted">
-        {product.image_url ? (
-          <Image src={product.image_url || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+        {imagen !== "/placeholder.svg" ? (
+          <Image src={imagen} alt={product.name} fill className="object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center bg-secondary/10">
             <span className="text-secondary">Sin imagen</span>
@@ -36,19 +40,18 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <CardTitle className="text-xl">{product.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground line-clamp-3">{product.description}</p>
-        {product.duration && <p className="mt-2 text-sm font-medium">Duración: {product.duration} minutos</p>}
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {stripHtml(product.short_description || product.description || "")}
+        </p>
         <Link
-          href={`/servicios/${product.slug}`}
+          href={`/servicios/${product.slug || product.id}`}
           className="text-primary font-lato font-semibold hover:text-accent transition-colors"
         >
           Saber más →
         </Link>
         <p className="mt-4 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
-       
       </CardContent>
       <CardFooter>
-  
         <Button onClick={() => onAddToCart(product)} className="w-full bg-primary hover:bg-primary/90">
           <ShoppingCart className="mr-2 h-4 w-4" />
           Añadir al carrito
@@ -57,4 +60,3 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     </Card>
   )
 }
-

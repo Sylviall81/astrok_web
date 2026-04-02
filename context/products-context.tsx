@@ -1,13 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { createContext, useContext, useState, useEffect } from "react"
-import type { Product } from "@/lib/supabase"
-import { clientSupabase } from "@/lib/supabase"
+import type { WCProduct } from "@/lib/woocomerce"
 
 interface ProductsContextType {
-  products: Product[]
+  products: WCProduct[]
   loading: boolean
   error: string | null
 }
@@ -19,33 +17,20 @@ const ProductsContext = createContext<ProductsContextType>({
 })
 
 export const ProductsProvider = ({ children }: { children: React.ReactNode }) => {
-  const [products, setProducts] = useState<Product[]>([])
+  const [products, setProducts] = useState<WCProduct[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log("🟢 ProductsProvider montado") // 👉 Verifica si el Provider se está ejecutando
-
     const fetchProducts = async () => {
-      const supabase = clientSupabase()
-      console.log("🔵 Fetching products from Supabase...") // 👉 Antes de llamar a Supabase
-
       try {
-        const { data, error } = await supabase
-          .from("products")
-          .select("*")
-          .order("created_at", { ascending:false }) // Luego los más antiguos?
-
-        if (error) {
-          console.error("🔴 Supabase error:", error.message) // 👉 Si hay un error en la consulta
-          setError(error.message)
-        } else {
-          console.log("🟢 Productos obtenidos:", data) // 👉 Si la consulta funciona
-          setProducts(data || [])
-        }
+        const res = await fetch("/api/products")
+        if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`)
+        const data: WCProduct[] = await res.json()
+        setProducts(data)
       } catch (err: any) {
-        console.error("🔴 Fetch failed:", err.message) // 👉 Error inesperado
-        setError(err.message || "Failed to fetch products")
+        console.error("🔴 Error cargando productos:", err.message)
+        setError(err.message || "Error al cargar productos")
       } finally {
         setLoading(false)
       }
@@ -61,6 +46,4 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
   )
 }
 
-
 export const useProducts = () => useContext(ProductsContext)
-

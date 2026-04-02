@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 //import { Toaster } from "@/components/ui/toaster"
 import { ProductsProvider } from "@/context/products-context"
 import { NotificationProvider } from "@/context/notification-context"
+import { CartProvider } from "@/context/cart-context"
 // import { Notification } from "@/components/ui/notification"
 import { Footer } from "@/components/footer"
 
@@ -26,12 +27,17 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
         <NotificationProvider>
           <ProductsProvider>
+            <CartProvider>
+
+            
             <Navbar />
             <main>{children}</main>
             {/*<Toaster />*/}
             <Footer />
+          </CartProvider>
           </ProductsProvider>
           </NotificationProvider>
+
         </ThemeProvider>
       </body>
     </html>
