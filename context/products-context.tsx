@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import type { WCProduct } from "@/lib/woocomerce"
+import type { WCProduct } from "@/lib/woocommerce"
 
 interface ProductsContextType {
   products: WCProduct[]

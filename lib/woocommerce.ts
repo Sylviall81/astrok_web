@@ -58,6 +58,7 @@ export type WCProduct = {
   images: WCImage[]
   attributes: WCAttribute[]
   variations: number[]
+  downloads: { id: string; name: string; file: string }[]
 }
 
 export type WCVariation = {

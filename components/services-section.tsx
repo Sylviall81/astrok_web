@@ -4,7 +4,7 @@ import { useProducts } from "@/context/products-context"
 import { useState, useRef } from "react"
 import ServiceCard from "./service-card"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import type { WCProduct } from "@/lib/woocomerce"
+import type { WCProduct } from "@/lib/woocommerce"
 
 // Helper para obtener la imagen principal del producto
 const getProductImage = (product: WCProduct): string => {

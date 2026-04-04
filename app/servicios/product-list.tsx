@@ -3,7 +3,7 @@
 import { useCart } from "@/context/cart-context"
 import { ProductCard } from "@/components/ui/product-card"
 import { useNotification } from "@/context/notification-context"
-import type { WCProduct } from "@/lib/woocomerce"
+import type { WCProduct } from "@/lib/woocommerce"
 
 interface ProductListProps {
   products: WCProduct[]

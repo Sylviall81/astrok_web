@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
-import type { WCProduct } from "@/lib/woocomerce"
+import type { WCProduct } from "@/lib/woocommerce"
 
 export type LocalCartItem = {
   id: string
@@ -14,6 +14,7 @@ interface CartContextType {
   addToCart: (product: WCProduct) => void
   updateQuantity: (id: string, quantity: number) => void
   removeItem: (id: string) => void
+  clearCart: () => void
   totalItems: number
   totalPrice: number
 }
@@ -23,6 +24,7 @@ const CartContext = createContext<CartContextType>({
   addToCart: () => {},
   updateQuantity: () => {},
   removeItem: () => {},
+  clearCart: () => {},
   totalItems: 0,
   totalPrice: 0,
 })
@@ -66,6 +68,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     )
   }
 
+ 
+
   const removeItem = (id: string) => {
     setCartItems((prev) => prev.filter((item) => item.id !== id))
   }
@@ -75,8 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (sum, item) => sum + parseFloat(item.product.price) * item.quantity, 0
   )
 
-  return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, totalItems, totalPrice }}>
+   const clearCart = () => setCartItems([])
+
+   return (
+    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, totalItems, clearCart,totalPrice,}}>
       {children}
     </CartContext.Provider>
   )

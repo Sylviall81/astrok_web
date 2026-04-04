@@ -1,6 +1,6 @@
 // app/api/products/route.ts
 import { NextResponse } from "next/server"
-import { getProducts } from "@/lib/woocomerce"
+import { getProducts } from "@/lib/woocommerce"
 
 export async function GET() {
   try {

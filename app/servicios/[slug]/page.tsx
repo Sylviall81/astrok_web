@@ -8,28 +8,37 @@ import { ArrowLeft, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useProducts } from "@/context/products-context"
 import { useNotification } from "@/context/notification-context"
-import type { WCProduct } from "@/lib/woocomerce"
 import { useCart } from "@/context/cart-context"
+import type { WCProduct, WCVariation } from "@/lib/woocommerce"
 
 export default function ProductDetailPage() {
   const params = useParams()
   const slug = params.slug as string
   const { products, loading } = useProducts()
   const [product, setProduct] = useState<WCProduct | null>(null)
+  const [variations, setVariations] = useState<WCVariation[]>([])
+  const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
   const { addToCart } = useCart()
+  
 
   useEffect(() => {
     if (loading) return
 
-    // Buscamos por slug o por id (WooCommerce devuelve el id como número)
-    const found = products.find(
-      (p) => p.slug === slug || p.id.toString() === slug
-    )
+    const found = products.find(p => p.slug === slug || p.id.toString() === slug)
 
     if (found) {
       setProduct(found)
+      if (found.type === "variable" && found.variations?.length > 0) {
+        fetch(`/api/products/${found.id}/variations`)
+          .then(res => res.json())
+          .then(data => {
+            setVariations(data)
+            setSelectedVariation(data[0] ?? null)
+          })
+          .catch(err => console.error("Error cargando variaciones:", err))
+      }
     } else {
       showNotification("error", "Error", "No se pudo cargar el producto")
     }
@@ -48,13 +57,38 @@ export default function ProductDetailPage() {
     return product.images?.[0]?.src || "/placeholder.svg"
   }
 
+  const displayPrice = selectedVariation?.price || product?.price || "0"
+
+  const modalidadAttr = product?.attributes?.find(
+    a => a.name.toLowerCase() === "modalidad"
+  )
+
+  const handleVariationChange = (option: string) => {
+    const match = variations.find(v =>
+      v.attributes.some(a => a.option === option)
+    )
+    if (match) setSelectedVariation(match)
+  }
+
 
   const handleAddToCart = () => {
   if (!product) return
-  addToCart(product)
-  showNotification("success", "Añadido al carrito", `${product.name} se ha añadido a tu carrito`)
-}
- 
+  if (esVariable && !selectedVariation) {
+    showNotification("error", "Selecciona una opción", "Por favor selecciona una modalidad antes de añadir al carrito")
+    return
+  }
+    const productToAdd = selectedVariation
+      ? {
+          ...product,
+          price: selectedVariation.price,
+          name: `${product.name} — ${selectedVariation.attributes.map(a => a.option).join(", ")}`,
+        }
+      : product
+
+    addToCart(productToAdd)
+    showNotification("success", "Añadido al carrito", `${productToAdd.name} se ha añadido a tu carrito`)
+  }
+
   if (isLoading || loading) {
     return <div className="container py-16 text-center"><p>Cargando producto...</p></div>
   }
@@ -71,9 +105,9 @@ export default function ProductDetailPage() {
     )
   }
 
-  const shareUrl = typeof window !== "undefined" ? window.location.href : ""
   const imagen = getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
+  const esVariable = product.type === "variable"
 
   return (
     <section className="py-16">
@@ -88,13 +122,7 @@ export default function ProductDetailPage() {
           {/* Imagen */}
           <div className="relative h-[400px] rounded-lg overflow-hidden">
             {imagen !== "/placeholder.svg" ? (
-              <Image
-                src={imagen}
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
+              <Image src={imagen} alt={product.name} fill className="object-cover" priority />
             ) : (
               <div className="flex h-full items-center justify-center bg-secondary/10">
                 <span className="text-secondary">Sin imagen</span>
@@ -108,26 +136,45 @@ export default function ProductDetailPage() {
 
             <div className="flex items-center mb-6">
               <p className="text-2xl font-semibold text-primary">
-                {formatPrice(product.price)}
+                {formatPrice(displayPrice)}
               </p>
             </div>
 
             {categoria && (
-              <div className="mb-6">
+              <div className="mb-4">
                 <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                   {categoria}
                 </span>
               </div>
             )}
 
-            {/* ✅ Fix HTML: usamos dangerouslySetInnerHTML para renderizar el HTML de WC */}
+            {/* Selector de modalidad */}
+            {esVariable && modalidadAttr && (
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-2">
+                  {modalidadAttr.name}
+                </label>
+                <select
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={e => handleVariationChange(e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled>Selecciona una modalidad</option>
+                  {modalidadAttr.options.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Descripción */}
             <div className="prose max-w-none mb-8">
               <h2 className="text-xl font-semibold mb-2">Descripción</h2>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: product.description || product.short_description || "",
-                }}
-              />
+              <div dangerouslySetInnerHTML={{
+                __html: product.description || product.short_description || "",
+              }} />
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">

@@ -1,3 +1,4 @@
+// app/api/checkout/route.ts
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 
@@ -13,15 +14,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No hay productos en el carrito" }, { status: 400 })
     }
 
-    // Construimos los line_items para Stripe
     const lineItems = items.map((item: any) => ({
       price_data: {
         currency: "eur",
         product_data: {
           name: item.name,
+          // Guardamos el ID de WooCommerce en los metadatos del producto
+          metadata: {
+            wc_product_id: String(item.id),
+          },
           ...(item.image ? { images: [item.image] } : {}),
         },
-        // Stripe trabaja en céntimos
         unit_amount: Math.round(parseFloat(item.price) * 100),
       },
       quantity: item.quantity,
@@ -31,8 +34,8 @@ export async function POST(request: NextRequest) {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_WC_URL || "http://localhost:3000"}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_WC_URL || "http://localhost:3000"}/checkout/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/cancel`,
       locale: "es",
     })
 
@@ -42,4 +45,3 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
-

@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -8,9 +9,13 @@ const nextConfig = {
       {
         protocol: "http",
         hostname: "kaleidoastro.local",
+        pathname: "/**",
       },
     ],
+    unoptimized: true,
   },
 };
 
 export default nextConfig;
+
+
