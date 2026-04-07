@@ -27,34 +27,39 @@ export default function ContactForm() {
     }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+ const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
 
-    // Aquí iría la lógica para enviar el formulario a un backend
-    // Por ahora, simulamos una respuesta exitosa
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
 
-    try {
-      // Simulación de envío
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      setStatus({
-        type: "success",
-        message: "¡Mensaje enviado con éxito! Te responderé lo antes posible.",
-      })
-
-      // Resetear el formulario
-      setFormData({
-        name: "",
-        email: "",
-        message: "",
-      })
-    } catch (error) {
-      setStatus({
-        type: "error",
-        message: "Hubo un error al enviar el mensaje. Por favor, intenta nuevamente.",
-      })
+    if (!res.ok) {
+      throw new Error("Error en el envío")
     }
+
+    setStatus({
+      type: "success",
+      message: "¡Mensaje enviado con éxito! Te responderé lo antes posible.",
+    })
+
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    })
+  } catch (error) {
+    setStatus({
+      type: "error",
+      message: "Hubo un error al enviar el mensaje. Inténtalo de nuevo.",
+    })
   }
+}
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
