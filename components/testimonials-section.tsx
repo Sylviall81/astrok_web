@@ -18,7 +18,7 @@ export default function TestimonialsSection() {
   }, [])
 
   return (
-    <section className="py-16 md:py-24 bg-neutral-light">
+    <section className="py-16 md:py-24 ">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="section-title">Lo que dicen mis clientes</h2>

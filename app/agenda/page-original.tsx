@@ -47,7 +47,7 @@
 //           <div id="calendly-embed" style={{ minHeight: "700px" }}></div>
 //         </div>
 
-//         <div className="mt-12 bg-neutral-light p-8 rounded-lg">
+//         <div className="mt-12 card-soft p-8 rounded-lg">
 //           <h2 className="text-2xl font-lato font-semibold text-primary mb-4">Información importante</h2>
 //           <ul className="space-y-3">
 //             <li className="flex items-start">

@@ -24,7 +24,7 @@ export default function TestimonialCard({ name, text, image, rating }: Testimoni
           </div>
         </div>
       </div>
-      <p className="text-neutral-dark">{text}</p>
+      <p className="text-body">{text}</p>
     </div>
   )
 }

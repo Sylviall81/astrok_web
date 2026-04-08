@@ -40,7 +40,7 @@ export default function BlogCard({
         </div>
 
         <h3 className="text-xl font-lato font-semibold text-primary mb-3">{title}</h3>
-        <p className="text-neutral-dark mb-4 line-clamp-3">{excerpt}</p>
+        <p className="text-body mb-4 line-clamp-3">{excerpt}</p>
 
         <div className="flex items-center justify-between">
           <Link

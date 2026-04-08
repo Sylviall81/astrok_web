@@ -91,7 +91,7 @@ export default function BookingPage() {
           <h1 className="text-4xl md:text-5xl font-lato font-bold text-primary mb-6">Agenda tu sesión</h1>
         </div>
 
-        <div className="mb-10 border-l-4 border-primary bg-neutral-light p-6 rounded-r-lg">
+        <div className="mb-10 border-l-4 border-primary card-soft p-6 rounded-r-lg">
           <h2 className="text-lg font-lato font-semibold text-primary mb-4">Antes de reservar</h2>
           <ul className="space-y-3">
             {infoItems.map((item, i) => (

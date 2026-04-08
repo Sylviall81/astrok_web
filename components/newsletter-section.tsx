@@ -75,7 +75,7 @@ export default function NewsletterSection() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Tu email"
                 required
-                className="flex-grow px-4 py-3 rounded-md text-neutral-dark focus:outline-none focus:ring-2 focus:ring-accent"
+                className="flex-grow px-4 py-3 rounded-md text-body focus:outline-none focus:ring-2 focus:ring-accent"
               />
               <button
                 type="submit"

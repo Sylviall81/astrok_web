@@ -34,7 +34,7 @@ const blogPosts = [
 
 export default function BlogSection() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 md:py-24 section-alt">
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="section-title">Últimos Artículos</h2>

@@ -123,7 +123,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
               ))}
             </div>
 
-            <div className="bg-neutral-light p-8 rounded-lg mb-10">
+            <div className="card-soft p-8 rounded-lg mb-10">
               <h2 className="text-2xl font-lato font-semibold text-primary mb-6">¿Qué incluye?</h2>
               <ul className="space-y-3">
                 {service.details.map((detail, index) => (

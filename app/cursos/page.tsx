@@ -90,7 +90,7 @@ export default function ServicesPage() {
 
         <div className="mt-16 text-center">
           <h2 className="text-2xl font-lato font-semibold text-primary mb-6">¿No encuentras lo que buscas?</h2>
-          <p className="text-neutral-dark mb-8 max-w-2xl mx-auto">
+          <p className="text-body mb-8 max-w-2xl mx-auto">
             Si necesitas un servicio personalizado o tienes alguna consulta específica, no dudes en contactarme. Podemos
             diseñar una sesión adaptada a tus necesidades.
           </p>
