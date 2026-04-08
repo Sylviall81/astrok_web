@@ -7,11 +7,15 @@ export function Footer() {
     <footer className="bg-neutral-light py-12">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            
-            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png" alt= "website black and white logo" width={400} height={25}/>
+          <div className="col-span-1 md:col-span-1">
+            <Image
+              src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
+              alt="website black and white logo"
+              width={400}
+              height={25}
+            />
             <p className="text-neutral-dark mb-4 max-w-md">
-            Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
+              Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
             </p>
             <div className="flex space-x-4">
               <a
@@ -39,7 +43,7 @@ export function Footer() {
                 className="text-primary hover:text-accent transition-colors"
               >
                 <Youtube className="h-6 w-6" />
-                <span className="sr-only">Twitter</span>
+                <span className="sr-only">YouTube</span>
               </a>
             </div>
           </div>
@@ -76,6 +80,27 @@ export function Footer() {
           </div>
 
           <div>
+            <h4 className="text-lg font-lato font-semibold text-primary mb-4">Legal</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/politica-privacidad" className="text-neutral-dark hover:text-primary transition-colors">
+                  Política de Privacidad
+                </Link>
+              </li>
+              <li>
+                <Link href="/politica-cookies" className="text-neutral-dark hover:text-primary transition-colors">
+                  Política de Cookies
+                </Link>
+              </li>
+              <li>
+                <Link href="/aviso-legal" className="text-neutral-dark hover:text-primary transition-colors">
+                  Aviso Legal
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h4 className="text-lg font-lato font-semibold text-primary mb-4">Contacto</h4>
             <ul className="space-y-2">
               <li className="text-neutral-dark">Email: kaleidoscopebcn@gmail.com</li>
@@ -86,11 +111,10 @@ export function Footer() {
 
         <div className="border-t border-gray-200 mt-12 pt-8 text-center">
           <p className="text-sm text-neutral-dark">
-            &copy; {new Date().getFullYear()} Kaleidoscope. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Kaleidoastro. Todos los derechos reservados.
           </p>
         </div>
       </div>
     </footer>
   )
 }
-
