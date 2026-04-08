@@ -12,7 +12,7 @@ export default function AboutSection() {
           </div>
 
           <div>
-            <h2 className="section-title">Sobre Mí y yo</h2>
+            <h2 className="section-title">Sobre Mí</h2>
             
             <h3 className="section-subtitle"> Soy Sylvia y te doy la bienvenida a mi web,</h3>
             

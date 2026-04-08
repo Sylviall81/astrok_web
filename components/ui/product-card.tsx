@@ -28,6 +28,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <div className="relative h-48 bg-muted">
+        <Link
+          href={`/servicios/${product.slug || product.id}`}
+          //className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+        >
         {imagen !== "/placeholder.svg" ? (
           <Image src={imagen} alt={product.name} fill className="object-cover" />
         ) : (
@@ -35,9 +39,16 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             <span className="text-secondary">Sin imagen</span>
           </div>
         )}
+        </Link>
       </div>
       <CardHeader>
-        <CardTitle className="text-xl">{product.name}</CardTitle>
+         <Link
+          href={`/servicios/${product.slug || product.id}`}
+          //className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+        >
+          <CardTitle className="text-xl">{product.name}</CardTitle>
+        </Link>
+        
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground line-clamp-3">

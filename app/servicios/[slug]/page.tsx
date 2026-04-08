@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
           {/* Imagen */}
           <div className="relative h-[400px] rounded-lg overflow-hidden">
             {imagen !== "/placeholder.svg" ? (
-              <Image src={imagen} alt={product.name} fill className="object-cover" priority />
+              <Image src={imagen} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
             ) : (
               <div className="flex h-full items-center justify-center bg-secondary/10">
                 <span className="text-secondary">Sin imagen</span>

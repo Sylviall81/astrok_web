@@ -11,16 +11,28 @@ interface ServiceCardProps {
 export default function ServiceCard({ title, description, image, slug }: ServiceCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg">
+      
       <div className="relative h-48 w-full">
+       <Link 
+          href={`/servicios/${slug}`}
+          //className="inline-flex items-center text-sm font-medium text-primary hover:text-accent"
+      >
         <Image 
           src={image || "/placeholder.svg"} 
           alt={title}
           fill
           className="object-cover"
         />
+        </Link>
       </div>
+      
       <div className="p-6">
+         <Link 
+          href={`/servicios/${slug}`}
+          //className="inline-flex items-center text-sm font-medium text-primary hover:text-accent"
+      >
         <h3 className="text-xl font-lato font-semibold text-primary mb-2">{title}</h3>
+        </Link>
         <p className="text-muted-foreground mb-4 line-clamp-3">{description}</p>
         <Link 
           href={`/servicios/${slug}`}
