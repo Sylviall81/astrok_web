@@ -22,13 +22,19 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
   const imagen = product.images?.[0]?.src || "/placeholder.svg"
 
+const esInfoproducto = product.categories?.some(c => c.slug === "infoproductos")
+
+const href = esInfoproducto
+  ? `/tienda/${product.slug || product.id}`
+  : `/servicios/${product.slug || product.id}`
+
   const stripHtml = (html: string) =>
     html.replace(/<[^>]*>/g, "").trim()
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
        <Link
-          href={`/servicios/${product.slug || product.id}`}
+          href={href}
           className="relative block h-48 bg-muted"
         >
       <div className="relative h-48 bg-muted">
@@ -44,8 +50,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       </Link>
       <CardHeader>
          <Link
-          href={`/servicios/${product.slug || product.id}`}
-          //className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+          href={href}
         >
           <CardTitle className="text-xl">{product.name}</CardTitle>
         </Link>
@@ -56,7 +61,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           {stripHtml(product.short_description || product.description || "")}
         </p>
         <Link
-          href={`/servicios/${product.slug || product.id}`}
+          href={href}
           className="text-primary font-lato font-semibold hover:text-accent transition-colors"
         >
           Saber más →

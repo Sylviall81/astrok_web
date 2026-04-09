@@ -1,14 +1,14 @@
 import Link from "next/link"
 import Image from "next/image"
 import { Phone, Mail } from "lucide-react"
-import ContactItem from "./contact-item"
-import { SiInstagram, SiFacebook, SiYoutube } from "react-icons/si"
+import ContactItem from "@/components/common/contact-item"
+import SocialLinks from "@/components/common/social-links"
 
 export function Footer() {
   return (
     <footer className="section-alt py-12">
-      <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="containermax-w-7xl mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-1">
             <Image
               src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
@@ -20,33 +20,7 @@ export function Footer() {
               Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
             </p>
             <div className="flex space-x-4">
-              <a
-                href="https://www.instagram.com/kaleidoscopebcn/#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-accent transition-colors"
-              >
-                <SiInstagram className="h-6 w-6" />
-                <span className="sr-only">Instagram</span>
-              </a>
-              <a
-                href="https://www.facebook.com/Kaleidoscopebcn/#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-accent transition-colors"
-              >
-                <SiFacebook className="h-6 w-6" />
-                <span className="sr-only">Facebook</span>
-              </a>
-              <a
-                href="https://www.youtube.com/@kaleidoscopeastrologiapsic6012"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-accent transition-colors"
-              >
-                <SiYoutube className="h-6 w-6" />
-                <span className="sr-only">YouTube</span>
-              </a>
+              <SocialLinks className="mt-4" />
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 import type React from "react"
 import "./globals.css"
-import type { Metadata } from "next"
+//import type { Metadata } from "next"
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 //import { Toaster } from "@/components/ui/toaster"
@@ -25,11 +25,11 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body>
            <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
 
         <NotificationProvider>
           <ProductsProvider>

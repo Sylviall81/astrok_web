@@ -1,7 +1,8 @@
 import ContactForm from "./contact-form"
 import { Phone, Mail } from "lucide-react"
-import ContactItem from "./contact-item"
-import { SiInstagram, SiFacebook, SiYoutube } from "react-icons/si"
+import ContactItem from "./common/contact-item"
+import SocialLinks from "./common/social-links"
+
 
 
 
@@ -19,12 +20,11 @@ export default function ContactSection() {
               <p className="text-body mb-6">
                 También puedes contactarme directamente a través de WhatsApp o redes sociales.
               </p>
-              {/* <div className="p-6 rounded-lg"> */}
-                  <h3 className="text-xl font-lato font-semibold text-primary mb-3">
+              <h3 className="text-xl font-lato font-semibold text-primary mb-3">
                     Información de contacto
-                  </h3>
+              </h3>
 
-                  <div className="space-y-3">
+              <div className="space-y-3">
                       <ContactItem
                         href="mailto:kaleidoscopebcn@gmail.com"
                         icon={<Mail className="w-5 h-5" />}
@@ -41,22 +41,16 @@ export default function ContactSection() {
                       >
                         WhatsApp: +34 628 840 747
                       </ContactItem>
-                  </div>
-              {/* </div> */}
+              </div>
+           
               <div className="mt-6">
                 <h4 className="text-sm font-semibold text-primary mb-2">
                   Sígueme
                 </h4>
+                <SocialLinks />
 
-                <div className="flex gap-4">
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <SiInstagram className="w-5 h-5 hover:text-primary transition-colors" />
-                  </a>
 
-                  <a href="#" target="_blank" rel="noopener noreferrer">
-                    <SiFacebook className="w-5 h-5 hover:text-primary transition-colors" />
-                  </a>
-                </div>
+  
               </div>
             </div>
 

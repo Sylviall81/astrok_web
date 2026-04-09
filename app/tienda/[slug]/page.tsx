@@ -19,7 +19,6 @@ export default function ProductDetailPage() {
   const slug = params.slug as string
   const { products, loading } = useProducts()
   const [product, setProduct] = useState<WCProduct | null>(null)
-  const [variations, setVariations] = useState<WCVariation[]>([])
   const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
@@ -38,7 +37,6 @@ export default function ProductDetailPage() {
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
           .then(data => {
-            setVariations(data)
             setSelectedVariation(data[0] ?? null)
           })
           .catch(err => console.error("Error cargando variaciones:", err))
@@ -69,31 +67,14 @@ const cleanHtml = useMemo(() => {
 
   const displayPrice = selectedVariation?.price || product?.price || "0"
 
-  const modalidadAttr = product?.attributes?.find(
-    a => a.name.toLowerCase() === "modalidad"
-  )
+ 
 
-  const handleVariationChange = (option: string) => {
-    const match = variations.find(v =>
-      v.attributes.some(a => a.option === option)
-    )
-    if (match) setSelectedVariation(match)
-  }
 
 
   const handleAddToCart = () => {
   if (!product) return
-  if (esVariable && !selectedVariation) {
-    showNotification("error", "Selecciona una opción", "Por favor selecciona una modalidad antes de añadir al carrito")
-    return
-  }
-    const productToAdd = selectedVariation
-      ? {
-          ...product,
-          price: selectedVariation.price,
-          name: `${product.name} — ${selectedVariation.attributes.map(a => a.option).join(", ")}`,
-        }
-      : product
+
+    const productToAdd =  product
 
     addToCart(productToAdd)
     showNotification("success", "Añadido al carrito", `${productToAdd.name} se ha añadido a tu carrito`)
@@ -108,8 +89,8 @@ const cleanHtml = useMemo(() => {
       <div className="container py-16 text-center">
         <h1 className="text-3xl font-lato font-semibold text-primary mb-6">Producto no encontrado</h1>
         <p className="mb-8">Lo sentimos, el producto que buscas no está disponible.</p>
-        <Link href="/servicios" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90">
-          Ver todos los servicios
+        <Link href="/tienda" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90">
+          Ver otros productos
         </Link>
       </div>
     )
@@ -117,14 +98,14 @@ const cleanHtml = useMemo(() => {
 
   const imagen = getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
-  const esVariable = product.type === "variable"
+ 
 
   return (
     <section className="py-16">
       <div className="container-custom">
-        <Link href="/servicios" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
+        <Link href="/tienda" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver a servicios
+          Volver a la tienda
         </Link>
 
         <div className="grid gap-8 md:grid-cols-2">
@@ -164,7 +145,7 @@ const cleanHtml = useMemo(() => {
                   {product.tags.map(tag => (
                     <Link
                       key={tag.id}
-                      href={`/servicios?tag=${tag.slug}`}
+                      href={`/tienda?tag=${tag.slug}`}
                       className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
                     >
                       {tag.name}
@@ -173,25 +154,7 @@ const cleanHtml = useMemo(() => {
                 </div>
               )}
 
-              {/* Selector de modalidad */}
-              {esVariable && modalidadAttr && (
-                <div className="mb-6">
-                  <label className="block text-sm font-medium mb-2">
-                    {modalidadAttr.name}
-                  </label>
-                  <select
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    onChange={e => handleVariationChange(e.target.value)}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>Selecciona una modalidad</option>
-                    {modalidadAttr.options.map(option => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
-                </div>
-              )}
-
+              
               {/* Descripción */}
               <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-3">Descripción</h2>
@@ -206,15 +169,13 @@ const cleanHtml = useMemo(() => {
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button onClick={handleAddToCart} className="btn-primary hover:bg-primary/90">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Añadir al carrito
                 </Button>
-                <Link href="/agenda" passHref>
-                  <Button variant="outline">Reservar sesión</Button>
-                </Link>
               </div>
+
             </div>
         </div>
       </div>

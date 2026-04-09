@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Menu, Moon, Sun, User } from "lucide-react"
@@ -14,11 +14,19 @@ export function Navbar() {
   const { theme, setTheme } = useTheme()
   const router = useRouter()
 
+  const [mounted, setMounted] = useState(false)
+
+useEffect(() => {
+  setMounted(true)
+}, [])
+
+if (!mounted) return null
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container flex h-16 items-center justify-between">
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             <Menu className="h-6 w-6" />

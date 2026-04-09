@@ -1,5 +1,6 @@
 import ContactForm from "@/components/contact-form"
-import ContactItem from  "@/components/contact-item"
+import ContactItem from  "@/components/common/contact-item"
+import SocialLinks from "@/components/common/social-links"
 import { Mail, Clock, Phone } from "lucide-react"
 
 export default function ContactPage() {
@@ -41,12 +42,13 @@ export default function ContactPage() {
             >
               WhatsApp: +34 628 840 747
             </ContactItem>
-
+            
             {/* Esto NO es link → no usar ContactItem */}
             <div className="flex items-center gap-2 text-body">
               <Clock className="w-5 h-5" />
               Horario: Lunes a Viernes, 10:00 - 18:00
             </div>
+            <SocialLinks />
 
     </div>
   </div>
