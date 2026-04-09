@@ -27,11 +27,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
-      <div className="relative h-48 bg-muted">
-        <Link
+       <Link
           href={`/servicios/${product.slug || product.id}`}
-          //className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+          className="relative block h-48 bg-muted"
         >
+      <div className="relative h-48 bg-muted">
         {imagen !== "/placeholder.svg" ? (
           <Image src={imagen} alt={product.name} fill className="object-cover" />
         ) : (
@@ -39,8 +39,9 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             <span className="text-secondary">Sin imagen</span>
           </div>
         )}
-        </Link>
+       
       </div>
+      </Link>
       <CardHeader>
          <Link
           href={`/servicios/${product.slug || product.id}`}
@@ -63,7 +64,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <p className="mt-4 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => onAddToCart(product)} className="w-full bg-primary hover:bg-primary/90">
+        <Button onClick={() => onAddToCart(product)} className="w-full btn-primary hover:bg-primary/90">
           <ShoppingCart className="mr-2 h-4 w-4" />
           Añadir al carrito
         </Button>

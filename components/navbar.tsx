@@ -24,13 +24,14 @@ export function Navbar() {
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle menu</span>
           </Button>
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
-              alt="Logotipo Kaleidoscope"
-              width={400}
-              height={200}
-            />
+          <Link href="/" className="flex items-center gap-2 ">
+          <Image
+            src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
+            alt="Logotipo Kaleidoscope"
+            width={400}
+            height={200}
+            className="h-10 w-auto"
+          />
           </Link>
         </div>
 

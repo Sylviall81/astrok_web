@@ -1,4 +1,6 @@
 import ContactForm from "@/components/contact-form"
+import ContactItem from  "@/components/contact-item"
+import { Mail, Clock, Phone } from "lucide-react"
 
 export default function ContactPage() {
   return (
@@ -17,11 +19,37 @@ export default function ContactPage() {
               </p>
 
               <div className="card-soft p-6 rounded-lg mb-8">
-                <h3 className="text-xl font-lato font-semibold text-primary mb-3">Información de contacto</h3>
-                <p className="text-body mb-2">Email: info@kaleidoscope.com</p>
-                <a href="https://wa.me/+34628840747"><p className="text-body mb-2">WhatsApp: +34 628 840 747</p></a>
-                <p className="text-body">Horario de atención: Lunes a Viernes, 10:00 - 18:00</p>
-              </div>
+                <h3 className="text-xl font-lato font-semibold text-primary mb-3">
+                  Información de contacto
+                </h3>
+
+          <div className="space-y-3">
+
+            <ContactItem
+              href="mailto: kaleidoscopebcn@gmail.com"
+              icon={<Mail className="w-5 h-5" />}
+              className="text-body hover:text-primary"
+            >
+              kaleidoscopebcn@gmail.com
+            </ContactItem>
+
+            <ContactItem
+              href="https://wa.me/34628840747"
+              icon={<Phone className="w-5 h-5" />}
+              className="text-body hover:text-primary"
+              external
+            >
+              WhatsApp: +34 628 840 747
+            </ContactItem>
+
+            {/* Esto NO es link → no usar ContactItem */}
+            <div className="flex items-center gap-2 text-body">
+              <Clock className="w-5 h-5" />
+              Horario: Lunes a Viernes, 10:00 - 18:00
+            </div>
+
+    </div>
+  </div>
 
               <div className="card-soft p-6 rounded-lg">
                 <h3 className="text-xl font-lato font-semibold text-primary mb-3">Preguntas frecuentes</h3>

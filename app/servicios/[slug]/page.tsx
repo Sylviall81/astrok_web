@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -10,6 +10,9 @@ import { useProducts } from "@/context/products-context"
 import { useNotification } from "@/context/notification-context"
 import { useCart } from "@/context/cart-context"
 import type { WCProduct, WCVariation } from "@/lib/woocommerce"
+import DOMPurify from "dompurify"
+
+
 
 export default function ProductDetailPage() {
   const params = useParams()
@@ -21,6 +24,7 @@ export default function ProductDetailPage() {
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
   const { addToCart } = useCart()
+
   
 
   useEffect(() => {
@@ -56,6 +60,12 @@ export default function ProductDetailPage() {
   const getProductImage = (product: WCProduct): string => {
     return product.images?.[0]?.src || "/placeholder.svg"
   }
+
+const cleanHtml = useMemo(() => {
+  return DOMPurify.sanitize(
+    product?.description || product?.short_description || ""
+  )
+}, [product])
 
   const displayPrice = selectedVariation?.price || product?.price || "0"
 
@@ -111,7 +121,7 @@ export default function ProductDetailPage() {
 
   return (
     <section className="py-16">
-      <div className="container">
+      <div className="container-custom">
         <Link href="/servicios" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Volver a servicios
@@ -172,13 +182,14 @@ export default function ProductDetailPage() {
             {/* Descripción */}
             <div className="prose max-w-none mb-8">
               <h2 className="text-xl font-semibold mb-2">Descripción</h2>
-              <div dangerouslySetInnerHTML={{
+              <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />
+              {/* <div dangerouslySetInnerHTML={{
                 __html: product.description || product.short_description || "",
-              }} />
+              }} /> */}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button onClick={handleAddToCart} className="bg-primary hover:bg-primary/90">
+              <Button onClick={handleAddToCart} className="btn-primary hover:bg-primary/90">
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Añadir al carrito
               </Button>

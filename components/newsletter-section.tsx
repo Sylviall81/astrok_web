@@ -4,6 +4,7 @@ import type React from "react"
 import { useState } from "react"
 
 export default function NewsletterSection() {
+  
   const [gdprConsent, setGdprConsent] = useState(false)
   const [email, setEmail] = useState("")
   const [loading, setLoading] = useState(false)
@@ -124,3 +125,4 @@ export default function NewsletterSection() {
     </section>
   )
 }
+  

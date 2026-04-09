@@ -1,6 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Instagram, Facebook, Youtube } from "lucide-react"
+import { Phone, Mail } from "lucide-react"
+import ContactItem from "./contact-item"
+import { SiInstagram, SiFacebook, SiYoutube } from "react-icons/si"
 
 export function Footer() {
   return (
@@ -24,16 +26,16 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
               >
-                <Instagram className="h-6 w-6" />
+                <SiInstagram className="h-6 w-6" />
                 <span className="sr-only">Instagram</span>
               </a>
               <a
-                href="https://www.facebook.com/Kaleidoscopebcn/"
+                href="https://www.facebook.com/Kaleidoscopebcn/#"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
               >
-                <Facebook className="h-6 w-6" />
+                <SiFacebook className="h-6 w-6" />
                 <span className="sr-only">Facebook</span>
               </a>
               <a
@@ -42,7 +44,7 @@ export function Footer() {
                 rel="noopener noreferrer"
                 className="text-primary hover:text-accent transition-colors"
               >
-                <Youtube className="h-6 w-6" />
+                <SiYoutube className="h-6 w-6" />
                 <span className="sr-only">YouTube</span>
               </a>
             </div>
@@ -102,9 +104,28 @@ export function Footer() {
 
           <div>
             <h4 className="text-lg font-lato font-semibold text-primary mb-4">Contacto</h4>
+            
             <ul className="space-y-2">
-              <li className="text-body">Email: kaleidoscopebcn@gmail.com</li>
-              <li className="text-body">WhatsApp: +34 628 840 747</li>
+              <li>
+                <ContactItem
+                  href="mailto:kaleidoscopebcn@gmail.com"
+                  icon={<Mail className="w-4 h-4" />}
+                  className="text-body hover:text-primary"
+                >
+                  kaleidoscopebcn@gmail.com
+                </ContactItem>
+              </li>
+
+              <li>
+                <ContactItem
+                  href="https://wa.me/34628840747"
+                  icon={<Phone className="w-4 h-4" />}
+                  className="text-body hover:text-primary"
+                  external
+                >
+                  WhatsApp: +34 628 840 747
+                </ContactItem>
+              </li>
             </ul>
           </div>
         </div>
