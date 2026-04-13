@@ -98,7 +98,8 @@ const cleanHtml = useMemo(() => {
 
   const imagen = getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
- 
+  
+
 
   return (
     <section className="py-16">
@@ -158,16 +159,16 @@ const cleanHtml = useMemo(() => {
               {/* Descripción */}
               <div className="mb-8">
                 <h2 className="text-xl font-semibold mb-3">Descripción</h2>
-                <div
-                  className="prose prose-sm max-w-none
-                    prose-headings:font-lora prose-headings:text-primary
-                    prose-p:text-foreground prose-p:leading-relaxed
-                    prose-li:text-foreground
-                    prose-strong:text-primary prose-strong:font-semibold
-                    prose-ul:my-2 prose-li:my-0.5"
-                  dangerouslySetInnerHTML={{ __html: cleanHtml }}
-                />
-              </div>
+                <div className="prose prose-sm dark:prose-invert max-w-none
+                        prose-headings:font-lora prose-headings:text-primary
+                        prose-p:text-foreground prose-p:leading-relaxed
+                        prose-li:text-foreground
+                        prose-strong:text-primary prose-strong:font-semibold
+                        prose-a:!text-primary hover:prose-a:underline
+                        prose-ul:my-2 prose-li:my-0.5"
+                      dangerouslySetInnerHTML={{ __html: cleanHtml }}
+                    /> </div>
+             
 
                <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button onClick={handleAddToCart} className="btn-primary hover:bg-primary/90">

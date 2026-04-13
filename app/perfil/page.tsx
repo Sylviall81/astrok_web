@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { serverSupabase } from "@/lib/supabase"
+//import { serverSupabase } from "@/lib/supabase"
 import { UserProfile } from "./user-profile"
 
 export const metadata = {
@@ -8,7 +8,7 @@ export const metadata = {
 }
 
 export default async function ProfilePage() {
-  const supabase = serverSupabase()
+  //const supabase = serverSupabase()
   const {
     data: { session },
   } = await supabase.auth.getSession()

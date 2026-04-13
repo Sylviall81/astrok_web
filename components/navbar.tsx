@@ -3,16 +3,16 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, Moon, Sun, User } from "lucide-react"
+import { Menu, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import { useTheme } from "next-themes"
-import { useRouter } from "next/navigation"
+//import { useRouter } from "next/navigation"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
-  const router = useRouter()
+  //const router = useRouter()
 
   const [mounted, setMounted] = useState(false)
 
@@ -57,9 +57,10 @@ if (!mounted) return null
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           <CartDrawer />
-          <Button variant="ghost" size="icon" onClick={() => router.push("/perfil")}>
+          {/* Activar cuando haya perfil de usuario */}
+          {/* <Button variant="ghost" size="icon" onClick={() => router.push("/perfil")}>
             <User className="h-5 w-5" />
-          </Button>
+          </Button> */}
         </div>
       </div>
     </header>
