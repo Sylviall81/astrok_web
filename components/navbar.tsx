@@ -9,6 +9,7 @@ import { CartDrawer } from "@/components/cart/cart-drawer"
 import { useTheme } from "next-themes"
 //import { useRouter } from "next/navigation"
 
+
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
@@ -34,12 +35,14 @@ if (!mounted) return null
           </Button>
           <Link href="/" className="flex items-center gap-2 ">
           <Image
-            src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
-            alt="Logotipo Kaleidoscope"
-            width={400}
-            height={200}
-            className="h-10 w-auto"
-          />
+              src={theme === 'dark' 
+                ? 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1776255206/4_pbcj46.png' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
+              alt="Logotipo Kaleidoscope"
+              width={400}
+              height={100}
+              className="h-10 w-auto object-contain"
+              //style={{ aspectRatio: '4/1' }}
+            />
           </Link>
         </div>
 

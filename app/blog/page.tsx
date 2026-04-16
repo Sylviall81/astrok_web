@@ -2,7 +2,7 @@
 import BlogCard from "@/components/blog-card"
 import { getPosts, formatDate, readingTime } from "@/lib/wordpress"
 
-export const revalidate = 3600 // revalida cada hora
+export const revalidate = 3600
 
 export default async function BlogPage() {
   const posts = await getPosts()
@@ -22,8 +22,8 @@ export default async function BlogPage() {
             <BlogCard
               key={post.slug}
               title={post.title.rendered}
-              excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")} // quita tags HTML del excerpt
-              image="/placeholder.svg?height=300&width=400" // placeholder hasta tener imagen destacada
+              excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")}
+              image={post.featuredImageUrl ?? "/placeholder.svg?height=300&width=400"}
               date={formatDate(post.date)}
               readTime={readingTime(post.content.rendered)}
               slug={post.slug}

@@ -26,34 +26,57 @@ export type WPTag = {
   slug: string
 }
 
+// Tipo interno que representa la respuesta cruda de la REST API
+// jetpack_featured_media_url viene directo en la respuesta base si Jetpack está activo
+type WPPostRaw = {
+  id: number
+  slug: string
+  status: string
+  date: string
+  modified: string
+  title: { rendered: string }
+  content: { rendered: string }
+  excerpt: { rendered: string }
+  featured_media: number
+  categories: number[]
+  tags: number[]
+  rank_math_description?: string
+  rank_math_title?: string
+  jetpack_featured_media_url?: string // ← Jetpack lo expone sin fetch extra
+}
+
 export type WPPost = {
   id: number
   slug: string
   status: string
   date: string
   modified: string
-  title: {
-    rendered: string
-  }
-  content: {
-    rendered: string
-  }
-  excerpt: {
-    rendered: string
-  }
+  title: { rendered: string }
+  content: { rendered: string }
+  excerpt: { rendered: string }
+  featuredImageUrl: string | null   // campo normalizado para uso en componentes
   featured_media: number
   categories: number[]
   tags: number[]
-  // Rank Math SEO (si está instalado)
   rank_math_description?: string
   rank_math_title?: string
 }
 
-// Post enriquecido con categorías, tags e imagen ya resueltos
+// Post enriquecido con categorías y tags resueltos
 export type WPPostFull = WPPost & {
   categoriesData: WPCategory[]
   tagsData: WPTag[]
-  featuredImageUrl: string | null
+}
+
+// ─── Helper: normaliza WPPostRaw → WPPost ─────────────────────────────────────
+// Extrae jetpack_featured_media_url al campo featuredImageUrl que usan los componentes
+
+function normalizePost(raw: WPPostRaw): WPPost {
+  const { jetpack_featured_media_url, ...rest } = raw
+  return {
+    ...rest,
+    featuredImageUrl: jetpack_featured_media_url || null,
+  }
 }
 
 // ─── Fetch base ───────────────────────────────────────────────────────────────
@@ -69,7 +92,9 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Pr
       Authorization: getAuthHeader(),
       "Content-Type": "application/json",
     },
-    next: { revalidate: 3600 }, // revalida cada hora — ajusta según necesites
+    cache: "no-store",
+
+    next: { revalidate: 10 },
   })
 
   if (!res.ok) {
@@ -81,21 +106,22 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Pr
 
 // ─── Posts ────────────────────────────────────────────────────────────────────
 
-// Listar posts publicados (para el índice del blog)
+// Listar posts publicados (para el índice del blog y home section)
 export async function getPosts(params?: Record<string, string>): Promise<WPPost[]> {
-  return wpFetch<WPPost[]>("/posts", {
+  const raw = await wpFetch<WPPostRaw[]>("/posts", {
     status: "publish",
     per_page: "100",
     orderby: "date",
     order: "desc",
     ...params,
   })
+  return raw.map(normalizePost)
 }
 
 // Obtener un post por su slug (para la página de detalle)
 export async function getPostBySlug(slug: string): Promise<WPPost | null> {
-  const posts = await wpFetch<WPPost[]>("/posts", { slug, status: "publish" })
-  return posts[0] ?? null
+  const raw = await wpFetch<WPPostRaw[]>("/posts", { slug, status: "publish" })
+  return raw[0] ? normalizePost(raw[0]) : null
 }
 
 // Obtener todos los slugs publicados (para generateStaticParams)
@@ -122,7 +148,7 @@ export async function getTagById(id: number): Promise<WPTag | null> {
   }
 }
 
-// ─── Imagen destacada ─────────────────────────────────────────────────────────
+// ─── Imagen destacada (fallback por si se necesita resolver por ID) ───────────
 
 export async function getFeaturedImageUrl(mediaId: number): Promise<string | null> {
   if (!mediaId) return null
@@ -135,27 +161,26 @@ export async function getFeaturedImageUrl(mediaId: number): Promise<string | nul
 }
 
 // ─── Post enriquecido (slug + categorías + tags + imagen) ────────────────────
+// La imagen ya viene resuelta en WPPost.featuredImageUrl via jetpack_featured_media_url
 
 export async function getFullPostBySlug(slug: string): Promise<WPPostFull | null> {
   const post = await getPostBySlug(slug)
   if (!post) return null
 
-  const [categoriesData, tagsData, featuredImageUrl] = await Promise.all([
+  const [categoriesData, tagsData] = await Promise.all([
     Promise.all(post.categories.map(getCategoryById)).then((cats) =>
       cats.filter(Boolean) as WPCategory[]
     ),
     Promise.all(post.tags.map(getTagById)).then((tags) =>
       tags.filter(Boolean) as WPTag[]
     ),
-    getFeaturedImageUrl(post.featured_media),
   ])
 
-  return { ...post, categoriesData, tagsData, featuredImageUrl }
+  return { ...post, categoriesData, tagsData }
 }
 
 // ─── Helpers de formato ───────────────────────────────────────────────────────
 
-// Formatea una fecha ISO a formato legible en español
 export function formatDate(isoDate: string): string {
   return new Date(isoDate).toLocaleDateString("es-ES", {
     day: "numeric",
@@ -164,7 +189,6 @@ export function formatDate(isoDate: string): string {
   })
 }
 
-// Calcula tiempo de lectura estimado a partir del HTML del contenido
 export function readingTime(htmlContent: string): string {
   const text = htmlContent.replace(/<[^>]+>/g, "")
   const words = text.trim().split(/\s+/).length

@@ -23,7 +23,7 @@ export default async function BlogSection() {
               key={post.slug}
               title={post.title.rendered}
               excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")} // quita tags HTML del excerpt
-              image="/placeholder.svg?height=300&width=400" // placeholder hasta tener imagen destacada
+              image = {post.featuredImageUrl ? post.featuredImageUrl : "/placeholder.svg?height=300&width=400"} // placeholder hasta tener imagen destacada
               date={formatDate(post.date)}
               readTime={readingTime(post.content.rendered)}
               slug={post.slug}

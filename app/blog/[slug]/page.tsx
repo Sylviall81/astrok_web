@@ -5,6 +5,8 @@ import { notFound } from "next/navigation"
 import { Calendar, Clock } from "lucide-react"
 import ShareButtons from "@/components/share-buttons"
 import { getFullPostBySlug, getAllPostSlugs, formatDate, readingTime } from "@/lib/wordpress"
+import { generateTOC } from "@/lib/toc"
+import TableOfContents from "@/components/table-contents"
 
 export const revalidate = 3600
 
@@ -32,6 +34,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
+
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
@@ -41,7 +45,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || ""
 
-
+  const { headings, html } = generateTOC(post.content.rendered)
   return (
     <section className="py-16 md:py-24">
       <div className="container-custom">
@@ -78,16 +82,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* Imagen destacada */}
           {post.featuredImageUrl ? (
-            <div className="relative h-[400px] rounded-lg overflow-hidden mb-8">
+            <div className="relative h-[700px] rounded-lg overflow-hidden mb-8">
               <Image
                 src={post.featuredImageUrl}
                 alt={post.title.rendered}
                 fill
                 className="object-cover"
+                priority
+                sizes="(max-width: 768px) 100vw, 1200px"
               />
             </div>
           ) : (
-            <div className="relative h-[400px] rounded-lg overflow-hidden mb-8 bg-gray-100" />
+            <div className="relative h-[700px] rounded-lg overflow-hidden mb-8 bg-gray-100" >
+             <Image
+                src={post.featuredImageUrl ?? "/placeholder.svg?height=300&width=400"}
+                alt={post.title.rendered}
+                fill
+                className="object-cover"
+                priority
+              />
+              </div>
           )}
 
           <div className="flex justify-end mb-8">
@@ -97,10 +111,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             />
           </div>
 
+
+          {/* Tabla de contenidos */}
+          
+         <div  className="sticky prose prose-lg max-w-none">
+           <TableOfContents headings={headings} /></div>
+
           {/* Contenido del post */}
           <div
             className="prose prose-lg max-w-none"
-            dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+            dangerouslySetInnerHTML={{ __html: html}}
           />
 
           {/* Tags */}
@@ -119,11 +139,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           <div className="border-t border-gray-200 mt-12 pt-8">
             <h3 className="text-xl font-lato font-semibold text-primary mb-4">
-              ¿Te ha gustado este artículo?
+              ¿Te ha gustado este artículo o te ha resultado útil?
             </h3>
             <p className="mb-6">
-              Si quieres profundizar en este tema, puedes agendar una sesión personalizada donde
-              exploraremos cómo estas energías están presentes en tu carta natal.
+              Si quieres profundizar mas sobre este u otros temas decídete a agendar una sesión personalizada donde 
+              despejaré todas tus dudas y exploraremos juntas tu carta natal. 
             </p>
             <Link href="/agenda" className="btn-primary">
               Agenda tu sesión
