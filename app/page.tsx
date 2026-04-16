@@ -6,6 +6,7 @@ import BlogSection from "@/components/blog-section"
 //import ContactForm from "@/components/contact-form"
 import NewsletterSection from "@/components/newsletter-section"
 import ContactSection from "@/components/contact-section"
+import FeaturedProductsSection from "@/components/featuredproducts-section"
 
 
 export default function Home() {
@@ -18,10 +19,10 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <TestimonialsSection />
+      
       <BlogSection />
-
+      <FeaturedProductsSection />
       <ContactSection />
-
       <NewsletterSection />
     </>
   )

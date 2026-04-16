@@ -8,7 +8,7 @@ import { getFullPostBySlug, getAllPostSlugs, formatDate, readingTime } from "@/l
 import { generateTOC } from "@/lib/toc"
 import TableOfContents from "@/components/table-contents"
 
-export const revalidate = 3600
+export const revalidate = 10
 
 // Genera las rutas estáticas para todos los posts publicados
 export async function generateStaticParams() {

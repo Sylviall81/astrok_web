@@ -69,7 +69,7 @@ export function CartDrawer() {
           <span className="sr-only">Abrir carrito</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex w-full flex-col sm:max-w-lg">
+      <SheetContent className="flex w-full flex-col sm:max-w-lg bg-white/70 dark:bg-slate-900/80 backdrop-blur-md border-l border-white/20 shadow-2xl">
         <SheetHeader className="space-y-2.5 pr-6">
           <SheetTitle className="text-2xl">Tu carrito</SheetTitle>
         </SheetHeader>

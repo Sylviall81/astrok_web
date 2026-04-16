@@ -2,7 +2,7 @@
 import BlogCard from "@/components/blog-card"
 import { getPosts, formatDate, readingTime } from "@/lib/wordpress"
 
-export const revalidate = 3600
+export const revalidate = 10
 
 export default async function BlogPage() {
   const posts = await getPosts()

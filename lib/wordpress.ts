@@ -92,7 +92,7 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Pr
       Authorization: getAuthHeader(),
       "Content-Type": "application/json",
     },
-    cache: "no-store",
+    //cache: "no-store",
 
     next: { revalidate: 10 },
   })

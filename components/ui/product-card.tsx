@@ -35,7 +35,6 @@ const href = esInfoproducto
     <Card className="overflow-hidden transition-all hover:shadow-md">
        <Link
           href={href}
-          className="relative block h-48 bg-muted"
         >
       <div className="relative h-48 bg-muted">
         {imagen !== "/placeholder.svg" ? (
@@ -48,7 +47,7 @@ const href = esInfoproducto
        
       </div>
       </Link>
-      <CardHeader>
+      <CardHeader className="pb-2 pt-4 px-4">
          <Link
           href={href}
         >
@@ -56,7 +55,7 @@ const href = esInfoproducto
         </Link>
         
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4 pb-2">
         <p className="text-sm text-muted-foreground line-clamp-3">
           {stripHtml(product.short_description || product.description || "")}
         </p>
@@ -68,12 +67,23 @@ const href = esInfoproducto
         </Link>
         <p className="mt-4 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
       </CardContent>
-      <CardFooter>
-        <Button onClick={() => onAddToCart(product)} className="w-full btn-primary hover:bg-primary/90">
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Añadir al carrito
-        </Button>
-      </CardFooter>
+      <CardFooter className="px-4 pb-4">
+      {esInfoproducto ? (
+                  <Button 
+                    onClick={() => onAddToCart(product)} 
+                    className="w-full btn-primary hover:bg-primary/90"
+                  >
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    Añadir al carrito
+                  </Button>
+                ) : (
+                  <Link href="/agenda" className="w-full sm:w-auto">
+                    <Button className="btn-primary w-full sm:w-auto hover:bg-primary/90">
+                      Reservar
+                    </Button>
+                  </Link>
+                )}
+          </CardFooter>
     </Card>
   )
 }

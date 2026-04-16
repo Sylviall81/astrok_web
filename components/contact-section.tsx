@@ -9,7 +9,7 @@ import SocialLinks from "./common/social-links"
 export default function ContactSection() {
   return (
 
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 section-alt">
         <div className="container-custom">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>

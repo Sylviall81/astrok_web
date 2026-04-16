@@ -12,7 +12,7 @@ export default function HeroSection() {
               Explora tu universo interior gracias a la Astrología Psicológica.
               </h1>
               <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
-                Te acompaño a (re)conocerte, ganar claridad y vivir con propósito.
+                Te acompaño a (RE)conocerte, ganar claridad y vivir con propósito.
               </p>
               <Link href="/servicios" className="btn-primary text-lg px-8 py-4">
                 Encuentra tu sesión ideal
