@@ -9,13 +9,13 @@ export default function HeroSection() {
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-lato font-bold text-stone-200 mb-6 leading-tight">
-            Descubre tu universo interior gracias al poder de la astrología.
-          </h1>
-          <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
-          Astrología Psicológica como guía para el autodescubrimiento, la claridad y el propósito.
-          </p>
-          <Link href="/agenda" className="btn-primary text-lg px-8 py-4">
-            Agenda tu sesión
+              Explora tu universo interior gracias a la Astrología Psicológica.
+              </h1>
+              <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
+                Te acompaño a (re)conocerte, ganar claridad y vivir con propósito.
+              </p>
+              <Link href="/servicios" className="btn-primary text-lg px-8 py-4">
+                Encuentra tu sesión ideal
           </Link>
         </div>
       </div>

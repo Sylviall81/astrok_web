@@ -208,7 +208,34 @@ export default function ProductDetailPage() {
                       dangerouslySetInnerHTML={{ __html: cleanHtml }}
                     /> </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+
+                     {/* Botones compra y reserva: acciones*/}
+
+                  <div className="flex flex-col gap-4 mb-8">
+
+                    {/* Botón principal — ver disponibilidad primero */}
+                    <Link href="/agenda" passHref className="w-full sm:w-auto">
+                      <Button className="btn-primary w-full sm:w-auto hover:bg-primary/90 text-base py-5">
+                        Consulta disponibilidad y reserva
+                      </Button>
+                    </Link>
+
+                    {/* Aviso de flexibilidad — neutraliza el miedo a pagar sin hueco */}
+                    <p className="text-xs text-muted-foreground -mt-2">
+                      ¿Prefieres reservar ahora?{" "}
+                      <button
+                        onClick={handleAddToCart}
+                        className="underline underline-offset-2 hover:text-primary transition-colors"
+                      >
+                        Añadir al carrito y pagar
+                      </button>
+                      {" "}— tienes hasta 3 meses para agendar tu sesión.
+                    </p>
+
+                  </div>
+
+
+              {/* <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Button onClick={handleAddToCart} className="btn-primary hover:bg-primary/90">
                   <ShoppingCart className="mr-2 h-4 w-4" />
                   Añadir al carrito
@@ -216,7 +243,8 @@ export default function ProductDetailPage() {
                 <Link href="/agenda" passHref>
                   <Button variant="outline">Reservar sesión</Button>
                 </Link>
-              </div>
+              </div> */}
+
             </div>
         </div>
       </div>
