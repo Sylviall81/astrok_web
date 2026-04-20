@@ -35,6 +35,7 @@ export default function ProductDetailPage() {
     if (found) {
       setProduct(found)
       if (found.type === "variable" && found.variations?.length > 0) {
+        console.log("ID del producto:", found.id, typeof found.id)
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
           .then(data => {

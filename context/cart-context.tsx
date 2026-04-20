@@ -79,7 +79,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     (sum, item) => sum + parseFloat(item.product.price) * item.quantity, 0
   )
 
-   const clearCart = () => setCartItems([])
+   const clearCart = () => {
+  localStorage.removeItem("cart")
+  setCartItems([])
+}
 
    return (
     <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, totalItems, clearCart,totalPrice,}}>

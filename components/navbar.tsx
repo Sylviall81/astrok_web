@@ -48,7 +48,7 @@ if (!mounted) return null
 
         <nav className={`${  isMenuOpen ? "flex" : "hidden"
                           } absolute top-16 left-0 right-0 flex-col gap-4 border-b p-6 md:static md:flex md:flex-row md:items-center md:border-0 md:p-0 
-                          bg-white/90 dark:bg-slate-900/95 backdrop-blur-lg shadow-xl md:bg-transparent md:backdrop-blur-none`}>
+                          bg-white/0 dark:bg-slate-900/95 backdrop-blur-lg shadow-xl md:bg-transparent md:backdrop-blur-none`}>
           <Link href="/" className="text-muted-foreground hover:text-foreground">Inicio</Link>
           <Link href="/servicios" className="text-muted-foreground hover:text-foreground">Servicios</Link>
           <Link href="/tienda" className="text-muted-foreground hover:text-foreground">Tienda</Link>
