@@ -46,11 +46,7 @@ export default function NewsletterSection() {
       setEmail("")
       setGdprConsent(false)
     } catch {
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Hubo un error al procesar tu suscripción."
-      setStatus({ type: "error", message })
+      setStatus({ type: "error", message: "Hubo un error al procesar tu suscripción." })
     } finally {
       setLoading(false)
     }
