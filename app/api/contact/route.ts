@@ -2,18 +2,22 @@ import { Resend } from "resend"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL
+const wpAuth = Buffer.from(
+  `${process.env.WC_AUTH_USER}:${process.env.WC_AUTH_PASSWORD}`
+).toString("base64")
+
 export async function POST(req: Request) {
   const data = await req.json()
 
-  const res = await fetch("http://kaleidoastro.local/wp-json/wp/v2/contacto", {
+  await fetch(`${WP_URL}/wp-json/wp/v2/contacto`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization":
-        "Basic " + Buffer.from("admin@kaleidoastro.local:adminastrok111").toString("base64"),
+      Authorization: `Basic ${wpAuth}`,
     },
     body: JSON.stringify({
-      title: data.name, 
+      title: data.name,
       status: "publish",
       acf: {
         name: data.name,
@@ -23,10 +27,6 @@ export async function POST(req: Request) {
     }),
   })
 
-  const result = await res.json()
-
-
-   // 2. Enviar email a tu clienta usando Resend
   await resend.emails.send({
     from: "Contacto Web Kaleidoscope <onboarding@resend.dev>",
     to: "kaleidoscopebcn@gmail.com",
@@ -39,5 +39,5 @@ export async function POST(req: Request) {
     `,
   })
 
-  return new Response(JSON.stringify(result), { status: 200 })
+  return new Response(JSON.stringify({ success: true }), { status: 200 })
 }

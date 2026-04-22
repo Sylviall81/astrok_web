@@ -9,12 +9,15 @@ export async function POST(req: Request) {
     )
   }
 
-  const res = await fetch("http://kaleidoastro.local/wp-json/wp/v2/newsletter", {
+  const wpAuth = Buffer.from(
+    `${process.env.WC_AUTH_USER}:${process.env.WC_AUTH_PASSWORD}`
+  ).toString("base64")
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wp/v2/newsletter`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization:
-        "Basic " + Buffer.from("admin@kaleidoastro.local:adminastrok111").toString("base64"),
+      Authorization: `Basic ${wpAuth}`,
     },
     body: JSON.stringify({
       title: data.email,

@@ -100,18 +100,15 @@ export default function FeaturedProductsSection() {
                   </button>
                   <div
                     ref={sliderRef}
-                    className="flex overflow-x-auto gap-6 pb-4"
+                    className="flex items-stretch overflow-x-auto gap-4 pb-4"
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                   >
                     {otherProducts.map((product) => (
-                      <div key={product.id} className="flex-none w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-
-                         <ProductCard
-                          key={product.id}
+                      <div key={product.id} className="flex-none w-56">
+                        <ProductCard
                           product={product}
-                          onAddToCart={handleAddToCart}  // necesitas definir esto
+                          onAddToCart={handleAddToCart}
                         />
-                      
                       </div>
                     ))}
                   </div>

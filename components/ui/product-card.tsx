@@ -32,60 +32,52 @@ const href = esInfoproducto
     html.replace(/<[^>]*>/g, "").trim()
 
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md">
-       <Link
-          href={href}
-        >
-      <div className="relative h-48 bg-muted">
-        {imagen !== "/placeholder.svg" ? (
-          <Image src={imagen} alt={product.name} fill className="object-cover" />
-        ) : (
-          <div className="flex h-full items-center justify-center bg-secondary/10">
-            <span className="text-secondary">Sin imagen</span>
-          </div>
-        )}
-       
-      </div>
+    <Card className="overflow-hidden transition-all hover:shadow-md h-full flex flex-col">
+      <Link href={href}>
+        <div className="relative h-48 bg-muted flex-shrink-0">
+          {imagen !== "/placeholder.svg" ? (
+            <Image src={imagen} alt={product.name} fill className="object-cover" />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-secondary/10">
+              <span className="text-secondary">Sin imagen</span>
+            </div>
+          )}
+        </div>
       </Link>
       <CardHeader className="pb-2 pt-4 px-4">
-         <Link
-          href={href}
-        >
-          <CardTitle className="text-xl">{product.name}</CardTitle>
+        <Link href={href}>
+          <CardTitle className="text-base">{product.name}</CardTitle>
         </Link>
-        
       </CardHeader>
-      <CardContent className="px-4 pb-2">
-        <p className="text-sm text-muted-foreground line-clamp-3">
+      <CardContent className="px-4 pb-2 flex flex-col flex-1">
+        <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
           {stripHtml(product.short_description || product.description || "")}
         </p>
         <Link
           href={href}
-          className="text-primary font-lato font-semibold hover:text-accent transition-colors"
+          className="text-sm text-primary font-lato font-semibold hover:text-accent transition-colors mt-2"
         >
           Saber más →
         </Link>
-        <p className="mt-4 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
+        <p className="mt-3 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
       </CardContent>
-      <CardFooter className="px-4 pb-4">
-      {esInfoproducto ? (
-                  <Button 
-                    onClick={() => onAddToCart(product)} 
-                    className="w-full btn-primary hover:bg-primary/90"
-                  >
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Añadir al carrito
-                  </Button>
-                ) : (
-                  <Link href={`/servicios/${product.slug || product.id}`} className="w-full sm:w-auto">
-                    <Button className="btn-primary w-full sm:w-auto hover:bg-primary/90">
-                      Reservar
-                    </Button>
-                  </Link>
-                   
-
-                )}
-          </CardFooter>
+      <CardFooter className="px-4 pb-4 mt-auto">
+        {esInfoproducto ? (
+          <Button
+            onClick={() => onAddToCart(product)}
+            className="w-full btn-primary hover:bg-primary/90"
+          >
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Añadir al carrito
+          </Button>
+        ) : (
+          <Link href={`/servicios/${product.slug || product.id}`} className="w-full">
+            <Button className="btn-primary w-full hover:bg-primary/90">
+              Reservar
+            </Button>
+          </Link>
+        )}
+      </CardFooter>
     </Card>
   )
 }

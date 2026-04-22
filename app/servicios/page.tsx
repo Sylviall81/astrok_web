@@ -2,12 +2,28 @@
 
 import { useProducts } from "@/context/products-context"
 import { ProductList } from "./product-list"
+import type { WCProduct } from "@/lib/woocommerce"
+
+// Mismo orden que en la sección de servicios del home
+const FEATURED_SLUGS = [
+  "sesion-integral-carta-natal-y-anual",
+  "sesion-de-carta-astral",
+  "SLUG-DEL-PACK-3-SESIONES", // ← reemplaza con el slug real del pack
+]
+
+function sortServices(products: WCProduct[]): WCProduct[] {
+  const featured = FEATURED_SLUGS
+    .map(slug => products.find(p => p.slug === slug))
+    .filter(Boolean) as WCProduct[]
+  const others = products.filter(p => !FEATURED_SLUGS.includes(p.slug))
+  return [...featured, ...others]
+}
 
 export default function ServiciosPage() {
   const { products, loading, error } = useProducts()
 
-  const servicios = products.filter(p =>
-    p.categories?.some(c => c.slug === "servicios")
+  const servicios = sortServices(
+    products.filter(p => p.categories?.some(c => c.slug === "servicios"))
   )
 
   return (

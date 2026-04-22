@@ -1,7 +1,8 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useCallback } from "react"
+import { createContext, useContext, useState, useCallback, useEffect } from "react"
+import { createPortal } from "react-dom"
 import { X } from "lucide-react"
 
 type NotificationType = "success" | "error" | "info"
@@ -24,22 +25,16 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([])
 
+  const hideNotification = useCallback((id: string) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id))
+  }, [])
+
   const showNotification = useCallback((type: NotificationType, title: string, message: string) => {
     const id = Math.random().toString(36).substring(2, 9)
-
     setNotifications((prev) => [...prev, { id, type, title, message }])
-
-    // Auto-dismiss after 5 seconds
-    setTimeout(() => {
-      hideNotification(id)
-    }, 5000)
-
+    setTimeout(() => hideNotification(id), 5000)
     return id
-  }, [])
-
-  const hideNotification = useCallback((id: string) => {
-    setNotifications((prev) => prev.filter((notification) => notification.id !== id))
-  }, [])
+  }, [hideNotification])
 
   return (
     <NotificationContext.Provider value={{ notifications, showNotification, hideNotification }}>
@@ -51,23 +46,22 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
 function NotificationContainer() {
   const context = useContext(NotificationContext)
+  const [mounted, setMounted] = useState(false)
 
-  if (!context) {
-    return null
-  }
+  useEffect(() => { setMounted(true) }, [])
+
+  if (!context || !mounted) return null
 
   const { notifications, hideNotification } = context
 
-  if (notifications.length === 0) {
-    return null
-  }
+  if (notifications.length === 0) return null
 
-  return (
-    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-md">
+  return createPortal(
+    <div className="fixed bottom-4 right-4 z-[9999] flex flex-col gap-2 w-80">
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className={`p-4 rounded-md shadow-md flex items-start gap-3 animate-in slide-in-from-right ${
+          className={`p-4 rounded-md shadow-lg flex items-start gap-3 ${
             notification.type === "success"
               ? "bg-green-50 text-green-800 border-l-4 border-green-500"
               : notification.type === "error"
@@ -76,16 +70,20 @@ function NotificationContainer() {
           }`}
         >
           <div className="flex-1">
-            <h4 className="font-medium">{notification.title}</h4>
-            <p className="text-sm">{notification.message}</p>
+            <h4 className="font-medium text-sm">{notification.title}</h4>
+            <p className="text-sm opacity-90">{notification.message}</p>
           </div>
-          <button onClick={() => hideNotification(notification.id)} className="text-gray-500 hover:text-gray-700">
+          <button
+            onClick={() => hideNotification(notification.id)}
+            className="text-gray-400 hover:text-gray-600 flex-shrink-0"
+          >
             <X className="h-4 w-4" />
             <span className="sr-only">Cerrar</span>
           </button>
         </div>
       ))}
-    </div>
+    </div>,
+    document.body
   )
 }
 

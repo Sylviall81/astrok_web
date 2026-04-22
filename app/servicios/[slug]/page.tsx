@@ -149,7 +149,8 @@ export default function ProductDetailPage() {
           Volver a servicios
         </Link>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        {/* Grid superior: imagen + info esencial */}
+        <div className="grid gap-8 md:grid-cols-2 mb-12">
 
           {/* Imagen */}
           <div className="relative h-[400px] rounded-lg overflow-hidden">
@@ -163,14 +164,12 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Info */}
-          <div>
+          <div className="flex flex-col">
             <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
 
-            <div className="flex items-center mb-6">
-              <p className="text-2xl font-semibold text-primary">
-                {formatPrice(displayPrice)}
-              </p>
-            </div>
+            <p className="text-2xl font-semibold text-primary mb-6">
+              {formatPrice(displayPrice)}
+            </p>
 
             {categoria && (
               <div className="mb-4">
@@ -180,7 +179,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Tags */}
             {product.tags && product.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {product.tags.map(tag => (
@@ -195,75 +193,40 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* Selector de modalidad + botón Reservar inline */}
+            {/* Selector de modalidad */}
             {esVariable && modalidadAttr && (
-              <div className="flex flex-wrap gap-3 mb-6 items-end">
-                <div className="flex-1 min-w-[200px]">
-                  <label className="block text-sm font-medium mb-2">
-                    {modalidadAttr.name}
-                  </label>
-                  {esVariable && !selectedModalidad && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        Selecciona una modalidad para continuar
-                      </p>
-                    )}
-                  <select
-                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                    onChange={e => handleVariationChange(e.target.value)}
-                    defaultValue=""
-                  >
-                    <option value="" disabled>Selecciona una modalidad</option>
-                    {modalidadAttr.options.map(option => (
-                      <option key={option} value={option}>{option}</option>
-                    ))}
-                  </select>
-                      
-                                      
-                </div>
-
-                {/* Botón Reservar pequeño — junto al select */}
-                <div>
-                  <Button
-                    size="sm"
-                    className="btn-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-                    onClick={handleReservar}
-                    disabled={esVariable && !selectedModalidad}
-                  >
-                    Reservar
-                  </Button>
-                 
-                </div>
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-2">
+                  {modalidadAttr.name}
+                </label>
+                <select
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  onChange={e => handleVariationChange(e.target.value)}
+                  defaultValue=""
+                >
+                  <option value="" disabled>Selecciona una modalidad</option>
+                  {modalidadAttr.options.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+                {esVariable && !selectedModalidad && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Selecciona una modalidad para continuar
+                  </p>
+                )}
               </div>
             )}
 
-            {/* Descripción */}
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-3">Descripción</h2>
-              <div
-                className="prose prose-sm dark:prose-invert max-w-none
-                  prose-headings:font-lora prose-headings:text-primary
-                  prose-p:text-foreground prose-p:leading-relaxed
-                  prose-li:text-foreground
-                  prose-strong:text-primary prose-strong:font-semibold
-                  prose-a:!text-primary hover:prose-a:underline
-                  prose-ul:my-2 prose-li:my-0.5"
-                dangerouslySetInnerHTML={{ __html: cleanHtml }}
-              />
-            </div>
-
-            {/* Botones de acción principales */}
-            <div className="flex flex-col gap-4 mb-8">
-
-              {/* Botón Reservar principal */}
+            {/* Acciones */}
+            <div className="flex flex-col gap-3 mt-auto">
               <Button
-                className="btn-primary w-full sm:w-auto hover:bg-primary/90 text-base py-5"
+                className="btn-primary w-full hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-base py-5"
                 onClick={handleReservar}
+                disabled={esVariable && !selectedModalidad}
               >
                 Reservar
               </Button>
-
-              {/* Opción de comprar sin reservar ahora */}
-              <p className="text-xs text-muted-foreground -mt-2">
+              <p className="text-xs text-muted-foreground">
                 ¿Prefieres comprar ahora y gestionar tu reserva luego?{" "}
                 <button
                   onClick={handleAddToCart}
@@ -273,9 +236,23 @@ export default function ProductDetailPage() {
                 </button>
                 {" "}— tienes hasta 3 meses para agendar tu sesión.
               </p>
-
             </div>
           </div>
+        </div>
+
+        {/* Descripción completa — ancho completo debajo del grid */}
+        <div className="border-t pt-10">
+          <h2 className="text-xl font-semibold mb-4">Descripción</h2>
+          <div
+            className="prose prose-sm dark:prose-invert max-w-none
+              prose-headings:font-lora prose-headings:text-primary
+              prose-p:text-foreground prose-p:leading-relaxed
+              prose-li:text-foreground
+              prose-strong:text-primary prose-strong:font-semibold
+              prose-a:!text-primary hover:prose-a:underline
+              prose-ul:my-2 prose-li:my-0.5"
+            dangerouslySetInnerHTML={{ __html: cleanHtml }}
+          />
         </div>
       </div>
     </section>

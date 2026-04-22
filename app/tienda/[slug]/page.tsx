@@ -109,7 +109,8 @@ const cleanHtml = useMemo(() => {
           Volver a la tienda
         </Link>
 
-        <div className="grid gap-8 md:grid-cols-2">
+        {/* Grid superior: imagen + info esencial */}
+        <div className="grid gap-8 md:grid-cols-2 mb-12">
 
           {/* Imagen */}
           <div className="relative h-[400px] rounded-lg overflow-hidden">
@@ -122,62 +123,58 @@ const cleanHtml = useMemo(() => {
             )}
           </div>
 
-        {/* Info */}
-            <div>
-              <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
+          {/* Info */}
+          <div className="flex flex-col">
+            <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
 
-              <div className="flex items-center mb-6">
-                <p className="text-2xl font-semibold text-primary">
-                  {formatPrice(displayPrice)}
-                </p>
+            <p className="text-2xl font-semibold text-primary mb-6">
+              {formatPrice(displayPrice)}
+            </p>
+
+            {categoria && (
+              <div className="mb-4">
+                <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+                  {categoria}
+                </span>
               </div>
+            )}
 
-              {categoria && (
-                <div className="mb-4">
-                  <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
-                    {categoria}
-                  </span>
-                </div>
-              )}
-
-              {/* Tags */}
-              {product.tags && product.tags.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {product.tags.map(tag => (
-                    <Link
-                      key={tag.id}
-                      href={`/tienda?tag=${tag.slug}`}
-                      className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
-                    >
-                      {tag.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
-
-              
-              {/* Descripción */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold mb-3">Descripción</h2>
-                <div className="prose prose-sm dark:prose-invert max-w-none
-                        prose-headings:font-lora prose-headings:text-primary
-                        prose-p:text-foreground prose-p:leading-relaxed
-                        prose-li:text-foreground
-                        prose-strong:text-primary prose-strong:font-semibold
-                        prose-a:!text-primary hover:prose-a:underline
-                        prose-ul:my-2 prose-li:my-0.5"
-                      dangerouslySetInnerHTML={{ __html: cleanHtml }}
-                    /> </div>
-             
-
-               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Button onClick={handleAddToCart} className="btn-primary hover:bg-primary/90">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Añadir al carrito
-                </Button>
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {product.tags.map(tag => (
+                  <Link
+                    key={tag.id}
+                    href={`/tienda?tag=${tag.slug}`}
+                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
+                  >
+                    {tag.name}
+                  </Link>
+                ))}
               </div>
+            )}
 
+            <div className="mt-auto">
+              <Button onClick={handleAddToCart} className="btn-primary w-full hover:bg-primary/90 text-base py-5">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Añadir al carrito
+              </Button>
             </div>
+          </div>
+        </div>
+
+        {/* Descripción completa — ancho completo debajo del grid */}
+        <div className="border-t pt-10">
+          <h2 className="text-xl font-semibold mb-4">Descripción</h2>
+          <div
+            className="prose prose-sm dark:prose-invert max-w-none
+              prose-headings:font-lora prose-headings:text-primary
+              prose-p:text-foreground prose-p:leading-relaxed
+              prose-li:text-foreground
+              prose-strong:text-primary prose-strong:font-semibold
+              prose-a:!text-primary hover:prose-a:underline
+              prose-ul:my-2 prose-li:my-0.5"
+            dangerouslySetInnerHTML={{ __html: cleanHtml }}
+          />
         </div>
       </div>
     </section>
