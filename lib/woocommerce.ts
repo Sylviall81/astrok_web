@@ -3,15 +3,17 @@
 // En local usamos Basic Auth con usuario/password de WP
 // En producción con HTTPS usaremos consumer_key/consumer_secret
 
-const WC_URL = process.env.NEXT_PUBLIC_WC_URL || "http://kaleidoastro.local"
+const WC_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || "http://kaleidoastro.local"
 const WC_API_BASE = `${WC_URL}/wp-json/wc/v3`
 
-// Credenciales: en local usamos usuario WP, en producción consumer keys
-const getAuthHeader = (): string => {
+const getWCAuthParams = (): Record<string, string> => {
+  const key = process.env.WC_CONSUMER_KEY
+  const secret = process.env.WC_CONSUMER_SECRET
+  if (key && secret) return { consumer_key: key, consumer_secret: secret }
+  // Fallback Basic Auth para desarrollo local sin consumer keys
   const user = process.env.WC_AUTH_USER
   const password = process.env.WC_AUTH_PASSWORD
-  const credentials = Buffer.from(`${user}:${password}`).toString("base64")
-  return `Basic ${credentials}`
+  return { consumer_key: user || "", consumer_secret: password || "" }
 }
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -75,16 +77,13 @@ export type WCVariation = {
 
 async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
   const url = new URL(`${WC_API_BASE}${endpoint}`)
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value))
-  }
+  const authParams = getWCAuthParams()
+  Object.entries({ ...authParams, ...params }).forEach(([key, value]) =>
+    url.searchParams.append(key, value)
+  )
 
   const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: getAuthHeader(),
-      "Content-Type": "application/json",
-    },
-    // En Next.js 14+ esto evita el cache agresivo en desarrollo
+    headers: { "Content-Type": "application/json" },
     cache: "no-store",
   })
 

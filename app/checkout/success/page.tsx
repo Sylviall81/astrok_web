@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { CheckCircle, Download, Loader2 } from "lucide-react"
@@ -8,7 +8,15 @@ import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import type { DownloadProduct } from "@/app/api/checkout/verify/route"
 
-export default function CheckoutSuccessPage() {
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="py-24 text-center">Procesando tu pago...</div>}>
+      <CheckoutSuccessPage />
+    </Suspense>
+  )
+}
+
+function CheckoutSuccessPage() {
   const { clearCart } = useCart()
   const searchParams = useSearchParams()
   const sessionId = searchParams.get("session_id")

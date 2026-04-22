@@ -5,13 +5,6 @@
 const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || "http://kaleidoastro.local"
 const WP_API_BASE = `${WP_URL}/wp-json/wp/v2`
 
-const getAuthHeader = (): string => {
-  const user = process.env.WC_AUTH_USER
-  const password = process.env.WC_AUTH_PASSWORD
-  const credentials = Buffer.from(`${user}:${password}`).toString("base64")
-  return `Basic ${credentials}`
-}
-
 // ─── Tipos ────────────────────────────────────────────────────────────────────
 
 export type WPCategory = {
@@ -89,11 +82,8 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Pr
 
   const res = await fetch(url.toString(), {
     headers: {
-      Authorization: getAuthHeader(),
       "Content-Type": "application/json",
     },
-    //cache: "no-store",
-
     next: { revalidate: 10 },
   })
 
