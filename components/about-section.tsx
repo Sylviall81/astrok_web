@@ -14,20 +14,22 @@ export default function AboutSection() {
           <div>
             <h2 className="section-title">Sobre Mí</h2>
             
-            <h3 className="section-subtitle"> Soy Sylvia y te doy la bienvenida a mi web,</h3>
+            <h3 className="section-subtitle"> Soy Sylvia Ll., astróloga psicológica.</h3>
             
             <p className="text-body mb-6">
-            Mi trabajo como astróloga es traducir el lenguaje simbólico de las estrellas para acompañarte en la comprensión de tu propia historia. 
-            No entrego respuestas cerradas, ni certezas absolutas, sino herramientas para que explores tu camino con mayor claridad.   
+            Traduzco el lenguaje de las estrellas para que leas tu mapa interior con claridad.
             </p>
             <p className="text-body mb-6">
-            Desde una mirada informada en astrología y psicología, te impulso a conectar con tu fuerza y resiliencia, sin discursos condescendientes ni fórmulas prefabricadas. Cada carta natal es única, como cada proceso personal.
+               No doy respuestas cerradas. Te entrego herramientas para navegar tus tránsitos, patrones y dones con confianza.
             </p>
             <p className="text-body mb-8">
-            Durante más de 7 años de experiencia, he orientado a cientos de personas en su camino de autodescubrimiento, facilitando la comprensión de sus patrones, desafíos y dones únicos reflejados en su mapa natal.
+            Durante más de 10 años de experiencia, he orientado a cientos de personas en su camino de autodescubrimiento.
+            </p>
+            <p className="text-body mb-8">
+              Quieres saber más?
             </p>
             <Link href="/sobre-mi" className="btn-secondary">
-              Conoce más sobre mi enfoque
+              Conoceme mejor
             </Link>
           </div>
         </div>

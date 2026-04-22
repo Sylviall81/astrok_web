@@ -27,7 +27,7 @@ export default function ServiciosPage() {
   )
 
   return (
-    <div className="container py-10">
+    <div className="container-custom py-10">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-lato font-bold text-primary mb-6">Servicios</h1>

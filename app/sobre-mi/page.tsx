@@ -15,49 +15,50 @@ export default function AboutPage() {
 
             <div className="prose prose-lg max-w-none">
               <p>
-                Soy una astróloga psicológica apasionada por ayudar a las personas a descubrir su potencial interior a
-                través de la sabiduría de los astros. Mi enfoque combina la astrología tradicional con la psicología
-                junguiana para ofrecer una perspectiva profunda y transformadora.
+                Soy Sylvia, astróloga psicológica con +10 años acompañando procesos de autoconocimiento.
+                Combino astrología humanista evolutiva y herramientas corporales para que descubras tu mapa interior y navegues tus tránsitos con claridad y confianza.
               </p>
 
               <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Trayectoria</h2>
               <p>
                 Mi camino en la astrología comenzó hace más de 10 años, cuando descubrí cómo esta antigua disciplina
                 podía ofrecer una comprensión profunda de la psique humana. Desde entonces, he dedicado mi vida a
-                estudiar y practicar la astrología psicológica, formándome con reconocidos astrólogos internacionales.
-              </p>
-              <p>
-                Soy licenciada en Psicología por la Universidad de Barcelona y tengo un máster en Psicología Analítica
-                Junguiana. He complementado mi formación con estudios especializados en astrología psicológica,
-                astrología evolutiva y técnicas de coaching transformacional.
+                estudiar y practicar la astrología psicológica, formándome con reconocidos profesionales de esta disciplina.
               </p>
 
               <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Enfoque</h2>
-              <p>
-                Mi aproximación a la astrología es integradora y orientada al crecimiento personal. No creo en la
-                astrología determinista con decretos y predicciones limitantes, sino en aquella que te ayuda a comprender tus
-                patrones, desafíos y potenciales para que puedas tomar decisiones conscientes.
-              </p>
+              <ul>
+                <li>Astrología como espejo de tu psique (no predictiva ni determinista)</li>
+                <li>Integración cuerpo-emoción-simbolismo</li>
+                <li>Perspectiva de género y cuidado informado del trauma </li>
+                <li>Espacio seguro para tus luces y sombras</li>
+                <li>Herramientas prácticas para tu día a día</li>
+                
+              </ul>
               <p>
                 En mis sesiones, utilizo la carta natal como un mapa de tu psique, revelando tus dones innatos, desafíos
                 evolutivos y propósito de vida. Mi objetivo es empoderarte con autoconocimiento y herramientas prácticas
                 para navegar tu camino con mayor conciencia y autenticidad.
               </p>
 
-              <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Filosofía</h2>
+              <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
+           
+              <ul>
+                <li>Introductorio somatic experience (Bcna)</li> 
+                <li>Astro-Terapéutica (Pablo Flores Laymuns)</li>
+                <li>Geocosmos Barcelona (Lluís Gisbert) </li>
+                <li>Cosmograma (Aleix Mercadé)</li>
+                <li>Barro y Arte Ritual (Anais Pineda Ruegg - Slow Art Bcn)</li>
+                <li>Curso de Técnica Gestalt (La silla vacía)</li>
+                <li>PhD Ciencias Políticas (USC Santiago)</li>
+              </ul>
               <p>
-                Creo firmemente que cada persona tiene un propósito único y dones especiales para compartir con el
-                mundo. La astrología psicológica es una poderosa herramienta para descubrir y alinear tu vida con ese
-                propósito, permitiéndote vivir con mayor autenticidad y plenitud.
-              </p>
-              <p>
-                Mi compromiso es crear un espacio seguro y de confianza donde puedas explorar tu universo interior,
-                hacer las paces con tu sombra y abrazar todo tu potencial.
+                ¿List@ para explorar tu mapa astrológico? 
               </p>
 
               <div className="mt-10 text-center">
-                <Link href="/contacto" className="btn-primary inline-block">
-                  Contáctame
+                <Link href="/servicios" className="btn-primary inline-block">
+                  Reserva tu sesión
                 </Link>
               </div>
             </div>
