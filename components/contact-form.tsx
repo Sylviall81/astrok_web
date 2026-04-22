@@ -53,7 +53,7 @@ export default function ContactForm() {
       email: "",
       message: "",
     })
-  } catch (error) {
+  } catch {
     setStatus({
       type: "error",
       message: "Hubo un error al enviar el mensaje. Inténtalo de nuevo.",

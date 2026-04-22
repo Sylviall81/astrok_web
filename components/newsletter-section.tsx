@@ -45,7 +45,7 @@ export default function NewsletterSection() {
       setStatus({ type: "success", message: "¡Te has suscrito con éxito! 🌙" })
       setEmail("")
       setGdprConsent(false)
-    } catch (error) {
+    } catch {
       const message =
         error instanceof Error
           ? error.message
