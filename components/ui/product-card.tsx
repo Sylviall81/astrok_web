@@ -77,11 +77,13 @@ const href = esInfoproducto
                     Añadir al carrito
                   </Button>
                 ) : (
-                  <Link href="/agenda" className="w-full sm:w-auto">
+                  <Link href={`/servicios/${product.slug || product.id}`} className="w-full sm:w-auto">
                     <Button className="btn-primary w-full sm:w-auto hover:bg-primary/90">
                       Reservar
                     </Button>
                   </Link>
+                   
+
                 )}
           </CardFooter>
     </Card>

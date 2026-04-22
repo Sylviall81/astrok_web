@@ -3,8 +3,8 @@
 import { useEffect, useState, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
-import { ArrowLeft} from "lucide-react"
+import { useParams, useRouter } from "next/navigation"
+import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useProducts } from "@/context/products-context"
 import { useNotification } from "@/context/notification-context"
@@ -12,20 +12,18 @@ import { useCart } from "@/context/cart-context"
 import type { WCProduct, WCVariation } from "@/lib/woocommerce"
 import { sanitizeHtml } from "@/lib/sanitize"
 
-//shoppingCart?
-
 export default function ProductDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const slug = params.slug as string
   const { products, loading } = useProducts()
   const [product, setProduct] = useState<WCProduct | null>(null)
   const [variations, setVariations] = useState<WCVariation[]>([])
   const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
+  const [selectedModalidad, setSelectedModalidad] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
   const { addToCart } = useCart()
-
-  
 
   useEffect(() => {
     if (loading) return
@@ -35,7 +33,6 @@ export default function ProductDetailPage() {
     if (found) {
       setProduct(found)
       if (found.type === "variable" && found.variations?.length > 0) {
-        console.log("ID del producto:", found.id, typeof found.id)
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
           .then(data => {
@@ -62,7 +59,6 @@ export default function ProductDetailPage() {
     return product.images?.[0]?.src || "/placeholder.svg"
   }
 
-
   const displayPrice = selectedVariation?.price || product?.price || "0"
 
   const modalidadAttr = product?.attributes?.find(
@@ -70,23 +66,49 @@ export default function ProductDetailPage() {
   )
 
   const handleVariationChange = (option: string) => {
+    setSelectedModalidad(option)
     const match = variations.find(v =>
       v.attributes.some(a => a.option === option)
     )
     if (match) setSelectedVariation(match)
   }
 
+  const getCalLink = (modalidad: string): string | null => {
+    if (!product?.meta_data) return null
+    const key = modalidad === "online" ? "cal_link_online" : "cal_link_presencial"
+    return product.meta_data.find(m => m.key === key)?.value || null
+  }
+
+  const handleReservar = () => {
+    const modalidadKey = selectedModalidad.toLowerCase()
+
+    if (esVariable && !modalidadKey) {
+      showNotification("error", "Selecciona una modalidad", "Por favor elige online o presencial antes de reservar")
+      return
+    }
+
+    const calLink = getCalLink(modalidadKey)
+
+    if (calLink) {
+      router.push(`/agenda?cal=${encodeURIComponent(calLink)}`)
+    } else if (esVariable) {
+      showNotification("error", "Enlace no configurado", "Este servicio no tiene enlace de reserva configurado. Contacta con nosotros.")
+    } else {
+      router.push("/agenda")
+    }
+  }
+
   const cleanHtml = useMemo(() => {
-  if (typeof window === 'undefined') return ''; // SSR: no sanitizar
-  return sanitizeHtml(product?.description || product?.short_description || '');
-}, [product]);
+    if (typeof window === "undefined") return ""
+    return sanitizeHtml(product?.description || product?.short_description || "")
+  }, [product])
 
   const handleAddToCart = () => {
-  if (!product) return
-  if (esVariable && !selectedVariation) {
-    showNotification("error", "Selecciona una opción", "Por favor selecciona una modalidad antes de añadir al carrito")
-    return
-  }
+    if (!product) return
+    if (esVariable && !selectedVariation) {
+      showNotification("error", "Selecciona una opción", "Por favor selecciona una modalidad antes de añadir al carrito")
+      return
+    }
     const productToAdd = selectedVariation
       ? {
           ...product,
@@ -118,139 +140,143 @@ export default function ProductDetailPage() {
   const imagen = getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
   const esVariable = product.type === "variable"
-  
-
-
 
   return (
-   
-   <section className="py-16">
+    <section className="py-16">
       <div className="container-custom">
-          <Link href="/servicios" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Volver a servicios
-          </Link>
+        <Link href="/servicios" className="inline-flex items-center text-primary hover:text-primary/80 mb-8">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Volver a servicios
+        </Link>
 
-          <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
 
-            {/* Imagen */}
-            <div className="relative h-[400px] rounded-lg overflow-hidden">
-              {imagen !== "/placeholder.svg" ? (
-                <Image src={imagen} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
-              ) : (
-                <div className="flex h-full items-center justify-center bg-secondary/10">
-                  <span className="text-secondary">Sin imagen</span>
-                </div>
-              )}
-            </div>
+          {/* Imagen */}
+          <div className="relative h-[400px] rounded-lg overflow-hidden">
+            {imagen !== "/placeholder.svg" ? (
+              <Image src={imagen} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-secondary/10">
+                <span className="text-secondary">Sin imagen</span>
+              </div>
+            )}
+          </div>
 
           {/* Info */}
-              <div>
-                <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
+          <div>
+            <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
 
-                <div className="flex items-center mb-6">
-                  <p className="text-2xl font-semibold text-primary">
-                    {formatPrice(displayPrice)}
-                  </p>
+            <div className="flex items-center mb-6">
+              <p className="text-2xl font-semibold text-primary">
+                {formatPrice(displayPrice)}
+              </p>
+            </div>
+
+            {categoria && (
+              <div className="mb-4">
+                <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+                  {categoria}
+                </span>
+              </div>
+            )}
+
+            {/* Tags */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-6">
+                {product.tags.map(tag => (
+                  <Link
+                    key={tag.id}
+                    href={`/servicios?tag=${tag.slug}`}
+                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
+                  >
+                    {tag.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            {/* Selector de modalidad + botón Reservar inline */}
+            {esVariable && modalidadAttr && (
+              <div className="flex flex-wrap gap-3 mb-6 items-end">
+                <div className="flex-1 min-w-[200px]">
+                  <label className="block text-sm font-medium mb-2">
+                    {modalidadAttr.name}
+                  </label>
+                  {esVariable && !selectedModalidad && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Selecciona una modalidad para continuar
+                      </p>
+                    )}
+                  <select
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    onChange={e => handleVariationChange(e.target.value)}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>Selecciona una modalidad</option>
+                    {modalidadAttr.options.map(option => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                      
+                                      
                 </div>
 
-                {categoria && (
-                  <div className="mb-4">
-                    <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
-                      {categoria}
-                    </span>
-                  </div>
-            
-                )}
-
-                {/* Tags */}
-                {product.tags && product.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {product.tags.map(tag => (
-                      <Link
-                        key={tag.id}
-                        href={`/servicios?tag=${tag.slug}`}
-                        className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
-                      >
-                        {tag.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-
-                        
-                                  {esVariable && modalidadAttr && (
-  <div className="flex flex-wrap gap-3 mb-6 items-end">
-    {/* Selector */}
-    <div className= "flex-1 min-w-[200px]">
-      <label className="block text-sm font-medium mb-2">
-        {modalidadAttr.name}
-      </label>
-      <select
-        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-        onChange={e => handleVariationChange(e.target.value)}
-        defaultValue=""
-      >
-        <option value="" disabled>Selecciona una modalidad</option>
-        {modalidadAttr.options.map(option => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </select>
-    </div>
-
-    <div>
-      <Link href="/agenda" className="w-fit">
-        <Button size="sm" className="btn-primary hover:bg-primary/90">
-          Reservar
-        </Button>
-      </Link>
-    </div>
-  </div>
-)} {/* ← cierre AQUÍ */}
-
-                {/* Descripción */}
-                <div className="mb-8">
-                  <h2 className="text-xl font-semibold mb-3">Descripción</h2>
-                  <div className="prose prose-sm dark:prose-invert max-w-none
-                          prose-headings:font-lora prose-headings:text-primary
-                          prose-p:text-foreground prose-p:leading-relaxed
-                          prose-li:text-foreground
-                          prose-strong:text-primary prose-strong:font-semibold
-                          prose-a:!text-primary hover:prose-a:underline
-                          prose-ul:my-2 prose-li:my-0.5"
-                        dangerouslySetInnerHTML={{ __html: cleanHtml }}
-                      /> </div>
-
-
-                      {/* Botones compra y reserva: acciones*/}
-
-                    <div className="flex flex-col gap-4 mb-8">
-
-                      {/* Botón principal — ver disponibilidad primero */}
-                      <Link href="/agenda" passHref className="w-full sm:w-auto">
-                        <Button className="btn-primary w-full sm:w-auto hover:bg-primary/90 text-base py-5">
-                          Reservar
-                        </Button>
-                      </Link>
-
-                      {/* Aviso de flexibilidad — neutraliza el miedo a pagar sin hueco */}
-                      <p className="text-xs text-muted-foreground -mt-2">
-                        ¿Prefieres comprar ahora y gestionar tu reserva luego?{" "}
-                        <button
-                          onClick={handleAddToCart}
-                          className="underline underline-offset-2 hover:text-primary transition-colors"
-                        >
-                          Añadir al carrito y pagar
-                        </button>
-                        {" "}— tienes hasta 3 meses para agendar tu sesión.
-                      </p>
-
-                    </div>
-
-
-
+                {/* Botón Reservar pequeño — junto al select */}
+                <div>
+                  <Button
+                    size="sm"
+                    className="btn-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                    onClick={handleReservar}
+                    disabled={esVariable && !selectedModalidad}
+                  >
+                    Reservar
+                  </Button>
+                 
+                </div>
               </div>
+            )}
+
+            {/* Descripción */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold mb-3">Descripción</h2>
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none
+                  prose-headings:font-lora prose-headings:text-primary
+                  prose-p:text-foreground prose-p:leading-relaxed
+                  prose-li:text-foreground
+                  prose-strong:text-primary prose-strong:font-semibold
+                  prose-a:!text-primary hover:prose-a:underline
+                  prose-ul:my-2 prose-li:my-0.5"
+                dangerouslySetInnerHTML={{ __html: cleanHtml }}
+              />
+            </div>
+
+            {/* Botones de acción principales */}
+            <div className="flex flex-col gap-4 mb-8">
+
+              {/* Botón Reservar principal */}
+              <Button
+                className="btn-primary w-full sm:w-auto hover:bg-primary/90 text-base py-5"
+                onClick={handleReservar}
+              >
+                Reservar
+              </Button>
+
+              {/* Opción de comprar sin reservar ahora */}
+              <p className="text-xs text-muted-foreground -mt-2">
+                ¿Prefieres comprar ahora y gestionar tu reserva luego?{" "}
+                <button
+                  onClick={handleAddToCart}
+                  className="underline underline-offset-2 hover:text-primary transition-colors"
+                >
+                  Añadir al carrito y pagar
+                </button>
+                {" "}— tienes hasta 3 meses para agendar tu sesión.
+              </p>
+
+            </div>
           </div>
+        </div>
       </div>
     </section>
   )

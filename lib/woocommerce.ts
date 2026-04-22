@@ -59,6 +59,7 @@ export type WCProduct = {
   attributes: WCAttribute[]
   variations: number[]
   downloads: { id: string; name: string; file: string }[]
+  meta_data: { id: number; key: string; value: string }[]
 }
 
 export type WCVariation = {

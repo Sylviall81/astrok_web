@@ -90,9 +90,12 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
+        
         lato: ["var(--font-lato)"],
         lora: ["var(--font-lora)"],
-      },
+        // serif: ['Newsreader', 'serif'], // La fuente "scholarly"
+        // sans: ['Montserrat', 'sans-serif'], // Tu fuente de cuerpo preferida
+       },
       backgroundImage: {
         "sri-yantra-pattern": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/v1743672005/Captura_desde_2025-04-03_11-16-58_u49afq.png')",
       },
