@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { Resend } from "resend"
-import { getProductById } from "@/lib/woocommerce"
+import { getProductById, createWCOrder, getOrderDownloads } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   const customerName = session.customer_details?.name?.split(" ")[0] ?? "corazón"
 
   let isServicio = false
-  const downloadLinks: { name: string; url: string }[] = []
+  const wcLineItems: { productId: number; quantity: number }[] = []
 
   for (const item of lineItems) {
     const stripeProduct = item.price?.product as Stripe.Product
@@ -49,12 +49,33 @@ export async function POST(req: NextRequest) {
     if (!wcProductId) continue
 
     const wcProduct = await getProductById(Number(wcProductId))
-    if (wcProduct.downloadable && wcProduct.downloads?.length > 0) {
-      for (const d of wcProduct.downloads) {
-        downloadLinks.push({ name: d.name, url: d.file })
+    if (!wcProduct.downloadable) isServicio = true
+    wcLineItems.push({ productId: Number(wcProductId), quantity: item.quantity ?? 1 })
+  }
+
+  // Crear pedido en WooCommerce y obtener links de descarga protegidos
+  let downloadLinks: { name: string; url: string }[] = []
+
+  if (wcLineItems.length > 0 && customerEmail && !isServicio) {
+    try {
+      const wcOrder = await createWCOrder({
+        email: customerEmail,
+        name: session.customer_details?.name ?? customerEmail,
+        stripeSessionId: session.id,
+        lineItems: wcLineItems,
+      })
+
+      // Guardar wc_order_id en el payment intent para que verify lo encuentre
+      if (session.payment_intent) {
+        await stripe.paymentIntents.update(session.payment_intent as string, {
+          metadata: { wc_order_id: String(wcOrder.id) },
+        })
       }
-    } else {
-      isServicio = true
+
+      const wcDownloads = await getOrderDownloads(wcOrder.id)
+      downloadLinks = wcDownloads.map((d) => ({ name: d.download_name, url: d.download_url }))
+    } catch (err) {
+      console.error("[webhook] Error creando pedido WooCommerce:", err)
     }
   }
 

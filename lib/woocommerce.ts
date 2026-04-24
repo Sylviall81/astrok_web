@@ -73,6 +73,15 @@ export type WCVariation = {
   stock_status: string
 }
 
+// ─── Tipos pedidos ────────────────────────────────────────────────────────────
+
+export type WCOrderDownload = {
+  download_id: string
+  download_url: string
+  product_id: number
+  download_name: string
+}
+
 // ─── Funciones de fetch ───────────────────────────────────────────────────────
 
 async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
@@ -92,6 +101,55 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
   }
 
   return res.json() as Promise<T>
+}
+
+async function wcPost<T>(endpoint: string, body: Record<string, unknown>): Promise<T> {
+  const url = new URL(`${WC_API_BASE}${endpoint}`)
+  const authParams = getWCAuthParams()
+  Object.entries(authParams).forEach(([k, v]) => url.searchParams.append(k, v))
+
+  const res = await fetch(url.toString(), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  })
+
+  if (!res.ok) {
+    throw new Error(`WooCommerce API error: ${res.status} — ${endpoint}`)
+  }
+
+  return res.json() as Promise<T>
+}
+
+// ─── Pedidos ─────────────────────────────────────────────────────────────────
+
+export async function createWCOrder(params: {
+  email: string
+  name: string
+  stripeSessionId: string
+  lineItems: { productId: number; quantity: number }[]
+}): Promise<{ id: number; status: string }> {
+  const [firstName, ...rest] = params.name.split(" ")
+  return wcPost("/orders", {
+    payment_method: "stripe",
+    payment_method_title: "Stripe",
+    set_paid: true,
+    status: "completed",
+    billing: {
+      first_name: firstName,
+      last_name: rest.join(" "),
+      email: params.email,
+    },
+    line_items: params.lineItems.map(({ productId, quantity }) => ({
+      product_id: productId,
+      quantity,
+    })),
+    meta_data: [{ key: "_stripe_session_id", value: params.stripeSessionId }],
+  })
+}
+
+export async function getOrderDownloads(orderId: number): Promise<WCOrderDownload[]> {
+  return wcFetch<WCOrderDownload[]>(`/orders/${orderId}/downloads`)
 }
 
 // ─── Productos ────────────────────────────────────────────────────────────────

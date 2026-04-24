@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { getProductById } from "@/lib/woocommerce"
+import { getOrderDownloads } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-06-20",
@@ -21,33 +21,27 @@ export async function GET(request: Request) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["line_items.data.price.product"],
+      expand: ["payment_intent"],
     })
 
     if (session.payment_status !== "paid") {
       return NextResponse.json({ error: "Pago no completado" }, { status: 400 })
     }
 
-    const lineItems = session.line_items?.data || []
-    const downloadableProducts: DownloadProduct[] = []
+    const paymentIntent = session.payment_intent as Stripe.PaymentIntent | null
+    const wcOrderId = paymentIntent?.metadata?.wc_order_id
 
-    for (const item of lineItems) {
-      const stripeProduct = item.price?.product as any
-      const wcProductId = stripeProduct?.metadata?.wc_product_id
+    let downloadableProducts: DownloadProduct[] = []
 
-      if (!wcProductId) continue
-
-      // Consultamos WooCommerce para obtener los enlaces de descarga
-      const wcProduct = await getProductById(Number(wcProductId))
-
-      if (wcProduct.downloadable && wcProduct.downloads?.length > 0) {
-        downloadableProducts.push({
-          name: wcProduct.name,
-          downloads: wcProduct.downloads.map((d: any) => ({
-            name: d.name,
-            url: d.file,
-          })),
-        })
+    if (wcOrderId) {
+      const wcDownloads = await getOrderDownloads(Number(wcOrderId))
+      if (wcDownloads.length > 0) {
+        downloadableProducts = [
+          {
+            name: "Tus descargas",
+            downloads: wcDownloads.map((d) => ({ name: d.download_name, url: d.download_url })),
+          },
+        ]
       }
     }
 
@@ -56,8 +50,9 @@ export async function GET(request: Request) {
       customerEmail: session.customer_details?.email,
       downloadableProducts,
     })
-  } catch (error: any) {
-    console.error("Error verificando pago:", error.message)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Error desconocido"
+    console.error("Error verificando pago:", message)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }
