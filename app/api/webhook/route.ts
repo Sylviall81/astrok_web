@@ -7,6 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
+const REPLY_TO = "hola@astrokaleido.com"
 const SYLVIA_EMAIL = "kaleidoscopebcn@gmail.com"
 const INSTAGRAM_URL = "https://www.instagram.com/kaleidoscopebcn/"
 
@@ -54,6 +55,7 @@ export async function POST(req: NextRequest) {
   if (customerEmail) {
     const { error: customerEmailError } = await resend.emails.send({
       from: FROM,
+      replyTo: REPLY_TO,
       to: customerEmail,
       subject: isServicio
         ? "Hemos recibido tu solicitud de sesión"
@@ -74,6 +76,7 @@ export async function POST(req: NextRequest) {
 
   const { error: sylviaEmailError } = await resend.emails.send({
     from: FROM,
+    replyTo: REPLY_TO,
     to: SYLVIA_EMAIL,
     subject: `Nueva venta — ${isServicio ? "Sesión" : "Infoproducto"}`,
     html: `

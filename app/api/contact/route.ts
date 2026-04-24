@@ -29,6 +29,7 @@ export async function POST(req: Request) {
 
   await resend.emails.send({
     from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+    replyTo: data.email,
     to: "kaleidoscopebcn@gmail.com",
     subject: "Nuevo contacto de Kaleidoscope Web",
     html: `
