@@ -12,8 +12,10 @@ import { Footer } from "@/components/footer"
 import { CookieBanner } from "@/components/cookie-banner"
 
 export const metadata = {
-  title: "Página de Inicio | Kaleidoscope",
-  description: "Bienvenido a Kaleidoscope, astrología psicológica...",
+  metadataBase: new URL("https://astrokaleido.com"),
+  title: "Inicio | Kaleidoscope Astrología",
+  description:
+    "Astrología psicológica evolutiva para (re)conectar con tu claridad interna, navegar tránsitos y abrazar tu propósito. Acompañamiento con Sylvia Llorente.",
 }
 
 

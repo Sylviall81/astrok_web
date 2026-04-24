@@ -2,6 +2,13 @@ import ContactForm from "@/components/contact-form"
 import ContactItem from  "@/components/common/contact-item"
 import SocialLinks from "@/components/common/social-links"
 import { Mail, Clock, Phone } from "lucide-react"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Contacto | Kaleidoscope Astrología",
+  description:
+    "¿Buscas claridad astrológica? Escríbeme para consultas personalizadas o reserva sesión. Te respondo pronto para guiarte en tu proceso.",
+}
 
 export default function ContactPage() {
   return (
@@ -31,7 +38,7 @@ export default function ContactPage() {
               icon={<Mail className="w-5 h-5" />}
               className="text-body hover:text-primary"
             >
-              kaleidoscopebcn@gmail.com
+              hola@astrokaleido.com 
             </ContactItem>
 
             <ContactItem

@@ -90,7 +90,7 @@ export function Footer() {
                   icon={<Mail className="w-4 h-4" />}
                   className="text-body hover:text-primary"
                 >
-                  kaleidoscopebcn@gmail.com
+                  hola@astrokaleido.com 
                 </ContactItem>
               </li>
 

@@ -84,7 +84,7 @@ export default function PoliticaPrivacidadPage() {
             <p>
               Tienes derecho a acceder, rectificar, suprimir, limitar, oponerte al tratamiento y a la
               portabilidad de tus datos. Puedes ejercerlos enviando un email a{" "}
-              <a href="mailto:kaleidoscopebcn@gmail.com">kaleidoscopebcn@gmail.com</a> adjuntando
+              <a href="mailto:hola@astrokaleido.com ">hola@astrokaleido.com </a> adjuntando
               copia de tu DNI.
             </p>
             <p>
@@ -104,7 +104,7 @@ export default function PoliticaPrivacidadPage() {
               psicológica, herramientas de autodescubrimiento y novedades de Kaleidoastro. El envío
               se realiza únicamente con tu consentimiento expreso y puedes darte de baja en cualquier
               momento haciendo clic en el enlace de baja de cualquier email o escribiendo a{" "}
-              <a href="mailto:kaleidoscopebcn@gmail.com">kaleidoscopebcn@gmail.com</a> con el asunto
+              <a href="mailto:hola@astrokaleido.com ">hola@astrokaleido.com </a> con el asunto
               «Baja newsletter».
             </p>
           </div>

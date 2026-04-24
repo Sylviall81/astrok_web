@@ -1,8 +1,15 @@
 // app/blog/page.tsx
 import BlogCard from "@/components/blog-card"
 import { getPosts, formatDate, readingTime } from "@/lib/wordpress"
+import type { Metadata } from "next"
 
 export const revalidate = 10
+
+export const metadata: Metadata = {
+  title: "Blog | Kaleidoscope Astrología",
+  description:
+    "Artículos sobre astrología evolutiva, signos, tránsitos y reflexión interna. Profundiza en tu mapa y gana herramientas prácticas para tu vida.",
+}
 
 export default async function BlogPage() {
   const posts = await getPosts()

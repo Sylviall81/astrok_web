@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
 const REPLY_TO = "hola@astrokaleido.com"
-const SYLVIA_EMAIL = "kaleidoscopebcn@gmail.com"
+const SYLVIA_EMAIL = "hola@astrokaleido.com "
 const INSTAGRAM_URL = "https://www.instagram.com/kaleidoscopebcn/"
 
 export async function POST(req: NextRequest) {
