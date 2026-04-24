@@ -116,7 +116,7 @@ function buildInfoproductoEmail(name: string): string {
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Puedes responder directamente a este email. Intento responder en un plazo de 24–48 horas.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir profundizando en este espacio aquí:<br>
-      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@kaleidoscopebcn</a>
+      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@astrokaleido</a>
     </p>
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
@@ -147,7 +147,7 @@ function buildServicioEmail(name: string): string {
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Si deseas compartir previamente alguna información o tienes alguna duda, puedes responder directamente a este email.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir mi trabajo y contenidos aquí:<br>
-      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@kaleidoscopebcn</a>
+      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@astrokaleido</a>
     </p>
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>

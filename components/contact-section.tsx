@@ -26,11 +26,11 @@ export default function ContactSection() {
 
               <div className="space-y-3">
                       <ContactItem
-                        href="mailto:kaleidoscopebcn@gmail.com"
+                        href="mailto:hola@astrokaleido.com"
                         icon={<Mail className="w-5 h-5" />}
                         className="text-body hover:text-primary"
                       >
-                        kaleidoscopebcn@gmail.com
+                        hola@astrokaleido.com
                       </ContactItem>
 
                       <ContactItem

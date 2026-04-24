@@ -86,7 +86,7 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <ContactItem
-                  href="mailto:kaleidoscopebcn@gmail.com"
+                  href="mailto:hola@astrokaleido.com"
                   icon={<Mail className="w-4 h-4" />}
                   className="text-body hover:text-primary"
                 >

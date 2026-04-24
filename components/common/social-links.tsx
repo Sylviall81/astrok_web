@@ -12,7 +12,7 @@ export default function SocialLinks({
   return (
     <div className={`flex gap-4 ${className}`}>
       <a
-        href="https://www.instagram.com/kaleidoscopebcn/#    "
+        href="https://www.instagram.com/astrokaleido/    "
         target="_blank"
         rel="noopener noreferrer"
       >

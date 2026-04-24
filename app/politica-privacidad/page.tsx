@@ -21,7 +21,7 @@ export default function PoliticaPrivacidadPage() {
               <li><strong>Titular:</strong> Sylvia Llorente Suárez (Kaleidoastro)</li>
               <li><strong>NIF:</strong> 45960967K</li>
               <li><strong>Domicilio:</strong> CalleSegre, 76-84. 08030 Barcelona</li>
-              <li><strong>Email:</strong> kaleidoscopebcn@gmail.com</li>
+              <li><strong>Email:</strong> hola@astrokaleido.com</li>
               <li><strong>Web:</strong> kaleidoastro.com</li>
             </ul>
 
