@@ -3,7 +3,7 @@ import BlogCard from "@/components/blog-card"
 import { getPosts, formatDate, readingTime } from "@/lib/wordpress"
 import type { Metadata } from "next"
 
-export const revalidate = 10
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: "Blog | Kaleidoscope Astrología",
