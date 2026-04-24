@@ -12,24 +12,14 @@ export async function POST(req: Request) {
     )
   }
 
-  const { error } = await resend.emails.send({
-    from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
-    replyTo: data.email,
-    to: "kaleidoscopebcn@gmail.com",
-    subject: "Nueva suscripción al newsletter",
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 500px;">
-        <h2 style="color: #2c2c2c;">Nueva suscripción</h2>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Fuente:</strong> ${data.source || "newsletter_section"}</p>
-        <p><strong>GDPR:</strong> Aceptado</p>
-        <p><strong>Fecha:</strong> ${new Date().toLocaleString("es-ES", { timeZone: "Europe/Madrid" })}</p>
-      </div>
-    `,
+  const { error } = await resend.contacts.create({
+    audienceId: process.env.RESEND_AUDIENCE_ID!,
+    email: data.email,
+    unsubscribed: false,
   })
 
   if (error) {
-    console.error("[newsletter] Error enviando notificación:", error)
+    console.error("[newsletter] Error guardando contacto en Resend:", error)
     return new Response(
       JSON.stringify({ message: "Error al procesar la suscripción." }),
       { status: 500 }
