@@ -27,14 +27,14 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <div className="relative max-w-sm md:max-w-2xl lg:max-w-4xl mx-auto">
           <div className="overflow-hidden">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {testimonials.map((testimonial, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-4">
+                <div key={index} className="w-full flex-shrink-0 px-2 md:px-4">
                   <TestimonialCard name={testimonial.name} text={testimonial.text} rating={testimonial.rating} />
                 </div>
               ))}
