@@ -46,15 +46,15 @@ if (!mounted) return null
           </Link>
         </div>
 
-        <nav className={`${  isMenuOpen ? "flex" : "hidden"
-                          } absolute top-16 left-0 right-0 flex-col gap-4 border-b p-6 md:static md:flex md:flex-row md:items-center md:border-0 md:p-0 
-                          bg-white/0 dark:bg-slate-900/95 backdrop-blur-lg shadow-xl md:bg-transparent md:backdrop-blur-none`}>
-          <Link href="/" className="text-muted-foreground hover:text-foreground">Inicio</Link>
-          <Link href="/servicios" className="text-muted-foreground hover:text-foreground">Servicios</Link>
-          <Link href="/tienda" className="text-muted-foreground hover:text-foreground">Tienda</Link>
-          <Link href="/blog" className="text-muted-foreground hover:text-foreground">Blog</Link>
-          <Link href="/sobre-mi" className="text-muted-foreground hover:text-foreground">Sobre Mí</Link>
-          <Link href="/contacto" className="text-muted-foreground hover:text-foreground">Contacto</Link>
+        <nav className={`${isMenuOpen ? "flex" : "hidden"
+                          } absolute top-16 left-0 right-0 flex-col gap-4 border-b p-6 md:static md:flex md:flex-row md:items-center md:border-0 md:p-0
+                          bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl md:bg-transparent md:backdrop-blur-none md:shadow-none`}>
+          <Link href="/" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
+          <Link href="/servicios" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Servicios</Link>
+          <Link href="/tienda" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Tienda</Link>
+          <Link href="/blog" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Blog</Link>
+          <Link href="/sobre-mi" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Sobre Mí</Link>
+          <Link href="/contacto" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Contacto</Link>
         </nav>
 
         <div className="flex items-center gap-2">
