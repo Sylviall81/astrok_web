@@ -105,12 +105,15 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
 
 async function wcPost<T>(endpoint: string, body: Record<string, unknown>): Promise<T> {
   const url = new URL(`${WC_API_BASE}${endpoint}`)
-  const authParams = getWCAuthParams()
-  Object.entries(authParams).forEach(([k, v]) => url.searchParams.append(k, v))
+  const { consumer_key, consumer_secret } = getWCAuthParams()
+  const credentials = Buffer.from(`${consumer_key}:${consumer_secret}`).toString("base64")
 
   const res = await fetch(url.toString(), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${credentials}`,
+    },
     body: JSON.stringify(body),
   })
 
