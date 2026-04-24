@@ -9,8 +9,7 @@ import { useNotification } from "@/context/notification-context"
 import { useState } from "react"
 
 export function CartDrawer() {
-  const { cartItems, updateQuantity, removeItem, totalItems, totalPrice } = useCart()
-  const [isOpen, setIsOpen] = useState(false)
+  const { cartItems, updateQuantity, removeItem, totalItems, totalPrice, isCartOpen, setIsCartOpen } = useCart()
   const [isLoading, setIsLoading] = useState(false)
   const { showNotification } = useNotification()
 
@@ -57,7 +56,7 @@ export function CartDrawer() {
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="icon" className="relative">
           <ShoppingCart className="h-5 w-5" />
@@ -81,7 +80,7 @@ export function CartDrawer() {
               <h3 className="text-lg font-medium">Tu carrito está vacío</h3>
               <p className="text-sm text-muted-foreground">Añade algunos productos para comenzar</p>
             </div>
-            <Button onClick={() => setIsOpen(false)}>Continuar comprando</Button>
+            <Button onClick={() => setIsCartOpen(false)}>Continuar comprando</Button>
           </div>
         ) : (
           <>

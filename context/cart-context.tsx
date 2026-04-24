@@ -17,6 +17,8 @@ interface CartContextType {
   clearCart: () => void
   totalItems: number
   totalPrice: number
+  isCartOpen: boolean
+  setIsCartOpen: (open: boolean) => void
 }
 
 const CartContext = createContext<CartContextType>({
@@ -27,6 +29,8 @@ const CartContext = createContext<CartContextType>({
   clearCart: () => {},
   totalItems: 0,
   totalPrice: 0,
+  isCartOpen: false,
+  setIsCartOpen: () => {},
 })
 
 const generateId = () =>
@@ -34,6 +38,7 @@ const generateId = () =>
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<LocalCartItem[]>([])
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   // Cargamos el carrito desde localStorage al montar
   useEffect(() => {
@@ -60,6 +65,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { id: generateId(), product, quantity: 1 }]
     })
+    setIsCartOpen(true)
   }
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -85,7 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 }
 
    return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, totalItems, clearCart,totalPrice,}}>
+    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeItem, totalItems, clearCart, totalPrice, isCartOpen, setIsCartOpen }}>
       {children}
     </CartContext.Provider>
   )
