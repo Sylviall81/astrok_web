@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (customerEmail) {
-    await resend.emails.send({
+    const { error: customerEmailError } = await resend.emails.send({
       from: FROM,
       to: customerEmail,
       subject: isServicio
@@ -69,6 +69,9 @@ export async function POST(req: NextRequest) {
         ? buildServicioEmail(customerName)
         : buildInfoproductoEmail(customerName, downloadLinks),
     })
+    if (customerEmailError) {
+      console.error("[webhook] Error enviando email al cliente:", customerEmailError)
+    }
   }
 
   const productSummary = lineItems
@@ -78,7 +81,7 @@ export async function POST(req: NextRequest) {
     })
     .join("<br>")
 
-  await resend.emails.send({
+  const { error: sylviaEmailError } = await resend.emails.send({
     from: FROM,
     to: SYLVIA_EMAIL,
     subject: `Nueva venta — ${isServicio ? "Sesión" : "Infoproducto"}`,
@@ -93,6 +96,9 @@ export async function POST(req: NextRequest) {
       </div>
     `,
   })
+  if (sylviaEmailError) {
+    console.error("[webhook] Error enviando notificación interna:", sylviaEmailError)
+  }
 
   return NextResponse.json({ received: true })
 }
