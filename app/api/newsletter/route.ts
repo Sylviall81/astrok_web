@@ -1,3 +1,7 @@
+import { Resend } from "resend"
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
 export async function POST(req: Request) {
   const data = await req.json()
 
@@ -8,40 +12,26 @@ export async function POST(req: Request) {
     )
   }
 
-  const wpAuth = Buffer.from(
-    `${process.env.WC_AUTH_USER}:${process.env.WC_AUTH_PASSWORD}`
-  ).toString("base64")
+  const { error } = await resend.emails.send({
+    from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+    replyTo: data.email,
+    to: "kaleidoscopebcn@gmail.com",
+    subject: "Nueva suscripción al newsletter",
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 500px;">
+        <h2 style="color: #2c2c2c;">Nueva suscripción</h2>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Fuente:</strong> ${data.source || "newsletter_section"}</p>
+        <p><strong>GDPR:</strong> Aceptado</p>
+        <p><strong>Fecha:</strong> ${new Date().toLocaleString("es-ES", { timeZone: "Europe/Madrid" })}</p>
+      </div>
+    `,
+  })
 
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_WORDPRESS_URL}/wp-json/wp/v2/newsletter`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Basic ${wpAuth}`,
-      },
-      body: JSON.stringify({
-        title: data.email,
-        status: "publish",
-        acf: {
-          email: data.email,
-          status: "active",
-          source: data.source || "newsletter_section",
-          gdpr_consent: data.gdpr_consent,
-          created_at: new Date().toISOString().replace("T", " ").substring(0, 19),
-        },
-      }),
-    })
-
-    if (!res.ok) {
-      const result = await res.json().catch(() => ({}))
-      return new Response(
-        JSON.stringify({ message: result.message || "Error al guardar la suscripción." }),
-        { status: res.status }
-      )
-    }
-  } catch {
+  if (error) {
+    console.error("[newsletter] Error enviando notificación:", error)
     return new Response(
-      JSON.stringify({ message: "No se pudo conectar con el servidor. Inténtalo de nuevo." }),
+      JSON.stringify({ message: "Error al procesar la suscripción." }),
       { status: 500 }
     )
   }
