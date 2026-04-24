@@ -4,16 +4,14 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Calendar, Clock } from "lucide-react"
 import ShareButtons from "@/components/share-buttons"
-import { getFullPostBySlug, getAllPostSlugs, formatDate, readingTime } from "@/lib/wordpress"
+import { getFullPostBySlug, formatDate, readingTime } from "@/lib/wordpress"
 import { generateTOC } from "@/lib/toc"
 import TableOfContents from "@/components/table-contents"
 
-export const revalidate = 10
+export const dynamic = 'force-dynamic'
 
-// Genera las rutas estáticas para todos los posts publicados
 export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs()
-  return slugs.map((slug) => ({ slug }))
+  return []
 }
 
 // Genera los metadatos SEO del post (título y meta description desde Rank Math)
