@@ -9,6 +9,7 @@ import { NotificationProvider } from "@/context/notification-context"
 import { CartProvider } from "@/context/cart-context"
 // import { Notification } from "@/components/ui/notification"
 import { Footer } from "@/components/footer"
+import { CookieBanner } from "@/components/cookie-banner"
 
 export const metadata = {
   title: "Página de Inicio | Kaleidoscope",
@@ -40,6 +41,7 @@ export default function RootLayout({
             <main>{children}</main>
             {/*<Toaster />*/}
             <Footer />
+            <CookieBanner />
           </CartProvider>
           </ProductsProvider>
           </NotificationProvider>
