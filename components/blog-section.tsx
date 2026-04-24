@@ -5,7 +5,12 @@ import Link from "next/link"
 
 
 export default async function BlogSection() {
- const posts = await getPosts()
+  let posts: Awaited<ReturnType<typeof getPosts>> = []
+  try {
+    posts = await getPosts()
+  } catch {
+    return null
+  }
 
   return (
     <section className="py-16 md:py-24 section-alt">

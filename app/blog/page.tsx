@@ -12,7 +12,12 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  const posts = await getPosts()
+  let posts: Awaited<ReturnType<typeof getPosts>> = []
+  try {
+    posts = await getPosts()
+  } catch {
+    // WordPress no disponible temporalmente
+  }
 
   return (
     <section className="py-16 md:py-24">
