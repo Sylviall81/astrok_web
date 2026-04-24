@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { getOrderDownloads } from "@/lib/woocommerce"
+import { getProductById } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-06-20",
@@ -21,27 +21,28 @@ export async function GET(request: Request) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["payment_intent"],
+      expand: ["line_items.data.price.product"],
     })
 
     if (session.payment_status !== "paid") {
       return NextResponse.json({ error: "Pago no completado" }, { status: 400 })
     }
 
-    const paymentIntent = session.payment_intent as Stripe.PaymentIntent | null
-    const wcOrderId = paymentIntent?.metadata?.wc_order_id
+    const lineItems = session.line_items?.data ?? []
+    const downloadableProducts: DownloadProduct[] = []
 
-    let downloadableProducts: DownloadProduct[] = []
+    for (const item of lineItems) {
+      const stripeProduct = item.price?.product as Stripe.Product
+      const wcProductId = stripeProduct?.metadata?.wc_product_id
+      if (!wcProductId) continue
 
-    if (wcOrderId) {
-      const wcDownloads = await getOrderDownloads(Number(wcOrderId))
-      if (wcDownloads.length > 0) {
-        downloadableProducts = [
-          {
-            name: "Tus descargas",
-            downloads: wcDownloads.map((d) => ({ name: d.download_name, url: d.download_url })),
-          },
-        ]
+      const wcProduct = await getProductById(Number(wcProductId))
+
+      if (wcProduct.downloadable && wcProduct.downloads?.length > 0) {
+        downloadableProducts.push({
+          name: wcProduct.name,
+          downloads: wcProduct.downloads.map((d) => ({ name: d.name, url: d.file })),
+        })
       }
     }
 

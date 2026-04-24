@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { Resend } from "resend"
-import { getProductById, createWCOrder, getOrderDownloads } from "@/lib/woocommerce"
+import { getProductById } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
   const customerName = session.customer_details?.name?.split(" ")[0] ?? "corazón"
 
   let isServicio = false
-  const wcLineItems: { productId: number; quantity: number }[] = []
 
   for (const item of lineItems) {
     const stripeProduct = item.price?.product as Stripe.Product
@@ -50,33 +49,6 @@ export async function POST(req: NextRequest) {
 
     const wcProduct = await getProductById(Number(wcProductId))
     if (!wcProduct.downloadable) isServicio = true
-    wcLineItems.push({ productId: Number(wcProductId), quantity: item.quantity ?? 1 })
-  }
-
-  // Crear pedido en WooCommerce y obtener links de descarga protegidos
-  let downloadLinks: { name: string; url: string }[] = []
-
-  if (wcLineItems.length > 0 && customerEmail && !isServicio) {
-    try {
-      const wcOrder = await createWCOrder({
-        email: customerEmail,
-        name: session.customer_details?.name ?? customerEmail,
-        stripeSessionId: session.id,
-        lineItems: wcLineItems,
-      })
-
-      // Guardar wc_order_id en el payment intent para que verify lo encuentre
-      if (session.payment_intent) {
-        await stripe.paymentIntents.update(session.payment_intent as string, {
-          metadata: { wc_order_id: String(wcOrder.id) },
-        })
-      }
-
-      const wcDownloads = await getOrderDownloads(wcOrder.id)
-      downloadLinks = wcDownloads.map((d) => ({ name: d.download_name, url: d.download_url }))
-    } catch (err) {
-      console.error("[webhook] Error creando pedido WooCommerce:", err)
-    }
   }
 
   if (customerEmail) {
@@ -86,9 +58,7 @@ export async function POST(req: NextRequest) {
       subject: isServicio
         ? "Hemos recibido tu solicitud de sesión"
         : "Acceso a tu contenido — gracias por tu confianza",
-      html: isServicio
-        ? buildServicioEmail(customerName)
-        : buildInfoproductoEmail(customerName, downloadLinks),
+      html: isServicio ? buildServicioEmail(customerName) : buildInfoproductoEmail(customerName),
     })
     if (customerEmailError) {
       console.error("[webhook] Error enviando email al cliente:", customerEmailError)
@@ -124,14 +94,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ received: true })
 }
 
-function buildInfoproductoEmail(name: string, downloads: { name: string; url: string }[]): string {
-  const downloadLinksHtml = downloads
-    .map(
-      (d) =>
-        `<a href="${d.url}" style="display:inline-block; margin: 8px 0; padding: 12px 24px; background-color: #2c2c2c; color: #fff; text-decoration: none; border-radius: 4px; font-size: 15px;">${d.name}</a>`
-    )
-    .join("<br>")
-
+function buildInfoproductoEmail(name: string): string {
   return `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
@@ -143,17 +106,11 @@ function buildInfoproductoEmail(name: string, downloads: { name: string; url: st
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Kaleidoscope Astrología y en mi trabajo.</p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Tu compra se ha realizado correctamente. A continuación encontrarás el acceso a tu contenido, por si necesitas recuperarlo en cualquier momento:</p>
-
-    <div style="margin: 28px 0;">
-      ${downloadLinksHtml}
-    </div>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Tu compra se ha realizado correctamente. Espero que hayas podido acceder a tu contenido sin problemas. Si tienes cualquier comentario, sugerencia o duda sobre el material, estaré encantada de escucharte.</p>
 
     <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Espero que este material te aporte claridad, perspectiva y te acompañe en tu proceso personal.</p>
-
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Si tienes cualquier duda, puedes responder a este email. Intento responder en un plazo de 24–48 horas.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Puedes responder directamente a este email. Intento responder en un plazo de 24–48 horas.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir profundizando en este espacio aquí:<br>
       <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@kaleidoscopebcn</a>
