@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
       },
       {
+        protocol: "https",
+        hostname: "cms.astrokaleido.com",
+        pathname: "/**",
+      },
+      {
         protocol: "http",
         hostname: "kaleidoastro.local",
         pathname: "/**",
