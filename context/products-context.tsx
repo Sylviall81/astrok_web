@@ -22,16 +22,20 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProducts = async (retries = 2): Promise<void> => {
       try {
         const res = await fetch("/api/products")
         if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`)
         const data: WCProduct[] = await res.json()
         setProducts(data)
+        setLoading(false)
       } catch (err: any) {
+        if (retries > 0) {
+          await new Promise((r) => setTimeout(r, 1500))
+          return fetchProducts(retries - 1)
+        }
         console.error("🔴 Error cargando productos:", err.message)
         setError(err.message || "Error al cargar productos")
-      } finally {
         setLoading(false)
       }
     }
