@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { Resend } from "resend"
-import { getProductById } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -41,16 +40,10 @@ export async function POST(req: NextRequest) {
   const customerEmail = session.customer_details?.email
   const customerName = session.customer_details?.name?.split(" ")[0] ?? "corazón"
 
-  let isServicio = false
-
-  for (const item of lineItems) {
+  const isServicio = lineItems.some((item) => {
     const stripeProduct = item.price?.product as Stripe.Product
-    const wcProductId = stripeProduct?.metadata?.wc_product_id
-    if (!wcProductId) continue
-
-    const wcProduct = await getProductById(Number(wcProductId))
-    if (!wcProduct.downloadable) isServicio = true
-  }
+    return stripeProduct?.metadata?.downloadable !== "true"
+  })
 
   if (customerEmail) {
     const { error: customerEmailError } = await resend.emails.send({

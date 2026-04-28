@@ -11,6 +11,18 @@ export type DownloadProduct = {
   downloads: { name: string; url: string }[]
 }
 
+async function getProductWithRetry(id: number, retries = 2): Promise<Awaited<ReturnType<typeof getProductById>>> {
+  try {
+    return await getProductById(id)
+  } catch (err) {
+    if (retries > 0) {
+      await new Promise((r) => setTimeout(r, 1500))
+      return getProductWithRetry(id, retries - 1)
+    }
+    throw err
+  }
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const sessionId = searchParams.get("session_id")
@@ -36,7 +48,7 @@ export async function GET(request: Request) {
       const wcProductId = stripeProduct?.metadata?.wc_product_id
       if (!wcProductId) continue
 
-      const wcProduct = await getProductById(Number(wcProductId))
+      const wcProduct = await getProductWithRetry(Number(wcProductId))
 
       if (wcProduct.downloadable && wcProduct.downloads?.length > 0) {
         downloadableProducts.push({

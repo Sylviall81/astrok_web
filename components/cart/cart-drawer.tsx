@@ -35,6 +35,7 @@ export function CartDrawer() {
             price: item.product.price,
             quantity: item.quantity,
             image: item.product.images?.[0]?.src || null,
+            downloadable: item.product.downloadable,
           })),
         }),
       })
