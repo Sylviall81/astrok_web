@@ -1,5 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/wp-content/uploads/:path*",
+        destination: "https://cms.astrokaleido.com/wp-content/uploads/:path*",
+        permanent: false,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
