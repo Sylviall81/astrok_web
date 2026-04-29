@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { getPosts } from "@/lib/wordpress"
 
-export const preferredRegion = ["cdg1", "lhr1"]
+export const runtime = "edge"
 
 export async function GET() {
   try {
