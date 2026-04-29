@@ -1,6 +1,6 @@
 "use client"
 
-import { Share2, Facebook, Twitter } from "lucide-react"
+import { Share2, Facebook, Instagram } from "lucide-react"
 import { useState } from "react"
 
 interface ShareButtonsProps {
@@ -12,18 +12,24 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const shareOnWhatsApp = () => {
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} - ${url}`)}`
-    window.open(whatsappUrl, "_blank")
+    window.open(`https://wa.me/?text=${encodeURIComponent(`${title} - ${url}`)}`, "_blank")
   }
 
   const shareOnFacebook = () => {
-    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
-    window.open(facebookUrl, "_blank")
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank")
   }
 
-  const shareOnTwitter = () => {
-    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`
-    window.open(twitterUrl, "_blank")
+  const shareOnX = () => {
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+      "_blank"
+    )
+  }
+
+  const shareOnInstagram = () => {
+    if (navigator.share) {
+      navigator.share({ title, url })
+    }
   }
 
   return (
@@ -55,15 +61,23 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             <Facebook className="h-5 w-5" />
           </button>
           <button
-            onClick={shareOnTwitter}
-            className="text-blue-400 hover:text-blue-500 transition-colors"
-            aria-label="Compartir en Twitter"
+            onClick={shareOnX}
+            className="text-gray-800 hover:text-gray-900 transition-colors"
+            aria-label="Compartir en X"
           >
-            <Twitter className="h-5 w-5" />
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z" />
+            </svg>
+          </button>
+          <button
+            onClick={shareOnInstagram}
+            className="text-pink-500 hover:text-pink-600 transition-colors"
+            aria-label="Compartir en Instagram"
+          >
+            <Instagram className="h-5 w-5" />
           </button>
         </div>
       )}
     </div>
   )
 }
-
