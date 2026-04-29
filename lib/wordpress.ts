@@ -20,7 +20,7 @@ export type WPTag = {
 }
 
 // Tipo interno que representa la respuesta cruda de la REST API
-// jetpack_featured_media_url viene directo en la respuesta base si Jetpack está activo
+// _embedded["wp:featuredmedia"] disponible con ?_embed=wp:featuredmedia (WordPress Core, sin plugins)
 type WPPostRaw = {
   id: number
   slug: string
@@ -35,7 +35,9 @@ type WPPostRaw = {
   tags: number[]
   rank_math_description?: string
   rank_math_title?: string
-  jetpack_featured_media_url?: string // ← Jetpack lo expone sin fetch extra
+  _embedded?: {
+    "wp:featuredmedia"?: Array<{ source_url?: string } | { code: string }>
+  }
 }
 
 export type WPPost = {
@@ -62,14 +64,14 @@ export type WPPostFull = WPPost & {
 }
 
 // ─── Helper: normaliza WPPostRaw → WPPost ─────────────────────────────────────
-// Extrae jetpack_featured_media_url al campo featuredImageUrl que usan los componentes
+// Extrae la imagen destacada de _embedded["wp:featuredmedia"] (WordPress Core, ?_embed)
 
 function normalizePost(raw: WPPostRaw): WPPost {
-  const { jetpack_featured_media_url, ...rest } = raw
-  return {
-    ...rest,
-    featuredImageUrl: jetpack_featured_media_url || null,
-  }
+  const { _embedded, ...rest } = raw
+  const mediaItem = _embedded?.["wp:featuredmedia"]?.[0]
+  const featuredImageUrl =
+    mediaItem && "source_url" in mediaItem ? (mediaItem.source_url ?? null) : null
+  return { ...rest, featuredImageUrl }
 }
 
 // ─── Fetch base ───────────────────────────────────────────────────────────────
@@ -85,6 +87,7 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Pr
       "Content-Type": "application/json",
     },
     next: { revalidate: 10 },
+    signal: AbortSignal.timeout(8000),
   })
 
   if (!res.ok) {
@@ -103,6 +106,7 @@ export async function getPosts(params?: Record<string, string>): Promise<WPPost[
     per_page: "100",
     orderby: "date",
     order: "desc",
+    _embed: "wp:featuredmedia",
     ...params,
   })
   return raw.map(normalizePost)
@@ -110,7 +114,7 @@ export async function getPosts(params?: Record<string, string>): Promise<WPPost[
 
 // Obtener un post por su slug (para la página de detalle)
 export async function getPostBySlug(slug: string): Promise<WPPost | null> {
-  const raw = await wpFetch<WPPostRaw[]>("/posts", { slug, status: "publish" })
+  const raw = await wpFetch<WPPostRaw[]>("/posts", { slug, status: "publish", _embed: "wp:featuredmedia" })
   return raw[0] ? normalizePost(raw[0]) : null
 }
 
