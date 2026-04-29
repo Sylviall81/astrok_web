@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   const booking = payload.payload ?? payload
 
   // Solo procesamos reservas confirmadas/creadas
-  if (!["BOOKING_CREATED", "BOOKING_CONFIRMED"].includes(triggerEvent)) {
+  if (!["BOOKING_CREATED", "BOOKING_CONFIRMED", "BOOKING_PAID"].includes(triggerEvent)) {
     return NextResponse.json({ received: true })
   }
 
