@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { getPosts } from "@/lib/wordpress"
 
+export const preferredRegion = ["cdg1", "lhr1"]
+
 export async function GET() {
   try {
     const posts = await getPosts()
