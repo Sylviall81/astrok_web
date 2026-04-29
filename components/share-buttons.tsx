@@ -1,6 +1,6 @@
 "use client"
 
-import { Share2Icon, FacebookIcon, InstagramIcon } from "lucide-react"
+import { Share2Icon, FacebookIcon, LucideInstagram } from "lucide-react"
 import { useState } from "react"
 
 interface ShareButtonsProps {
@@ -74,7 +74,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             className="text-pink-500 hover:text-pink-600 transition-colors"
             aria-label="Compartir en Instagram"
           >
-            <InstagramIcon className="h-5 w-5" />
+            <LucideInstagram className="h-5 w-5" />
           </button>
         </div>
       )}
