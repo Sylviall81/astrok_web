@@ -13,13 +13,14 @@ export function Footer() {
       <div className="containermax-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-1">
+              <Link href="/" className="flex items-center gap-2 ">
             <Image
                         src=  'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'
                         alt="Logotipo Kaleidoscope"
                         width={400}
                         height={200}
                         className="h-10 w-auto"
-                      />
+                      /></Link> 
             <p className="text-body mb-4 max-w-md">
               Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
             </p>

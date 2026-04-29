@@ -76,25 +76,31 @@ function normalizePost(raw: WPPostRaw): WPPost {
 
 // ─── Fetch base ───────────────────────────────────────────────────────────────
 
-async function wpFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+async function wpFetch<T>(endpoint: string, params?: Record<string, string>, retries = 2): Promise<T> {
   const url = new URL(`${WP_API_BASE}${endpoint}`)
   if (params) {
     Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value))
   }
 
-  const res = await fetch(url.toString(), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    next: { revalidate: 10 },
-    signal: AbortSignal.timeout(8000),
-  })
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { "Content-Type": "application/json" },
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(12000),
+    })
 
-  if (!res.ok) {
-    throw new Error(`WordPress API error: ${res.status} ${res.statusText} — ${url.toString()}`)
+    if (!res.ok) {
+      throw new Error(`WordPress API error: ${res.status} ${res.statusText} — ${url.toString()}`)
+    }
+
+    return res.json() as Promise<T>
+  } catch (err) {
+    if (retries > 0) {
+      await new Promise((r) => setTimeout(r, 2000))
+      return wpFetch<T>(endpoint, params, retries - 1)
+    }
+    throw err
   }
-
-  return res.json() as Promise<T>
 }
 
 // ─── Posts ────────────────────────────────────────────────────────────────────
