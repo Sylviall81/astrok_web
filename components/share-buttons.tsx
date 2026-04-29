@@ -1,6 +1,6 @@
 "use client"
 
-import { Share2, Facebook, Instagram } from "lucide-react"
+import { Share2Icon, FacebookIcon, InstagramIcon } from "lucide-react"
 import { useState } from "react"
 
 interface ShareButtonsProps {
@@ -39,7 +39,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
         className="text-primary hover:text-accent transition-colors"
         aria-label="Compartir"
       >
-        <Share2 className="h-5 w-5" />
+        <Share2Icon className="h-5 w-5" />
       </button>
 
       {isOpen && (
@@ -58,7 +58,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             className="text-blue-600 hover:text-blue-700 transition-colors"
             aria-label="Compartir en Facebook"
           >
-            <Facebook className="h-5 w-5" />
+            <FacebookIcon className="h-5 w-5" />
           </button>
           <button
             onClick={shareOnX}
@@ -74,7 +74,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
             className="text-pink-500 hover:text-pink-600 transition-colors"
             aria-label="Compartir en Instagram"
           >
-            <Instagram className="h-5 w-5" />
+            <InstagramIcon className="h-5 w-5" />
           </button>
         </div>
       )}
