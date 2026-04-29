@@ -88,7 +88,7 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>, ret
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
       },
-      next: { revalidate: 3600 },
+      cache: "no-store",
       signal: AbortSignal.timeout(12000),
     })
 
