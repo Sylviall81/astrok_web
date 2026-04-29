@@ -92,7 +92,10 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
   )
 
   const res = await fetch(url.toString(), {
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
+    },
     cache: "no-store",
   })
 
