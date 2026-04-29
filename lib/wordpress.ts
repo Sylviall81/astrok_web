@@ -84,7 +84,10 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>, ret
 
   try {
     const res = await fetch(url.toString(), {
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
+      },
       next: { revalidate: 3600 },
       signal: AbortSignal.timeout(12000),
     })
