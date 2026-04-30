@@ -20,7 +20,7 @@ export default function AvisoLegalPage() {
             <ul>
               <li><strong>Titular:</strong> Sylvia Llorente Suárez (Kaleidoastro)</li>
               <li><strong>NIF:</strong> 45960967K</li>
-              <li><strong>Domicilio:</strong> Consell de Cent, 160. 08015 Barcelona</li>
+              <li><strong>Domicilio:</strong> Calle Segre, 76-84. 08030 Barcelona</li>
               <li><strong>Teléfono:</strong> 628 840 747</li>
               <li><strong>Email:</strong> hola@astrokaleido.com </li>
               <li><strong>Web:</strong> kaleidoastro.com</li>
