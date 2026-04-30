@@ -26,10 +26,10 @@ export default function AboutSection() {
             Durante más de 10 años de experiencia, he orientado a cientos de personas en su camino de autodescubrimiento.
             </p>
             <p className="text-body mb-8">
-              Quieres saber más?
+              ¿Quieres saber más?
             </p>
             <Link href="/sobre-mi" className="btn-secondary">
-              Conoceme mejor
+              Conóceme mejor
             </Link>
           </div>
         </div>
