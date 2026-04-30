@@ -36,7 +36,7 @@ if (!mounted) return null
           <Link href="/" className="flex items-center gap-2 ">
           <Image
               src={theme === 'dark' 
-                ? 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1776255206/4_pbcj46.png' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
+                ? 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1777565976/Gemini_Generated_Image_ynuykeynuykeynuy_sgd87u.png' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
               alt="Logotipo Kaleidoscope"
               width={400}
               height={100}
