@@ -165,7 +165,7 @@ export default function ProductDetailPage() {
 
           {/* Info */}
           <div className="flex flex-col">
-            <h1 className="font-lora text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
+            <h1 className="font-lato text-3xl md:text-4xl font-semibold mb-4">{product.name}</h1>
 
             <p className="text-2xl font-semibold text-primary mb-6">
               {formatPrice(displayPrice)}

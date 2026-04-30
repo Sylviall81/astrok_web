@@ -23,7 +23,7 @@ export default function ServiceCard({ title, description, image, slug }: Service
       </Link>
       <div className="p-5 flex flex-col flex-1">
         <Link href={`/servicios/${slug}`}>
-          <h3 className="text-lg font-lato font-semibold italic text-primary mb-2">{title}</h3>
+          <h3 className="text-lg font-lato font-semibold text-primary mb-2">{title}</h3>
         </Link>
         <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">{description}</p>
         <Link
