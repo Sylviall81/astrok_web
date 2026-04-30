@@ -26,6 +26,13 @@ export async function POST(req: Request) {
     )
   }
 
+  await resend.emails.send({
+    from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+    to: "hola@astrokaleido.com",
+    subject: "Nueva suscriptora — Kaleidoscope",
+    html: `<p>Nuevo email suscrito a la lista: <strong>${data.email}</strong></p>`,
+  }).catch((err) => console.error("[newsletter] Error notificando suscripción:", err))
+
   return new Response(
     JSON.stringify({ success: true, message: "¡Suscripción completada con éxito!" }),
     { status: 201 }
