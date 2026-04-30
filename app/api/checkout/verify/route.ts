@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { getProductById } from "@/lib/woocommerce"
+import { createWCOrder, findOrderByStripeSession, getOrderDownloads } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-06-20",
@@ -9,18 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export type DownloadProduct = {
   name: string
   downloads: { name: string; url: string }[]
-}
-
-async function getProductWithRetry(id: number, retries = 2): Promise<Awaited<ReturnType<typeof getProductById>>> {
-  try {
-    return await getProductById(id)
-  } catch (err) {
-    if (retries > 0) {
-      await new Promise((r) => setTimeout(r, 1500))
-      return getProductWithRetry(id, retries - 1)
-    }
-    throw err
-  }
 }
 
 export async function GET(request: Request) {
@@ -41,26 +29,62 @@ export async function GET(request: Request) {
     }
 
     const lineItems = session.line_items?.data ?? []
+    const customerEmail = session.customer_details?.email
+    const customerName = session.customer_details?.name ?? ""
+
+    const hasDownloadables = lineItems.some((item) => {
+      const p = item.price?.product as Stripe.Product
+      return p?.metadata?.downloadable === "true"
+    })
+
     const downloadableProducts: DownloadProduct[] = []
 
-    for (const item of lineItems) {
-      const stripeProduct = item.price?.product as Stripe.Product
-      const wcProductId = stripeProduct?.metadata?.wc_product_id
-      if (!wcProductId) continue
+    if (hasDownloadables && customerEmail) {
+      let wcOrderId: number
 
-      const wcProduct = await getProductWithRetry(Number(wcProductId))
-
-      if (wcProduct.downloadable && wcProduct.downloads?.length > 0) {
-        downloadableProducts.push({
-          name: wcProduct.name,
-          downloads: wcProduct.downloads.map((d) => ({ name: d.name, url: d.file })),
+      const existingOrder = await findOrderByStripeSession(sessionId)
+      if (existingOrder) {
+        wcOrderId = existingOrder.id
+      } else {
+        const wcLineItems = lineItems.flatMap((item) => {
+          const p = item.price?.product as Stripe.Product
+          const id = p?.metadata?.wc_product_id
+          return id ? [{ productId: Number(id), quantity: item.quantity ?? 1 }] : []
         })
+        const order = await createWCOrder({
+          email: customerEmail,
+          name: customerName,
+          stripeSessionId: sessionId,
+          lineItems: wcLineItems,
+        })
+        wcOrderId = order.id
+      }
+
+      const orderDownloads = await getOrderDownloads(wcOrderId)
+
+      const nameByWcId = new Map<string, string>()
+      for (const item of lineItems) {
+        const p = item.price?.product as Stripe.Product
+        if (p?.metadata?.wc_product_id) nameByWcId.set(p.metadata.wc_product_id, p.name)
+      }
+
+      for (const dl of orderDownloads) {
+        const productName = nameByWcId.get(String(dl.product_id)) ?? `Producto ${dl.product_id}`
+        const existing = downloadableProducts.find((p) => p.name === productName)
+        if (existing) {
+          existing.downloads.push({ name: dl.download_name, url: dl.download_url })
+        } else {
+          downloadableProducts.push({
+            name: productName,
+            downloads: [{ name: dl.download_name, url: dl.download_url }],
+          })
+        }
       }
     }
 
     return NextResponse.json({
       paid: true,
-      customerEmail: session.customer_details?.email,
+      customerEmail,
       downloadableProducts,
     })
   } catch (error) {

@@ -84,9 +84,8 @@ function CheckoutSuccessPage() {
                     {product.downloads.map((download, j) => (
                       <a
                         key={j}
-                        href={download.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href={`/api/download?url=${encodeURIComponent(download.url)}`}
+                        download
                         className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
                       ><Download className="h-4 w-4" />
                         {download.name}

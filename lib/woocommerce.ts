@@ -158,6 +158,14 @@ export async function getOrderDownloads(orderId: number): Promise<WCOrderDownloa
   return wcFetch<WCOrderDownload[]>(`/orders/${orderId}/downloads`)
 }
 
+export async function findOrderByStripeSession(sessionId: string): Promise<{ id: number } | null> {
+  const orders = await wcFetch<{ id: number }[]>("/orders", {
+    meta_key: "_stripe_session_id",
+    meta_value: sessionId,
+  })
+  return orders[0] ?? null
+}
+
 // ─── Productos ────────────────────────────────────────────────────────────────
 
 // Obtener todos los productos publicados
