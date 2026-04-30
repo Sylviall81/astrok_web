@@ -46,7 +46,7 @@ const href = esInfoproducto
       </Link>
       <CardHeader className="pb-2 pt-4 px-4">
         <Link href={href}>
-          <CardTitle className="text-base">{product.name}</CardTitle>
+          <CardTitle className="text-lg italic">{product.name}</CardTitle>
         </Link>
       </CardHeader>
       <CardContent className="px-4 pb-2 flex flex-col flex-1">

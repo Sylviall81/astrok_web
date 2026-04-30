@@ -68,7 +68,7 @@ export default function ServicesSection() {
             <div className="text-center">
               <Link
                 href="/servicios"
-                className="inline-flex items-center gap-2 text-primary font-lato font-semibold hover:text-accent transition-colors"
+                className="inline-flex items-center gap-2 text-primary font-lato font-semibold text-lg hover:text-accent transition-colors"
               >
                 Ver todos los servicios
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
