@@ -11,7 +11,7 @@ export default function HeroSection() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-lato font-bold text-stone-200 mb-6 leading-tight">
               Explora tu universo interior gracias a la Astrología Psicológica.
               </h1>
-              <p className="text-xl md:text-2xl text-secondary mb-10 font-lora">
+              <p className="text-xl md:text-2xl text-secondary mb-10 font-lato not-italic">
                 Te acompaño a (RE)conocerte, ganar claridad y vivir con propósito.
               </p>
               <Link href="/servicios" className="btn-primary text-lg px-8 py-4">

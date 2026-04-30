@@ -46,11 +46,11 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-white px-6 py-3 rounded-md font-lato font-semibold transition-all hover:bg-opacity-90;
+    @apply bg-primary text-white px-6 py-3 rounded-md font-lora text-base font-semibold transition-all hover:bg-opacity-90;
   }
 
   .btn-secondary {
-    @apply bg-transparent border border-primary text-primary px-6 py-3 rounded-md font-lato font-semibold transition-all hover:bg-primary hover:bg-opacity-10;
+    @apply bg-transparent border border-primary text-primary px-6 py-3 rounded-md font-lora text-base font-semibold transition-all hover:bg-primary hover:bg-opacity-10;
   }
 
   .section-title {
