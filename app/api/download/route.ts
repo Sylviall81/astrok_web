@@ -21,11 +21,10 @@ export async function GET(request: NextRequest) {
 
   const filename = decodeURIComponent(fileUrl.split("/").pop()?.split("?")[0] ?? "download")
   const contentType = res.headers.get("Content-Type") ?? "application/octet-stream"
+  const stream = searchParams.get("stream") === "1"
 
-  return new NextResponse(res.body, {
-    headers: {
-      "Content-Type": contentType,
-      "Content-Disposition": `attachment; filename="${filename}"`,
-    },
-  })
+  const headers: Record<string, string> = { "Content-Type": contentType }
+  if (!stream) headers["Content-Disposition"] = `attachment; filename="${filename}"`
+
+  return new NextResponse(res.body, { headers })
 }

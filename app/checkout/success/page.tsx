@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { CheckCircle, Download, Loader2 } from "lucide-react"
+import { CheckCircle, Download, Play, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import type { DownloadProduct } from "@/app/api/checkout/verify/route"
@@ -82,14 +82,23 @@ function CheckoutSuccessPage() {
                   <div key={i} className="mb-4">
                     <p className="font-medium mb-2">{product.name}</p>
                     {product.downloads.map((download, j) => (
-                      <a
-                        key={j}
-                        href={`/api/download?url=${encodeURIComponent(download.url)}`}
-                        download
-                        className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
-                      ><Download className="h-4 w-4" />
-                        {download.name}
-                      </a>
+                      <div key={j} className="flex flex-wrap gap-3 items-center">
+                        <a
+                          href={`/api/download?url=${encodeURIComponent(download.url)}&stream=1`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
+                        ><Play className="h-4 w-4" />
+                          Escuchar
+                        </a>
+                        <a
+                          href={`/api/download?url=${encodeURIComponent(download.url)}`}
+                          download
+                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
+                        ><Download className="h-4 w-4" />
+                          Descargar
+                        </a>
+                      </div>
                     ))}
                   </div>
                 ))}
