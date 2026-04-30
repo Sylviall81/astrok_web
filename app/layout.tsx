@@ -1,6 +1,10 @@
 import type React from "react"
 import "./globals.css"
+import { Lato, Lora } from "next/font/google"
 //import type { Metadata } from "next"
+
+const lato = Lato({ subsets: ["latin"], weight: ["400", "700"], variable: "--font-lato" })
+const lora = Lora({ subsets: ["latin"], variable: "--font-lora" })
 import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 //import { Toaster } from "@/components/ui/toaster"
@@ -26,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body>
+      <body className={`${lato.variable} ${lora.variable}`}>
            <ThemeProvider
               attribute="class"
               defaultTheme="system"
