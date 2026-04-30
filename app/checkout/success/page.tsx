@@ -89,7 +89,7 @@ function CheckoutSuccessPage() {
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
                         ><Play className="h-4 w-4" />
-                          Escuchar
+                          Abrir
                         </a>
                         <a
                           href={`/api/download?url=${encodeURIComponent(download.url)}`}
