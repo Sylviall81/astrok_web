@@ -28,7 +28,9 @@
   body {
     @apply font-lora;
   }
-  h1,
+  h1 {
+    @apply font-lato font-semibold italic;
+  }
   h2,
   h3,
   h4,
