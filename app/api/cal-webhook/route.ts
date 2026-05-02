@@ -45,8 +45,8 @@ export async function POST(req: NextRequest) {
   const triggerEvent: string = payload.triggerEvent ?? payload.type ?? ""
   const booking: CalBooking = payload.payload ?? payload
 
-  // Solo procesamos reservas confirmadas/creadas
-  if (!["BOOKING_CREATED", "BOOKING_CONFIRMED", "BOOKING_PAID"].includes(triggerEvent)) {
+  // Solo enviamos email cuando tú confirmas la reserva manualmente
+  if (!["BOOKING_CONFIRMED"].includes(triggerEvent)) {
     return NextResponse.json({ received: true })
   }
 
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
       from: FROM,
       replyTo: REPLY_TO,
       to: customerEmail,
-      subject: "Hemos recibido tu reserva — Kaleidoscope Astrología",
+      subject: "Tu reserva está confirmada — Kaleidoscope Astrología",
       html: buildConfirmacionEmail(customerName, eventTitle, formattedDate),
     })
 
@@ -112,25 +112,17 @@ function buildConfirmacionEmail(name: string, eventTitle: string, fecha: string 
     <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4;">Hola ${name},</h1>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
-      Hemos recibido correctamente tu pago para la sesión de <strong>${eventTitle}</strong> ✨
+      Tu sesión de <strong>${eventTitle}</strong> está confirmada. ✨
+    </p>
+
+    ${fecha ? `<p style="font-size:16px; line-height:1.75; margin:0 0 20px;"><strong>Fecha:</strong> ${fecha}</p>` : ""}
+
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      Si necesitas hacer algún cambio en tu sesión (modalidad, fecha u otro detalle), puedes escribirme directamente respondiendo a este email. Recuerda, que para reagendar sesiones es necesario hacerlo con -al menos- 48 horas de antelación.
     </p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
-      <strong>Reserva recibida (pendiente de validación final)</strong>
-    </p>
-
-    ${fecha ? `<p style="font-size:16px; line-height:1.75; margin:0 0 20px;"><strong>Fecha solicitada:</strong> ${fecha}</p>` : ""}
-
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
-      En este momento estoy revisando personalmente la reserva y los datos enviados. En los próximos dias recibirás un correo de confirmación definitiva a través de la app de reservas cal.com con todos los detalles de la sesión.
-    </p>
-
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
-     Adicionalmente, unos días antes del encuentro me pondré en contacto contigo para pedirte un breve texto sobre tu momento actual y así poder preparar la sesión de forma más personalizada.
-    </p>
-
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
-      Si por cualquier motivo necesitáramos ajustar la fecha o hay algún detalle a revisar, te escribiré directamente.
+      Unos días antes del encuentro me pondré en contacto contigo para pedirte un breve texto sobre tu momento actual y así poder preparar la sesión de forma más personalizada.
     </p>
 
     <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">

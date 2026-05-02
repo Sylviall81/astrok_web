@@ -115,7 +115,7 @@ export default function BookingPage() {
             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       ),
-      text: "Si necesitas cancelar o reprogramar tu cita, por favor hazlo con al menos 24 horas de antelación.",
+      text: "Si necesitas cancelar o reprogramar tu cita, por favor hazlo con al menos 48 horas de antelación.",
     },
   ]
 
@@ -139,6 +139,17 @@ export default function BookingPage() {
             ))}
           </ul>
         </div>
+
+        <p className="text-sm text-secondary/70 text-center mb-4">
+          Si el calendario no se muestra correctamente,{" "}
+          <button
+            onClick={() => window.location.reload()}
+            className="underline underline-offset-2 hover:text-primary transition-colors"
+          >
+            recarga la página
+          </button>
+          .
+        </p>
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div id="cal-embed" style={{ width: "100%", height: "800px", overflow: "scroll" }} />
