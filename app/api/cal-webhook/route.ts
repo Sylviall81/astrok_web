@@ -1,6 +1,19 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 
+interface CalAttendee { email?: string; name?: string }
+interface CalBooking {
+  attendees?: CalAttendee[]
+  title?: string
+  startTime?: string
+  eventType?: { title?: string }
+}
+interface CalWebhookPayload extends CalBooking {
+  triggerEvent?: string
+  type?: string
+  payload?: CalBooking
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY)
 const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
 const REPLY_TO = "hola@astrokaleido.com"
@@ -8,6 +21,7 @@ const SYLVIA_EMAIL = "hola@astrokaleido.com"
 const INSTAGRAM_URL = "https://www.instagram.com/astrokaleido/"
 
 export async function POST(req: NextRequest) {
+
   const secret = process.env.CAL_WEBHOOK_SECRET
   if (secret) {
     const signature = req.headers.get("x-cal-signature-256")
@@ -20,16 +34,16 @@ export async function POST(req: NextRequest) {
     // if (signature !== expected) return NextResponse.json({ error: "Invalid signature" }, { status: 401 })
   }
 
-  let payload: any
+  let payload: CalWebhookPayload
   try {
-    payload = await req.json()
+    payload = await req.json() as CalWebhookPayload
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
   // Cal.com envía { triggerEvent, payload: { ... } }
   const triggerEvent: string = payload.triggerEvent ?? payload.type ?? ""
-  const booking = payload.payload ?? payload
+  const booking: CalBooking = payload.payload ?? payload
 
   // Solo procesamos reservas confirmadas/creadas
   if (!["BOOKING_CREATED", "BOOKING_CONFIRMED", "BOOKING_PAID"].includes(triggerEvent)) {
@@ -59,9 +73,10 @@ export async function POST(req: NextRequest) {
       from: FROM,
       replyTo: REPLY_TO,
       to: customerEmail,
-      subject: "Tu sesión está confirmada — Kaleidoscope Astrología",
+      subject: "Hemos recibido tu reserva — Kaleidoscope Astrología",
       html: buildConfirmacionEmail(customerName, eventTitle, formattedDate),
     })
+
     if (error) {
       console.error("[cal-webhook] Error enviando email al cliente:", error)
     }
@@ -96,25 +111,48 @@ function buildConfirmacionEmail(name: string, eventTitle: string, fecha: string 
 
     <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4;">Hola ${name},</h1>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Tu sesión de <strong>${eventTitle}</strong> está confirmada.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      Hemos recibido correctamente tu pago para la sesión de <strong>${eventTitle}</strong> ✨
+    </p>
 
-    ${fecha ? `<p style="font-size:16px; line-height:1.75; margin:0 0 20px;"><strong>Fecha y hora:</strong> ${fecha}</p>` : ""}
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      <strong>Reserva recibida (pendiente de validación final)</strong>
+    </p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Recibirás los detalles de acceso a la videollamada en el correo de confirmación de cal.com. Si prefieres sesión presencial en Barcelona, escríbeme para coordinarlo.</p>
+    ${fecha ? `<p style="font-size:16px; line-height:1.75; margin:0 0 20px;"><strong>Fecha solicitada:</strong> ${fecha}</p>` : ""}
 
-    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      En este momento estoy revisando personalmente la reserva y los datos enviados. En los próximos dias recibirás un correo de confirmación definitiva a través de la app de reservas cal.com con todos los detalles de la sesión.
+    </p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Si tienes cualquier pregunta antes de la sesión, puedes responder directamente a este email.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+     Adicionalmente, unos días antes del encuentro me pondré en contacto contigo para pedirte un breve texto sobre tu momento actual y así poder preparar la sesión de forma más personalizada.
+    </p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir mi trabajo aquí:<br>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      Si por cualquier motivo necesitáramos ajustar la fecha o hay algún detalle a revisar, te escribiré directamente.
+    </p>
+
+    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">
+      Mirar hacia dentro a través del lenguaje de las estrellas.
+    </p>
+
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">
+      Si tienes cualquier duda, puedes escribirme a <a href="mailto:hola@astrokaleido.com" style="color:#2c2c2c;">hola@astrokaleido.com</a> o contactarme por WhatsApp en <a href="https://wa.me/34628840747" style="color:#2c2c2c;">+34 628 84 07 47</a>.
+    </p>
+
+    <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">
+      También puedes seguir mi trabajo aquí:<br>
       <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@astrokaleido</a>
     </p>
 
-    <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
-      <strong>Sylvia Llorente</strong><br>
+    <p style="font-size:16px; line-height:1.75; margin:0;">
+      Un abrazo,<br>
+      <strong>Phd. Sylvia Llorente</strong><br>
       <span style="color:#9b8c7a;">Kaleidoscope Astrología</span>
     </p>
   </div>
 </body>
-</html>`
-}
+</html>`;
+} 
+
