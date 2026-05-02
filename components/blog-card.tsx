@@ -24,7 +24,12 @@ export default function BlogCard({
 }: BlogCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      
       <div className="relative h-48">
+        <Link
+          href={`/blog/${slug}`}
+          className="absolute inset-0 z-10"
+        />
         <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover" />
       </div>
       <div className="p-6">
@@ -50,7 +55,7 @@ export default function BlogCard({
             Leer más →
           </Link>
 
-          {showShareButtons && <ShareButtons url={`https://kaleidoscope.com/blog/${slug}`} title={title} />}
+          {showShareButtons && <ShareButtons url={`https://astrokaleido.com/blog/${slug}`} title={title} />}
         </div>
       </div>
     </div>
