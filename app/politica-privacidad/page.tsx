@@ -107,6 +107,22 @@ export default function PoliticaPrivacidadPage() {
               <a href="mailto:hola@astrokaleido.com">hola@astrokaleido.com</a> con el asunto
               «Baja newsletter».
             </p>
+
+            <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">
+              8. Exención de responsabilidad
+            </h2>
+            <p>
+              Los contenidos de este sitio web tienen carácter meramente divulgativo e informativo.
+              La información sobre astrología psicológica y bienestar emocional no sustituye en
+              ningún caso la consulta, el diagnóstico ni el tratamiento por parte de un profesional
+              de la salud mental cualificado. No uses este contenido para autodiagnosticarte ni para
+              diagnosticar a otras personas. Si tienes dudas sobre tu salud mental o emocional,
+              consulta siempre con un profesional.
+            </p>
+            <p>
+              Para más información, consulta el{" "}
+              <a href="/aviso-legal">Aviso Legal completo</a>.
+            </p>
           </div>
         </div>
       </div>

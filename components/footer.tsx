@@ -109,7 +109,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-12 pt-8 text-center">
+        <div className="border-t border-gray-200 mt-12 pt-8 space-y-3 text-center">
+          <p className="text-xs text-body/60 max-w-2xl mx-auto">
+            La información en este sitio web es de carácter divulgativo y no sustituye el consejo profesional de un especialista en salud mental.{" "}
+            <Link href="/aviso-legal" className="underline hover:text-primary transition-colors">
+              Ver aviso legal completo
+            </Link>
+            .
+          </p>
           <p className="text-sm text-body">
             &copy; {new Date().getFullYear()} Kaleidoastro. Todos los derechos reservados.
           </p>

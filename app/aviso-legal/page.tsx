@@ -53,6 +53,14 @@ export default function AvisoLegalPage() {
               la falta de disponibilidad del mismo, ni de los contenidos de sitios web de terceros
               accesibles mediante enlaces.
             </p>
+            <p>
+              Los contenidos publicados en este sitio web tienen carácter meramente divulgativo e
+              informativo. La información sobre astrología psicológica y bienestar emocional no
+              sustituye en ningún caso la consulta, el diagnóstico ni el tratamiento por parte de
+              un profesional de la salud mental cualificado. No uses este contenido para
+              autodiagnosticarte ni para diagnosticar a otras personas. Si tienes dudas sobre tu
+              salud mental o emocional, consulta siempre con un profesional.
+            </p>
 
             <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">5. Ley aplicable y jurisdicción</h2>
             <p>
