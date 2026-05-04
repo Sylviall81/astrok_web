@@ -20,48 +20,62 @@ export default function AboutPage() {
               <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742253022/IMG_9559_vsqupe.jpg" alt="Foto de perfil" fill className="object-cover" />
             </div>
 
-            <div className="prose prose-lg max-w-none">
-              <p>
-                Soy Sylvia, astróloga psicológica con +10 años acompañando procesos de autoconocimiento.
-                Combino astrología humanista evolutiva y herramientas corporales para que descubras tu mapa interior y navegues tus tránsitos con claridad y confianza.
-              </p>
+            
+             <div className="prose prose-lg max-w-none">
+  <p>
+    Soy Sylvia, astróloga psicológica con más de 10 años acompañando procesos de autoconocimiento. 
+    Combino astrología humanista y evolutiva con herramientas de integración cuerpo-emoción-simbolismo 
+    para que descubras tu mapa interior y navegues tus tránsitos con claridad y confianza.
+  </p>
 
-              <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Trayectoria</h2>
-              <p>
-                Mi camino en la astrología comenzó hace más de 10 años, cuando descubrí cómo esta antigua disciplina
-                podía ofrecer una comprensión profunda de la psique humana. Desde entonces, he dedicado mi vida a
-                estudiar y practicar la astrología psicológica, formándome con reconocidos profesionales de esta disciplina.
-              </p>
+  <p>
+    Pero más que la formación, lo que me define es cómo entiendo este trabajo: no soy quien tiene 
+    las respuestas. Soy quien te acompaña a encontrar las tuyas.
+  </p>
 
-              <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Enfoque</h2>
-              <ul>
-                <li>Astrología como espejo de tu psique (no predictiva ni determinista)</li>
-                <li>Integración cuerpo-emoción-simbolismo</li>
-                <li>Perspectiva de género y cuidado informado del trauma </li>
-                <li>Espacio seguro para tus luces y sombras</li>
-                <li>Herramientas prácticas para tu día a día</li>
-                
-              </ul>
-              <p>
-                En mis sesiones, utilizo la carta natal como un mapa de tu psique, revelando tus dones innatos, desafíos
-                evolutivos y propósito de vida. Mi objetivo es empoderarte con autoconocimiento y herramientas prácticas
-                para navegar tu camino con mayor conciencia y autenticidad.
-              </p>
+  <p>
+    Lo que traigo a cada sesión es presencia, escucha y una mirada sin juicio. El respeto profundo 
+    por cada persona que se abre, que comparte algo íntimo, que confía. La convicción de que nadie 
+    sabe más que tú lo que necesitas — yo solo puedo ofrecerte mis propios aprendizajes de camino, 
+    con la esperanza de que te ayuden a encontrar tu propio norte.
+  </p>
 
-              <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
-           
-              <ul>
-                <li>Introductorio somatic experience (Bcna)</li> 
-                <li>Astro-Terapéutica (Pablo Flores Laymuns)</li>
-                <li>Geocosmos Barcelona (Lluís Gisbert) </li>
-                <li>Cosmograma (Aleix Mercadé)</li>
-                <li>Barro y Arte Ritual (Anais Pineda Ruegg - Slow Art Bcn)</li>
-                <li>Curso de Técnica Gestalt (La silla vacía)</li>
-                <li>PhD Ciencias Políticas (USC Santiago)</li>
-              </ul>
-              <p>
-                ¿List@ para explorar tu mapa astrológico? 
-              </p>
+  <p>
+    La astrología, para mí, no es sobre predecir ni etiquetar. Utilizo la carta natal como un mapa 
+    de tu psique — un espejo que revela tus dones innatos, tus desafíos evolutivos y tu propósito 
+    de vida. Un lenguaje simbólico que puede darte claridad, validar lo que ya sentías y darte valor 
+    para emprender tus decisiones con más conciencia y autenticidad.
+  </p>
+
+  <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Mi Enfoque</h2>
+  <ul>
+    <li>Astrología como espejo de tu psique, no predictiva ni determinista</li>
+    <li>Integración cuerpo, emoción y simbolismo</li>
+    <li>Perspectiva de género y mirada inclusiva</li>
+    <li>Atención informada al trauma</li>
+    <li>Espacio seguro para tus luces y tus sombras</li>
+    <li>Herramientas prácticas para tu día a día</li>
+  </ul>
+
+  <p>
+    Lo más importante no está en ningún diploma: está en saber que nadie es más que nadie, y que 
+    acompañar bien significa hacer red, darse apoyo y mirada — y confiar en que eso puede sanar.
+  </p>
+
+  <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
+  <ul>
+    <li>Astrología Psicológica · Geocosmos Barcelona (Lluís Gisbert)</li>
+    <li>Cosmograma · Aleix Mercadé</li>
+    <li>Astro-Terapéutica · Pablo Flores Laymuns</li>
+    <li>Técnica Gestalt · La Silla Vacía</li>
+    <li>Barro y Arte Ritual · Slow Art BCN (Anaïs Pineda Ruegg)</li>
+    <li>Somatic Experience · formación introductoria en curso</li>
+  </ul>
+
+  <p>
+    ¿List@ para explorar tu mapa astrológico?
+  </p>
+</div>
 
               <div className="mt-10 text-center">
                 <Link href="/servicios" className="btn-primary inline-block">

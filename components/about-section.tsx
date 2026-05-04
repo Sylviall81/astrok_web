@@ -14,17 +14,17 @@ export default function AboutSection() {
           <div>
             <h2 className="section-title">Sobre Mí</h2>
             
-            <h3 className="section-subtitle"> Soy Sylvia Ll., astróloga psicológica.</h3>
+            <h3 className="section-subtitle"> Soy Sylvia, astróloga, investigadora, migrante y neurodivergente.</h3>
+
+             <p className="text-body mb-8">
+            Durante más de 10 años, he acompañado a cientos de personas en su camino de autodescubrimiento.
+            </p>
+            <p className="text-body mb-6">
+              Traduzco el lenguaje de las estrellas para que leas tu mapa interior con claridad — no para predecir tu vida, sino para que la vivas con conciencia, autenticidad y aceptación.
+              No tengo las respuestas. Te acompaño a encontrar las tuyas.
+            </p>
             
-            <p className="text-body mb-6">
-            Traduzco el lenguaje de las estrellas para que leas tu mapa interior con claridad.
-            </p>
-            <p className="text-body mb-6">
-               No doy respuestas cerradas. Te entrego herramientas para navegar tus tránsitos, patrones y dones con confianza.
-            </p>
-            <p className="text-body mb-8">
-            Durante más de 10 años de experiencia, he orientado a cientos de personas en su camino de autodescubrimiento.
-            </p>
+           
             <p className="text-body mb-8">
               ¿Quieres saber más?
             </p>
