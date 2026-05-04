@@ -71,6 +71,7 @@ export type WCVariation = {
   sale_price: string
   attributes: { id: number; name: string; option: string }[]
   stock_status: string
+  image?: WCImage
 }
 
 // ─── Tipos pedidos ────────────────────────────────────────────────────────────

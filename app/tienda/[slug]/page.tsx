@@ -19,6 +19,7 @@ export default function ProductDetailPage() {
   const slug = params.slug as string
   const { products, loading } = useProducts()
   const [product, setProduct] = useState<WCProduct | null>(null)
+  const [variations, setVariations] = useState<WCVariation[]>([])
   const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
@@ -37,6 +38,7 @@ export default function ProductDetailPage() {
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
           .then(data => {
+            setVariations(data)
             setSelectedVariation(data[0] ?? null)
           })
           .catch(err => console.error("Error cargando variaciones:", err))
@@ -71,10 +73,21 @@ const cleanHtml = useMemo(() => {
 
 
 
-  const handleAddToCart = () => {
-  if (!product) return
+  const handleVariationChange = (variationId: string) => {
+    const match = variations.find(v => v.id.toString() === variationId)
+    if (match) setSelectedVariation(match)
+  }
 
-    const productToAdd =  product
+  const handleAddToCart = () => {
+    if (!product) return
+
+    const productToAdd = selectedVariation
+      ? {
+          ...product,
+          price: selectedVariation.price,
+          name: `${product.name} — ${selectedVariation.attributes.map(a => a.option).join(", ")}`,
+        }
+      : product
 
     addToCart(productToAdd)
     showNotification("success", "Añadido al carrito", `${productToAdd.name} se ha añadido a tu carrito`)
@@ -96,7 +109,7 @@ const cleanHtml = useMemo(() => {
     )
   }
 
-  const imagen = getProductImage(product)
+  const imagen = selectedVariation?.image?.src || getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
   
 
@@ -150,6 +163,25 @@ const cleanHtml = useMemo(() => {
                     {tag.name}
                   </Link>
                 ))}
+              </div>
+            )}
+
+            {product.type === "variable" && variations.length > 0 && (
+              <div className="mb-6">
+                <label className="block text-sm font-medium mb-2">
+                  {variations[0].attributes[0]?.name ?? "Tipo"}
+                </label>
+                <select
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  value={selectedVariation?.id.toString() ?? ""}
+                  onChange={e => handleVariationChange(e.target.value)}
+                >
+                  {variations.map(v => (
+                    <option key={v.id} value={v.id.toString()}>
+                      {v.attributes.map(a => a.option).join(", ")} — {formatPrice(v.price)}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
 
