@@ -118,7 +118,7 @@ export function Footer() {
             .
           </p>
           <p className="text-sm text-body">
-            &copy; {new Date().getFullYear()} Kaleidoastro. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Astrokaleido. Todos los derechos reservados.
           </p>
         </div>
       </div>

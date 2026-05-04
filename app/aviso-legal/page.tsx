@@ -18,17 +18,17 @@ export default function AvisoLegalPage() {
               Datos identificativos
             </h2>
             <ul>
-              <li><strong>Titular:</strong> Sylvia Llorente Suárez (Kaleidoastro)</li>
+              <li><strong>Titular:</strong> Sylvia Llorente Suárez (Astrokaleido)</li>
               <li><strong>NIF:</strong> 45960967K</li>
               <li><strong>Domicilio:</strong> Calle Segre, 76-84. 08030 Barcelona</li>
               <li><strong>Teléfono:</strong> 628 840 747</li>
               <li><strong>Email:</strong> hola@astrokaleido.com </li>
-              <li><strong>Web:</strong> kaleidoastro.com</li>
+              <li><strong>Web:</strong> astrokaleido.com</li>
             </ul>
 
             <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">1. Objeto</h2>
             <p>
-              Kaleidoastro pone a disposición de los usuarios este sitio web con el fin de facilitar
+              Astrokaleido pone a disposición de los usuarios este sitio web con el fin de facilitar
               información sobre sus servicios de astrología psicológica. El acceso y uso del sitio
               implica la aceptación del presente Aviso Legal.
             </p>
@@ -49,7 +49,7 @@ export default function AvisoLegalPage() {
 
             <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">4. Exclusión de responsabilidad</h2>
             <p>
-              Kaleidoastro no se responsabiliza de los daños derivados del uso del sitio web, de
+              Astrokaleido no se responsabiliza de los daños derivados del uso del sitio web, de
               la falta de disponibilidad del mismo, ni de los contenidos de sitios web de terceros
               accesibles mediante enlaces.
             </p>

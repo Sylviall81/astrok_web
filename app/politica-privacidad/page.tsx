@@ -18,11 +18,11 @@ export default function PoliticaPrivacidadPage() {
               1. Responsable del tratamiento
             </h2>
             <ul>
-              <li><strong>Titular:</strong> Sylvia Llorente Suárez (Kaleidoastro)</li>
+              <li><strong>Titular:</strong> Sylvia Llorente Suárez (Astrokaleido)</li>
               <li><strong>NIF:</strong> 45960967K</li>
               <li><strong>Domicilio:</strong> Calle Segre, 76-84. 08030 Barcelona</li>
               <li><strong>Email:</strong> hola@astrokaleido.com</li>
-              <li><strong>Web:</strong> kaleidoastro.com</li>
+              <li><strong>Web:</strong> astrokaleido.com</li>
             </ul>
 
             <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">
@@ -101,7 +101,7 @@ export default function PoliticaPrivacidadPage() {
             </h2>
             <p>
               Si te suscribes al newsletter, recibirás periódicamente contenido sobre astrología
-              psicológica, herramientas de autodescubrimiento y novedades de Kaleidoastro. El envío
+              psicológica, herramientas de autodescubrimiento y novedades de Astrokaleido. El envío
               se realiza únicamente con tu consentimiento expreso y puedes darte de baja en cualquier
               momento haciendo clic en el enlace de baja de cualquier email o escribiendo a{" "}
               <a href="mailto:hola@astrokaleido.com">hola@astrokaleido.com</a> con el asunto

@@ -36,7 +36,7 @@ const href = esInfoproducto
       <Link href={href}>
         <div className="relative h-48 bg-muted flex-shrink-0">
           {imagen !== "/placeholder.svg" ? (
-            <Image src={imagen} alt={product.name} fill className="object-cover" />
+            <Image src={imagen} alt={product.name} fill className="object-cover object-top" />
           ) : (
             <div className="flex h-full items-center justify-center bg-secondary/10">
               <span className="text-secondary">Sin imagen</span>

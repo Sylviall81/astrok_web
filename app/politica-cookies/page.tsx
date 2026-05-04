@@ -11,7 +11,7 @@ export default function PoliticaCookiesPage() {
           <div className="prose prose-lg max-w-none">
             <p>
               En cumplimiento de la Ley 34/2002 (LSSICE) y el RGPD, te informamos sobre el uso de
-              cookies en kaleidoastro.com.
+              cookies en astrokaleido.com.
             </p>
 
             <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">
