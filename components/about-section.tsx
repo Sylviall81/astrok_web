@@ -7,7 +7,7 @@ export default function AboutSection() {
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative h-[400px] md:h-[500px] rounded-lg overflow-hidden">
-            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742252908/IMG_9530_inqgle.jpg" alt="Foto de perfil" fill className="object-cover" />
+            <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1777989356/homekaleidoretoque_b079ef.jpg" alt="Foto de perfil" fill className="object-cover" />
 
           </div>
 

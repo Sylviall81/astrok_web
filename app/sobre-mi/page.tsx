@@ -64,8 +64,9 @@ export default function AboutPage() {
 
   <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
   <ul>
+    
+    <li>Astrología Psicológica · Cosmograma (Aleix Mercadé)</li>
     <li>Astrología Psicológica · Geocosmos Barcelona (Lluís Gisbert)</li>
-    <li>Cosmograma · Aleix Mercadé</li>
     <li>Astro-Terapéutica · Pablo Flores Laymuns</li>
     <li>Técnica Gestalt · La Silla Vacía</li>
     <li>Barro y Arte Ritual · Slow Art BCN (Anaïs Pineda Ruegg)</li>
