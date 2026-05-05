@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
           // Guardamos el ID de WooCommerce en los metadatos del producto
           metadata: {
             wc_product_id: String(item.id),
+            ...(item.variationId ? { wc_variation_id: String(item.variationId) } : {}),
             downloadable: String(item.downloadable ?? false),
           },
           ...(item.image ? { images: [item.image] } : {}),

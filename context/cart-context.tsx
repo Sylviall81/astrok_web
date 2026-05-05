@@ -7,11 +7,12 @@ export type LocalCartItem = {
   id: string
   product: WCProduct
   quantity: number
+  variationId?: number
 }
 
 interface CartContextType {
   cartItems: LocalCartItem[]
-  addToCart: (product: WCProduct) => void
+  addToCart: (product: WCProduct, variationId?: number) => void
   updateQuantity: (id: string, quantity: number) => void
   removeItem: (id: string) => void
   clearCart: () => void
@@ -23,7 +24,7 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType>({
   cartItems: [],
-  addToCart: () => {},
+  addToCart: () => { },
   updateQuantity: () => {},
   removeItem: () => {},
   clearCart: () => {},
@@ -55,15 +56,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("cart", JSON.stringify(cartItems))
   }, [cartItems])
 
-  const addToCart = (product: WCProduct) => {
+  const addToCart = (product: WCProduct, variationId?: number) => {
     setCartItems((prev) => {
-      const existingIndex = prev.findIndex((item) => item.product.id === product.id)
+      const existingIndex = prev.findIndex(
+        (item) => item.product.id === product.id && item.variationId === variationId
+      )
       if (existingIndex >= 0) {
         return prev.map((item, i) =>
           i === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
         )
       }
-      return [...prev, { id: generateId(), product, quantity: 1 }]
+      return [...prev, { id: generateId(), product, quantity: 1, variationId }]
     })
     setIsCartOpen(true)
   }

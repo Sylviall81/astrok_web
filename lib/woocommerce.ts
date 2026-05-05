@@ -101,7 +101,7 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
   })
 
   if (!res.ok) {
-    throw new Error(`WooCommerce API error: ${res.status} ${res.statusText} — ${url.toString()}`)
+    throw new Error(`WooCommerce API error: ${res.status} ${res.statusText} — ${endpoint}`)
   }
 
   return res.json() as Promise<T>
@@ -134,7 +134,7 @@ export async function createWCOrder(params: {
   email: string
   name: string
   stripeSessionId: string
-  lineItems: { productId: number; quantity: number }[]
+  lineItems: { productId: number; variationId?: number; quantity: number }[]
 }): Promise<{ id: number; status: string }> {
   const [firstName, ...rest] = params.name.split(" ")
   return wcPost("/orders", {
@@ -147,16 +147,36 @@ export async function createWCOrder(params: {
       last_name: rest.join(" "),
       email: params.email,
     },
-    line_items: params.lineItems.map(({ productId, quantity }) => ({
+    line_items: params.lineItems.map(({ productId, variationId, quantity }) => ({
       product_id: productId,
+      ...(variationId ? { variation_id: variationId } : {}),
       quantity,
     })),
     meta_data: [{ key: "_stripe_session_id", value: params.stripeSessionId }],
   })
 }
 
-export async function getOrderDownloads(orderId: number): Promise<WCOrderDownload[]> {
-  return wcFetch<WCOrderDownload[]>(`/orders/${orderId}/downloads`)
+export async function getProductDownloads(productId: number): Promise<WCOrderDownload[]> {
+  const product = await wcFetch<WCProduct>(`/products/${productId}`)
+  return (product.downloads ?? []).map((d) => ({
+    download_id: d.id,
+    download_url: d.file,
+    product_id: productId,
+    download_name: d.name,
+  }))
+}
+
+export async function getVariationDownloads(productId: number, variationId: number): Promise<WCOrderDownload[]> {
+  const variation = await wcFetch<{ downloads: { id: string; name: string; file: string }[] }>(
+    `/products/${productId}/variations/${variationId}`
+  )
+  if (!variation.downloads?.length) return getProductDownloads(productId)
+  return variation.downloads.map((d) => ({
+    download_id: d.id,
+    download_url: d.file,
+    product_id: productId,
+    download_name: d.name,
+  }))
 }
 
 export async function findOrderByStripeSession(sessionId: string): Promise<{ id: number } | null> {

@@ -89,7 +89,7 @@ const cleanHtml = useMemo(() => {
         }
       : product
 
-    addToCart(productToAdd)
+    addToCart(productToAdd, selectedVariation?.id)
     showNotification("success", "Añadido al carrito", `${productToAdd.name} se ha añadido a tu carrito`)
   }
 

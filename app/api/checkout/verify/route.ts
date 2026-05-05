@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { createWCOrder, findOrderByStripeSession, getOrderDownloads } from "@/lib/woocommerce"
+import { createWCOrder, findOrderByStripeSession, getProductDownloads, getVariationDownloads } from "@/lib/woocommerce"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-06-20",
@@ -42,45 +42,39 @@ export async function GET(request: Request) {
 
     if (hasDownloadables && customerEmail) {
       try {
-        let wcOrderId: number
-
         const existingOrder = await findOrderByStripeSession(sessionId)
-        if (existingOrder) {
-          wcOrderId = existingOrder.id
-        } else {
+        if (!existingOrder) {
           const wcLineItems = lineItems.flatMap((item) => {
             const p = item.price?.product as Stripe.Product
             const id = p?.metadata?.wc_product_id
-            return id ? [{ productId: Number(id), quantity: item.quantity ?? 1 }] : []
+            const variationId = p?.metadata?.wc_variation_id
+            return id
+              ? [{ productId: Number(id), ...(variationId ? { variationId: Number(variationId) } : {}), quantity: item.quantity ?? 1 }]
+              : []
           })
-          const order = await createWCOrder({
+          await createWCOrder({
             email: customerEmail,
             name: customerName,
             stripeSessionId: sessionId,
             lineItems: wcLineItems,
           })
-          wcOrderId = order.id
         }
 
-        const orderDownloads = await getOrderDownloads(wcOrderId)
-
-        const nameByWcId = new Map<string, string>()
         for (const item of lineItems) {
           const p = item.price?.product as Stripe.Product
-          if (p?.metadata?.wc_product_id) nameByWcId.set(p.metadata.wc_product_id, p.name)
-        }
+          const wcProductId = p?.metadata?.wc_product_id
+          const wcVariationId = p?.metadata?.wc_variation_id
+          if (!wcProductId) continue
 
-        for (const dl of orderDownloads) {
-          const productName = nameByWcId.get(String(dl.product_id)) ?? `Producto ${dl.product_id}`
-          const existing = downloadableProducts.find((p) => p.name === productName)
-          if (existing) {
-            existing.downloads.push({ name: dl.download_name, url: dl.download_url })
-          } else {
-            downloadableProducts.push({
-              name: productName,
-              downloads: [{ name: dl.download_name, url: dl.download_url }],
-            })
-          }
+          const downloads = wcVariationId
+            ? await getVariationDownloads(Number(wcProductId), Number(wcVariationId))
+            : await getProductDownloads(Number(wcProductId))
+          if (downloads.length === 0) continue
+
+          downloadableProducts.push({
+            name: p.name,
+            downloads: downloads.map((d) => ({ name: d.download_name, url: d.download_url })),
+          })
         }
       } catch (wcErr) {
         wcError = wcErr instanceof Error ? wcErr.message : "Error desconocido en WooCommerce"

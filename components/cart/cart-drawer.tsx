@@ -31,6 +31,7 @@ export function CartDrawer() {
         body: JSON.stringify({
           items: cartItems.map((item) => ({
             id: item.product.id,
+            variationId: item.variationId ?? null,
             name: item.product.name,
             price: item.product.price,
             quantity: item.quantity,

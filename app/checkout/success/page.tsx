@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { CheckCircle, Download, Play, Loader2 } from "lucide-react"
+import { CheckCircle, Download, Play, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import type { DownloadProduct } from "@/app/api/checkout/verify/route"
@@ -24,7 +24,9 @@ function CheckoutSuccessPage() {
   const [isVerifying, setIsVerifying] = useState(true)
   const [customerEmail, setCustomerEmail] = useState<string | null>(null)
   const [downloadableProducts, setDownloadableProducts] = useState<DownloadProduct[]>([])
-  const [error, setError] = useState<string | null>(null)
+  const [hasDownloadables, setHasDownloadables] = useState(false)
+  const [wcError, setWcError] = useState<string | null>(null)
+  const [fatalError, setFatalError] = useState<string | null>(null)
 
   useEffect(() => {
     clearCart()
@@ -38,15 +40,17 @@ function CheckoutSuccessPage() {
       .then(res => res.json())
       .then(data => {
         if (data.error) {
-          setError(data.error)
+          setFatalError(data.error)
         } else {
           setCustomerEmail(data.customerEmail)
           setDownloadableProducts(data.downloadableProducts || [])
+          setHasDownloadables(data.hasDownloadables ?? false)
+          setWcError(data.wcError ?? null)
         }
       })
       .catch(err => {
         console.error("Error verificando pago:", err)
-        setError("No se pudo verificar el pago")
+        setFatalError("No se pudo verificar el pago")
       })
       .finally(() => setIsVerifying(false))
   }, [sessionId])
@@ -62,7 +66,7 @@ function CheckoutSuccessPage() {
             <Loader2 className="h-4 w-4 animate-spin" />
             <span>Preparando tu compra...</span>
           </div>
-        ) : error ? (
+        ) : fatalError ? (
           <p className="text-muted-foreground mb-8">
             Gracias por tu compra. Recibirás un email de confirmación en breve.
           </p>
@@ -105,7 +109,25 @@ function CheckoutSuccessPage() {
               </div>
             )}
 
-            {downloadableProducts.length === 0 && (
+            {/* Error al generar descarga */}
+            {wcError && downloadableProducts.length === 0 && (
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-8 text-left flex gap-3">
+                <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-destructive mb-1">
+                    No se pudo generar el enlace de descarga automáticamente.
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Tu pago se ha procesado correctamente. Escríbenos a{" "}
+                    <a href="mailto:hola@astrokaleido.com" className="underline">hola@astrokaleido.com</a>{" "}
+                    y te enviaremos el archivo en breve.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Servicio (sin descargables) */}
+            {!hasDownloadables && (
               <p className="text-muted-foreground mb-8">
                 Gracias por tu compra. Nos pondremos en contacto contigo pronto para coordinar tu sesión.
               </p>
