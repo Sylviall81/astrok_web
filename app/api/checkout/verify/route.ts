@@ -38,47 +38,53 @@ export async function GET(request: Request) {
     })
 
     const downloadableProducts: DownloadProduct[] = []
+    let wcError: string | null = null
 
     if (hasDownloadables && customerEmail) {
-      let wcOrderId: number
+      try {
+        let wcOrderId: number
 
-      const existingOrder = await findOrderByStripeSession(sessionId)
-      if (existingOrder) {
-        wcOrderId = existingOrder.id
-      } else {
-        const wcLineItems = lineItems.flatMap((item) => {
-          const p = item.price?.product as Stripe.Product
-          const id = p?.metadata?.wc_product_id
-          return id ? [{ productId: Number(id), quantity: item.quantity ?? 1 }] : []
-        })
-        const order = await createWCOrder({
-          email: customerEmail,
-          name: customerName,
-          stripeSessionId: sessionId,
-          lineItems: wcLineItems,
-        })
-        wcOrderId = order.id
-      }
-
-      const orderDownloads = await getOrderDownloads(wcOrderId)
-
-      const nameByWcId = new Map<string, string>()
-      for (const item of lineItems) {
-        const p = item.price?.product as Stripe.Product
-        if (p?.metadata?.wc_product_id) nameByWcId.set(p.metadata.wc_product_id, p.name)
-      }
-
-      for (const dl of orderDownloads) {
-        const productName = nameByWcId.get(String(dl.product_id)) ?? `Producto ${dl.product_id}`
-        const existing = downloadableProducts.find((p) => p.name === productName)
-        if (existing) {
-          existing.downloads.push({ name: dl.download_name, url: dl.download_url })
+        const existingOrder = await findOrderByStripeSession(sessionId)
+        if (existingOrder) {
+          wcOrderId = existingOrder.id
         } else {
-          downloadableProducts.push({
-            name: productName,
-            downloads: [{ name: dl.download_name, url: dl.download_url }],
+          const wcLineItems = lineItems.flatMap((item) => {
+            const p = item.price?.product as Stripe.Product
+            const id = p?.metadata?.wc_product_id
+            return id ? [{ productId: Number(id), quantity: item.quantity ?? 1 }] : []
           })
+          const order = await createWCOrder({
+            email: customerEmail,
+            name: customerName,
+            stripeSessionId: sessionId,
+            lineItems: wcLineItems,
+          })
+          wcOrderId = order.id
         }
+
+        const orderDownloads = await getOrderDownloads(wcOrderId)
+
+        const nameByWcId = new Map<string, string>()
+        for (const item of lineItems) {
+          const p = item.price?.product as Stripe.Product
+          if (p?.metadata?.wc_product_id) nameByWcId.set(p.metadata.wc_product_id, p.name)
+        }
+
+        for (const dl of orderDownloads) {
+          const productName = nameByWcId.get(String(dl.product_id)) ?? `Producto ${dl.product_id}`
+          const existing = downloadableProducts.find((p) => p.name === productName)
+          if (existing) {
+            existing.downloads.push({ name: dl.download_name, url: dl.download_url })
+          } else {
+            downloadableProducts.push({
+              name: productName,
+              downloads: [{ name: dl.download_name, url: dl.download_url }],
+            })
+          }
+        }
+      } catch (wcErr) {
+        wcError = wcErr instanceof Error ? wcErr.message : "Error desconocido en WooCommerce"
+        console.error("[verify] Error al crear pedido/obtener descargas WC:", wcError)
       }
     }
 
@@ -86,10 +92,12 @@ export async function GET(request: Request) {
       paid: true,
       customerEmail,
       downloadableProducts,
+      hasDownloadables,
+      wcError,
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error desconocido"
-    console.error("Error verificando pago:", message)
+    console.error("[verify] Error general:", message)
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
