@@ -8,7 +8,6 @@ import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useProducts } from "@/context/products-context"
 import { useNotification } from "@/context/notification-context"
-import { useCart } from "@/context/cart-context"
 import type { WCProduct, WCVariation } from "@/lib/woocommerce"
 import { sanitizeHtml } from "@/lib/sanitize"
 
@@ -23,7 +22,6 @@ export default function ProductDetailPage() {
   const [selectedModalidad, setSelectedModalidad] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
-  const { addToCart } = useCart()
 
   useEffect(() => {
     if (loading) return
@@ -98,28 +96,15 @@ export default function ProductDetailPage() {
     }
   }
 
-  const cleanHtml = useMemo(() => {
+  const cleanShortHtml = useMemo(() => {
     if (typeof window === "undefined") return ""
-    return sanitizeHtml(product?.description || product?.short_description || "")
+    return sanitizeHtml(product?.short_description || "")
   }, [product])
 
-  const handleAddToCart = () => {
-    if (!product) return
-    if (esVariable && !selectedVariation) {
-      showNotification("error", "Selecciona una opción", "Por favor selecciona una modalidad antes de añadir al carrito")
-      return
-    }
-    const productToAdd = selectedVariation
-      ? {
-          ...product,
-          price: selectedVariation.price,
-          name: `${product.name} — ${selectedVariation.attributes.map(a => a.option).join(", ")}`,
-        }
-      : product
-
-    addToCart(productToAdd)
-    showNotification("success", "Añadido al carrito", `${productToAdd.name} se ha añadido a tu carrito`)
-  }
+  const cleanHtml = useMemo(() => {
+    if (typeof window === "undefined") return ""
+    return sanitizeHtml(product?.description || "")
+  }, [product])
 
   if (isLoading || loading) {
     return <div className="container py-16 text-center"><p>Cargando producto...</p></div>
@@ -179,20 +164,6 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {product.tags && product.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {product.tags.map(tag => (
-                  <Link
-                    key={tag.id}
-                    href={`/servicios?tag=${tag.slug}`}
-                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
-                  >
-                    {tag.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-
             {/* Selector de modalidad */}
             {esVariable && modalidadAttr && (
               <div className="mb-6">
@@ -217,6 +188,16 @@ export default function ProductDetailPage() {
               </div>
             )}
 
+            {cleanShortHtml && (
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none mb-6
+                  prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:my-1
+                  prose-strong:text-primary prose-strong:font-semibold
+                  prose-ul:my-2 prose-li:my-0.5 prose-li:text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: cleanShortHtml }}
+              />
+            )}
+
             {/* Acciones */}
             <div className="flex flex-col gap-3 mt-auto">
               <Button
@@ -227,16 +208,30 @@ export default function ProductDetailPage() {
                 Reservar
               </Button>
               <p className="text-xs text-muted-foreground">
-                ¿Prefieres comprar ahora y gestionar tu reserva luego?{" "}
-                <button
-                  onClick={handleAddToCart}
+                ¿Prefieres comprar ahora y elegir fecha después?{" "}
+                <Link
+                  href="/tienda/bono-regalo-sesiones-individuales"
                   className="underline underline-offset-2 hover:text-primary transition-colors"
                 >
-                  Añadir al carrito y pagar
-                </button>
-                {" "}— tienes hasta 3 meses para agendar tu sesión.
+                  Consulta el bono regalo
+                </Link>
+                {" "}— válido 4 meses desde la compra.
               </p>
             </div>
+
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {product.tags.map(tag => (
+                  <Link
+                    key={tag.id}
+                    href={`/servicios?tag=${tag.slug}`}
+                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
+                  >
+                    {tag.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
