@@ -20,6 +20,7 @@ export default function ProductDetailPage() {
   const [variations, setVariations] = useState<WCVariation[]>([])
   const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
   const [selectedModalidad, setSelectedModalidad] = useState<string>("")
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
 
@@ -30,6 +31,7 @@ export default function ProductDetailPage() {
 
     if (found) {
       setProduct(found)
+      setSelectedImage(found.images?.[0]?.src ?? null)
       if (found.type === "variable" && found.variations?.length > 0) {
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
@@ -51,10 +53,6 @@ export default function ProductDetailPage() {
       style: "currency",
       currency: "EUR",
     }).format(parseFloat(price))
-  }
-
-  const getProductImage = (product: WCProduct): string => {
-    return product.images?.[0]?.src || "/placeholder.svg"
   }
 
   const displayPrice = selectedVariation?.price || product?.price || "0"
@@ -122,9 +120,10 @@ export default function ProductDetailPage() {
     )
   }
 
-  const imagen = getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
   const esVariable = product.type === "variable"
+  const allImages = product.images ?? []
+  const displayImage = selectedImage || allImages[0]?.src || "/placeholder.svg"
 
   return (
     <section className="py-16">
@@ -137,13 +136,31 @@ export default function ProductDetailPage() {
         {/* Grid superior: imagen + info esencial */}
         <div className="grid gap-8 md:grid-cols-2 mb-12">
 
-          {/* Imagen */}
-          <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {imagen !== "/placeholder.svg" ? (
-              <Image src={imagen} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
-            ) : (
-              <div className="flex h-full items-center justify-center bg-secondary/10">
-                <span className="text-secondary">Sin imagen</span>
+          {/* Imagen principal + miniaturas */}
+          <div className="flex flex-col gap-3">
+            <div className="relative flex-1 min-h-[400px] rounded-lg overflow-hidden">
+              {displayImage !== "/placeholder.svg" ? (
+                <Image src={displayImage} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-secondary/10">
+                  <span className="text-secondary">Sin imagen</span>
+                </div>
+              )}
+            </div>
+
+            {allImages.length > 1 && (
+              <div className="flex gap-2 flex-wrap">
+                {allImages.map((img, i) => (
+                  <button
+                    key={img.id ?? i}
+                    onClick={() => setSelectedImage(img.src)}
+                    className={`relative h-16 w-16 rounded-md overflow-hidden border-2 transition-colors flex-shrink-0 ${
+                      displayImage === img.src ? "border-primary" : "border-transparent hover:border-primary/50"
+                    }`}
+                  >
+                    <Image src={img.src} alt={img.alt || product.name} fill className="object-cover" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -213,7 +230,7 @@ export default function ProductDetailPage() {
                   href="/tienda/bono-regalo-sesiones-individuales"
                   className="underline underline-offset-2 hover:text-primary transition-colors"
                 >
-                  Consulta el bono regalo
+                  Consulta nuestros bono regalo
                 </Link>
                 {" "}— válido 4 meses desde la compra.
               </p>
