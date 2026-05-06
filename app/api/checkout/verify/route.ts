@@ -32,32 +32,30 @@ export async function GET(request: Request) {
     const customerEmail = session.customer_details?.email
     const customerName = session.customer_details?.name ?? ""
 
-    const hasDownloadables = lineItems.some((item) => {
-      const p = item.price?.product as Stripe.Product
-      return p?.metadata?.downloadable === "true"
-    })
-
     const downloadableProducts: DownloadProduct[] = []
     let wcError: string | null = null
 
-    if (hasDownloadables && customerEmail) {
+    if (customerEmail) {
       try {
-        const existingOrder = await findOrderByStripeSession(sessionId)
-        if (!existingOrder) {
-          const wcLineItems = lineItems.flatMap((item) => {
-            const p = item.price?.product as Stripe.Product
-            const id = p?.metadata?.wc_product_id
-            const variationId = p?.metadata?.wc_variation_id
-            return id
-              ? [{ productId: Number(id), ...(variationId ? { variationId: Number(variationId) } : {}), quantity: item.quantity ?? 1 }]
-              : []
-          })
-          await createWCOrder({
-            email: customerEmail,
-            name: customerName,
-            stripeSessionId: sessionId,
-            lineItems: wcLineItems,
-          })
+        const wcLineItems = lineItems.flatMap((item) => {
+          const p = item.price?.product as Stripe.Product
+          const id = p?.metadata?.wc_product_id
+          const variationId = p?.metadata?.wc_variation_id
+          return id
+            ? [{ productId: Number(id), ...(variationId ? { variationId: Number(variationId) } : {}), quantity: item.quantity ?? 1 }]
+            : []
+        })
+
+        if (wcLineItems.length > 0) {
+          const existingOrder = await findOrderByStripeSession(sessionId)
+          if (!existingOrder) {
+            await createWCOrder({
+              email: customerEmail,
+              name: customerName,
+              stripeSessionId: sessionId,
+              lineItems: wcLineItems,
+            })
+          }
         }
 
         for (const item of lineItems) {
@@ -81,6 +79,8 @@ export async function GET(request: Request) {
         console.error("[verify] Error al crear pedido/obtener descargas WC:", wcError)
       }
     }
+
+    const hasDownloadables = downloadableProducts.length > 0
 
     return NextResponse.json({
       paid: true,

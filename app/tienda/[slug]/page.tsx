@@ -21,6 +21,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<WCProduct | null>(null)
   const [variations, setVariations] = useState<WCVariation[]>([])
   const [selectedVariation, setSelectedVariation] = useState<WCVariation | null>(null)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showNotification } = useNotification()
   const { addToCart } = useCart()
@@ -34,6 +35,7 @@ export default function ProductDetailPage() {
 
     if (found) {
       setProduct(found)
+      setSelectedImage(found.images?.[0]?.src ?? null)
       if (found.type === "variable" && found.variations?.length > 0) {
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
@@ -57,14 +59,13 @@ export default function ProductDetailPage() {
     }).format(parseFloat(price))
   }
 
-  const getProductImage = (product: WCProduct): string => {
-    return product.images?.[0]?.src || "/placeholder.svg"
-  }
+
+const cleanShortHtml = useMemo(() => {
+  return DOMPurify.sanitize(product?.short_description || "")
+}, [product])
 
 const cleanHtml = useMemo(() => {
-  return DOMPurify.sanitize(
-    product?.description || product?.short_description || ""
-  )
+  return DOMPurify.sanitize(product?.description || "")
 }, [product])
 
   const displayPrice = selectedVariation?.price || product?.price || "0"
@@ -75,7 +76,10 @@ const cleanHtml = useMemo(() => {
 
   const handleVariationChange = (variationId: string) => {
     const match = variations.find(v => v.id.toString() === variationId)
-    if (match) setSelectedVariation(match)
+    if (match) {
+      setSelectedVariation(match)
+      if (match.image?.src) setSelectedImage(match.image.src)
+    }
   }
 
   const handleAddToCart = () => {
@@ -109,10 +113,9 @@ const cleanHtml = useMemo(() => {
     )
   }
 
-  const imagen = selectedVariation?.image?.src || getProductImage(product)
   const categoria = product.categories?.[0]?.name || ""
-  
-
+  const allImages = product.images ?? []
+  const displayImage = selectedImage || allImages[0]?.src || "/placeholder.svg"
 
   return (
     <section className="py-16">
@@ -125,13 +128,31 @@ const cleanHtml = useMemo(() => {
         {/* Grid superior: imagen + info esencial */}
         <div className="grid gap-8 md:grid-cols-2 mb-12">
 
-          {/* Imagen */}
-          <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {imagen !== "/placeholder.svg" ? (
-              <Image src={imagen} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
-            ) : (
-              <div className="flex h-full items-center justify-center bg-secondary/10">
-                <span className="text-secondary">Sin imagen</span>
+          {/* Imagen principal + miniaturas */}
+          <div className="flex flex-col gap-3">
+            <div className="relative h-[400px] rounded-lg overflow-hidden">
+              {displayImage !== "/placeholder.svg" ? (
+                <Image src={displayImage} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
+              ) : (
+                <div className="flex h-full items-center justify-center bg-secondary/10">
+                  <span className="text-secondary">Sin imagen</span>
+                </div>
+              )}
+            </div>
+
+            {allImages.length > 1 && (
+              <div className="flex gap-2 flex-wrap">
+                {allImages.map((img, i) => (
+                  <button
+                    key={img.id ?? i}
+                    onClick={() => setSelectedImage(img.src)}
+                    className={`relative h-16 w-16 rounded-md overflow-hidden border-2 transition-colors flex-shrink-0 ${
+                      displayImage === img.src ? "border-primary" : "border-transparent hover:border-primary/50"
+                    }`}
+                  >
+                    <Image src={img.src} alt={img.alt || product.name} fill className="object-cover" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -149,20 +170,6 @@ const cleanHtml = useMemo(() => {
                 <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                   {categoria}
                 </span>
-              </div>
-            )}
-
-            {product.tags && product.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-6">
-                {product.tags.map(tag => (
-                  <Link
-                    key={tag.id}
-                    href={`/tienda?tag=${tag.slug}`}
-                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
-                  >
-                    {tag.name}
-                  </Link>
-                ))}
               </div>
             )}
 
@@ -185,12 +192,36 @@ const cleanHtml = useMemo(() => {
               </div>
             )}
 
+            {cleanShortHtml && (
+              <div
+                className="prose prose-sm dark:prose-invert max-w-none mb-6
+                  prose-p:text-muted-foreground prose-p:leading-relaxed prose-p:my-1
+                  prose-strong:text-primary prose-strong:font-semibold
+                  prose-ul:my-2 prose-li:my-0.5 prose-li:text-muted-foreground"
+                dangerouslySetInnerHTML={{ __html: cleanShortHtml }}
+              />
+            )}
+
             <div className="mt-auto">
               <Button onClick={handleAddToCart} className="btn-primary w-full hover:bg-primary/90 text-base py-5">
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Añadir al carrito
               </Button>
             </div>
+
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {product.tags.map(tag => (
+                  <Link
+                    key={tag.id}
+                    href={`/tienda?tag=${tag.slug}`}
+                    className="inline-block bg-accent/20 text-primary/70 hover:bg-accent/40 transition-colors px-3 py-1 rounded-full text-xs"
+                  >
+                    {tag.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

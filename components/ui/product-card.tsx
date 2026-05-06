@@ -63,13 +63,21 @@ const href = esInfoproducto
       </CardContent>
       <CardFooter className="px-4 pb-4 mt-auto">
         {esInfoproducto ? (
-          <Button
-            onClick={() => onAddToCart(product)}
-            className="w-full btn-primary hover:bg-primary/90"
-          >
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            Añadir al carrito
-          </Button>
+          product.type === "variable" ? (
+            <Link href={href} className="w-full">
+              <Button className="w-full btn-primary hover:bg-primary/90">
+                Elegir opción
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              onClick={() => onAddToCart(product)}
+              className="w-full btn-primary hover:bg-primary/90"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Añadir al carrito
+            </Button>
+          )
         ) : (
           <Link href={`/servicios/${product.slug || product.id}`} className="w-full">
             <Button className="btn-primary w-full hover:bg-primary/90">

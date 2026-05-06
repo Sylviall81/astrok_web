@@ -127,7 +127,7 @@ function CheckoutSuccessPage() {
             )}
 
             {/* Servicio (sin descargables) */}
-            {!hasDownloadables && (
+            {!hasDownloadables && !wcError && (
               <p className="text-muted-foreground mb-8">
                 Gracias por tu compra. Nos pondremos en contacto contigo pronto para coordinar tu sesión.
               </p>
