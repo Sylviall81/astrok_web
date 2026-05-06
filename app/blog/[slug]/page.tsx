@@ -63,11 +63,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           )}
 
-          <h1 className="text-3xl md:text-4xl font-lato font-bold text-primary mb-6">
+          <h1 className="text-3xl md:text-4xl font-lato font-bold text-primary dark:text-foreground mb-6">
             {post.title.rendered}
           </h1>
 
-          <div className="flex items-center text-sm text-gray-500 mb-6">
+          <div className="flex items-center text-sm text-muted-foreground mb-6">
             <div className="flex items-center mr-4">
               <Calendar className="h-4 w-4 mr-1" />
               <span>{formatDate(post.date)}</span>
@@ -112,12 +112,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {/* Tabla de contenidos */}
           
-         <div  className="sticky prose prose-lg max-w-none">
-           <TableOfContents headings={headings} /></div>
+          <TableOfContents headings={headings} />
 
           {/* Contenido del post */}
           <div
-            className="prose prose-lg max-w-none"
+            className="prose prose-lg dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: html}}
           />
 
@@ -127,7 +126,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {post.tagsData.map((tag) => (
                 <span
                   key={tag.id}
-                  className="text-xs text-secondary bg-gray-100 rounded-full px-3 py-1"
+                  className="text-xs text-secondary bg-muted rounded-full px-3 py-1"
                 >
                   #{tag.name}
                 </span>
@@ -135,8 +134,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </div>
           )}
 
-          <div className="border-t border-gray-200 mt-12 pt-8">
-            <h3 className="text-xl font-lato font-semibold text-primary mb-4">
+          <div className="border-t mt-12 pt-8">
+            <h3 className="text-xl font-lato font-semibold text-primary dark:text-foreground mb-4">
               ¿Te ha gustado este artículo o te ha resultado útil?
             </h3>
             <p className="mb-6">
