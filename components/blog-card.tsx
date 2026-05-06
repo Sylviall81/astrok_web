@@ -44,7 +44,9 @@ export default function BlogCard({
           </div>
         </div>
 
-        <h3 className="text-xl font-lato font-semibold text-primary mb-3">{title}</h3>
+        <Link href={`/blog/${slug}`}>
+          <h3 className="text-xl font-lato font-semibold text-primary mb-3 hover:text-accent transition-colors">{title}</h3>
+        </Link>
         <p className="text-body mb-4 line-clamp-3">{excerpt}</p>
 
         <div className="flex items-center justify-between">

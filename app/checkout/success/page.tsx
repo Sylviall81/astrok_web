@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { CheckCircle, Download, Play, Loader2, AlertCircle } from "lucide-react"
+import { CheckCircle, Download, CheckCheck, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "@/context/cart-context"
 import type { DownloadProduct } from "@/app/api/checkout/verify/route"
@@ -22,6 +22,7 @@ function CheckoutSuccessPage() {
   const sessionId = searchParams.get("session_id")
 
   const [isVerifying, setIsVerifying] = useState(true)
+  const [downloadedKeys, setDownloadedKeys] = useState<Set<string>>(new Set())
   const [customerEmail, setCustomerEmail] = useState<string | null>(null)
   const [downloadableProducts, setDownloadableProducts] = useState<DownloadProduct[]>([])
   const [hasDownloadables, setHasDownloadables] = useState(false)
@@ -35,6 +36,11 @@ function CheckoutSuccessPage() {
       setIsVerifying(false)
       return
     }
+
+    try {
+      const stored = localStorage.getItem(`dl_${sessionId}`)
+      if (stored) setDownloadedKeys(new Set(JSON.parse(stored)))
+    } catch { /* ignore */ }
 
     fetch(`/api/checkout/verify?session_id=${sessionId}`)
       .then(res => res.json())
@@ -54,6 +60,19 @@ function CheckoutSuccessPage() {
       })
       .finally(() => setIsVerifying(false))
   }, [sessionId])
+
+  const handleDownload = (url: string, key: string) => {
+    const a = document.createElement("a")
+    a.href = url
+    a.download = ""
+    a.click()
+    const next = new Set(downloadedKeys)
+    next.add(key)
+    setDownloadedKeys(next)
+    try {
+      localStorage.setItem(`dl_${sessionId}`, JSON.stringify([...next]))
+    } catch { /* ignore */ }
+  }
 
   return (
     <section className="py-24">
@@ -85,27 +104,31 @@ function CheckoutSuccessPage() {
                 {downloadableProducts.map((product, i) => (
                   <div key={i} className="mb-4">
                     <p className="font-medium mb-2">{product.name}</p>
-                    {product.downloads.map((download, j) => (
-                      <div key={j} className="flex flex-wrap gap-3 items-center">
-                        <a
-                          href={`/api/download?url=${encodeURIComponent(download.url)}&stream=1`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
-                        ><Play className="h-4 w-4" />
-                          Abrir
-                        </a>
-                        <a
-                          href={`/api/download?url=${encodeURIComponent(download.url)}`}
-                          download
-                          className="inline-flex items-center gap-2 text-primary hover:underline text-sm"
-                        ><Download className="h-4 w-4" />
-                          Descargar
-                        </a>
-                      </div>
-                    ))}
+                    {product.downloads.map((download, j) => {
+                      const key = `${i}_${j}`
+                      const done = downloadedKeys.has(key)
+                      return (
+                        <div key={j}>
+                          <button
+                            onClick={() => handleDownload(`/api/download?url=${encodeURIComponent(download.url)}`, key)}
+                            disabled={done}
+                            className={`inline-flex items-center gap-2 text-sm transition-colors ${
+                              done ? "text-muted-foreground cursor-default" : "text-primary hover:underline"
+                            }`}
+                          >
+                            {done
+                              ? <><CheckCheck className="h-4 w-4" /> Descargado</>
+                              : <><Download className="h-4 w-4" /> Descargar</>
+                            }
+                          </button>
+                        </div>
+                      )
+                    })}
                   </div>
                 ))}
+                <p className="text-xs text-muted-foreground mt-4">
+                  El enlace de descarga se desactiva tras su uso. Recibirás también un email con acceso válido durante 7 días por si necesitas descargarlo de nuevo.
+                </p>
               </div>
             )}
 

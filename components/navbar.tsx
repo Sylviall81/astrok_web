@@ -29,7 +29,7 @@ if (!mounted) return null
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
+          <Button variant="ghost" size="icon" className="md:hidden dark:hover:bg-white/10" onClick={toggleMenu}>
             <Menu className="h-6 w-6" />
             <span className="sr-only">Toggle menu</span>
           </Button>
@@ -48,7 +48,7 @@ if (!mounted) return null
 
         <nav className={`${isMenuOpen ? "flex" : "hidden"
                           } absolute top-16 left-0 right-0 flex-col gap-4 border-b p-6 md:static md:flex md:flex-row md:items-center md:border-0 md:p-0
-                          bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-xl md:bg-transparent md:backdrop-blur-none md:shadow-none`}>
+                          bg-white/95 dark:bg-background/95 backdrop-blur-md shadow-xl md:bg-transparent md:backdrop-blur-none md:shadow-none`}>
           <Link href="/" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
           <Link href="/servicios" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Servicios</Link>
           <Link href="/tienda" className="text-muted-foreground hover:text-foreground" onClick={() => setIsMenuOpen(false)}>Tienda</Link>
@@ -58,7 +58,7 @@ if (!mounted) return null
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+          <Button variant="ghost" size="icon" className="dark:hover:bg-white/10" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
           <CartDrawer />
