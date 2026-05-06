@@ -123,9 +123,9 @@ export async function POST(req: NextRequest) {
 function buildInfoproductoEmail(name: string, downloads: { productName: string; url: string }[]): string {
   const downloadBlock = downloads.map(d => `
     <div style="margin:8px 0;">
-      <p style="margin:0 0 4px; font-size:15px;">${d.productName}</p>
+      <p style="margin:0 0 8px; font-size:15px; color:#2c2c2c;">${d.productName}</p>
       <a href="${d.url}"
-         style="display:inline-block; background:#2c2c2c; color:#fff; text-decoration:none; padding:10px 20px; border-radius:4px; font-size:14px;">
+         style="display:inline-block; background:#4a3f74; color:#fff; text-decoration:none; padding:10px 24px; border-radius:4px; font-size:14px; letter-spacing:0.04em;">
         Descargar
       </a>
     </div>
@@ -134,33 +134,33 @@ function buildInfoproductoEmail(name: string, downloads: { productName: string; 
   return `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0; padding:0; background-color:#f9f7f4;">
+<body style="margin:0; padding:0; background-color:#ede8f3;">
   <div style="max-width:560px; margin:40px auto; background:#fff; padding:48px; border-radius:8px; font-family:Georgia,serif; color:#2c2c2c;">
-    <p style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#9b8c7a; margin:0 0 36px;">Kaleidoscope Astrología</p>
+    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Kaleidoscope Astrología</p>
 
-    <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4;">Hola ${name},</h1>
+    <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4; color:#4a3f74;">Hola ${name},</h1>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Kaleidoscope Astrología y en mi trabajo.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Tu compra se ha realizado correctamente. Aquí tienes tu enlace de descarga:</p>
 
-    <div style="background:#f9f7f4; border-radius:6px; padding:20px 24px; margin:0 0 28px;">
+    <div style="background:#f5f2f9; border-radius:6px; padding:20px 24px; margin:0 0 28px;">
       ${downloadBlock}
     </div>
 
-    <p style="font-size:14px; color:#9b8c7a; margin:0 0 28px;">Guarda este email para poder acceder a tu contenido cuando lo necesites.</p>
+    <p style="font-size:14px; color:#AA9CB8; margin:0 0 28px;">Guarda este email para poder acceder a tu contenido cuando lo necesites.</p>
 
-    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
+    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#7a6e8a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Si tienes cualquier comentario, sugerencia o duda sobre el material, puedes responder directamente a este email. Intento responder en un plazo de 24–48 horas.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir profundizando en este espacio aquí:<br>
-      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@astrokaleido</a>
+      <a href="${INSTAGRAM_URL}" style="color:#4a3f74;">@astrokaleido</a>
     </p>
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
       <strong>Sylvia Llorente</strong><br>
-      <span style="color:#9b8c7a;">Kaleidoscope Astrología</span>
+      <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
     </p>
   </div>
 </body>
@@ -171,27 +171,27 @@ function buildServicioEmail(name: string): string {
   return `<!DOCTYPE html>
 <html lang="es">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0; padding:0; background-color:#f9f7f4;">
+<body style="margin:0; padding:0; background-color:#ede8f3;">
   <div style="max-width:560px; margin:40px auto; background:#fff; padding:48px; border-radius:8px; font-family:Georgia,serif; color:#2c2c2c;">
-    <p style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#9b8c7a; margin:0 0 36px;">Kaleidoscope Astrología</p>
+    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Kaleidoscope Astrología</p>
 
-    <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4;">Hola ${name},</h1>
+    <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4; color:#4a3f74;">Hola ${name},</h1>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Kaleidoscope Astrología y en mi acompañamiento.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">He recibido correctamente tu solicitud de sesión y la propuesta de fecha. En un plazo de 24–48 horas confirmaré personalmente la disponibilidad y te escribiré con los siguientes pasos.</p>
 
-    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#5a5a5a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
+    <p style="font-size:15px; font-style:italic; line-height:1.75; color:#7a6e8a; margin:28px 0;">Mirar hacia dentro a través del lenguaje de las estrellas.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Si deseas compartir previamente alguna información o tienes alguna duda, puedes responder directamente a este email.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 28px;">También puedes seguir mi trabajo y contenidos aquí:<br>
-      <a href="${INSTAGRAM_URL}" style="color:#2c2c2c;">@astrokaleido</a>
+      <a href="${INSTAGRAM_URL}" style="color:#4a3f74;">@astrokaleido</a>
     </p>
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
       <strong>Sylvia Llorente</strong><br>
-      <span style="color:#9b8c7a;">Kaleidoscope Astrología</span>
+      <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
     </p>
   </div>
 </body>
