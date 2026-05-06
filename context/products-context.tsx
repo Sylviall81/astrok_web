@@ -22,6 +22,21 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const CACHE_KEY = "wc_products"
+    const CACHE_TTL = 5 * 60 * 1000 // 5 min
+
+    try {
+      const cached = sessionStorage.getItem(CACHE_KEY)
+      if (cached) {
+        const { data, ts } = JSON.parse(cached)
+        if (Date.now() - ts < CACHE_TTL) {
+          setProducts(data)
+          setLoading(false)
+          return
+        }
+      }
+    } catch { /* ignore */ }
+
     const fetchProducts = async (retries = 2): Promise<void> => {
       try {
         const res = await fetch("/api/products")
@@ -29,6 +44,9 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
         const data: WCProduct[] = await res.json()
         setProducts(data)
         setLoading(false)
+        try {
+          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }))
+        } catch { /* ignore */ }
       } catch (err: any) {
         if (retries > 0) {
           await new Promise((r) => setTimeout(r, 1500))
