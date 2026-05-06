@@ -44,7 +44,7 @@ export type WCProduct = {
   name: string
   slug: string
   permalink: string
-  type: string          // "simple" | "variable"
+  type: string          // "simple" | "variable" | "external"
   status: string        // "publish" | "draft"
   description: string
   short_description: string
@@ -62,6 +62,8 @@ export type WCProduct = {
   variations: number[]
   downloads: { id: string; name: string; file: string }[]
   meta_data: { id: number; key: string; value: string }[]
+  external_url: string
+  button_text: string
 }
 
 export type WCVariation = {

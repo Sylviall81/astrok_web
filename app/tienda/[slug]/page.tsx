@@ -203,10 +203,21 @@ const cleanHtml = useMemo(() => {
             )}
 
             <div className="mt-auto">
-              <Button onClick={handleAddToCart} className="btn-primary w-full hover:bg-primary/90 text-base py-5">
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                Añadir al carrito
-              </Button>
+              {product.type === "external" ? (
+                <a
+                  href={product.external_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary w-full hover:bg-primary/90 text-base py-5 inline-flex items-center justify-center rounded-md"
+                >
+                  {product.button_text || "Saber más"}
+                </a>
+              ) : (
+                <Button onClick={handleAddToCart} className="btn-primary w-full hover:bg-primary/90 text-base py-5">
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Añadir al carrito
+                </Button>
+              )}
             </div>
 
             {product.tags && product.tags.length > 0 && (

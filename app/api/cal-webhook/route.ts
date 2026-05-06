@@ -139,7 +139,7 @@ function buildConfirmacionEmail(name: string, eventTitle: string, fecha: string 
 
     <p style="font-size:16px; line-height:1.75; margin:0;">
       Un abrazo,<br>
-      <strong>Phd. Sylvia Llorente</strong><br>
+      <strong>Sylvia Llorente</strong><br>
       <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
     </p>
   </div>
