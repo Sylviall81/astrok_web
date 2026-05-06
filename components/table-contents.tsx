@@ -2,7 +2,7 @@ export default function TableOfContents({ headings }: { headings: Array<{ id: st
   if (!headings.length) return null
 
   return (
-    <aside className="sticky top-24 mb-8 rounded-lg border p-4 bg-muted/50">
+    <aside className="mb-8 rounded-lg border p-4 bg-muted/50 font-lato">
       <p className="font-semibold mb-2 text-foreground">Contenido</p>
 
       <ul className="space-y-1">

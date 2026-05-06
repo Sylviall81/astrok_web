@@ -230,7 +230,7 @@ export default function ProductDetailPage() {
                   href="/tienda/bono-regalo-sesiones-individuales"
                   className="underline underline-offset-2 hover:text-primary transition-colors"
                 >
-                  Consulta nuestros 1bono regalo
+                  Consulta nuestros bono regalo
                 </Link>
                 {" "}— válido 4 meses desde la compra.
               </p>
