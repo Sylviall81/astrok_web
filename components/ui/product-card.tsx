@@ -59,8 +59,10 @@ const href = esInfoproducto
         >
           Saber más →
         </Link>
-        <p className="mt-3 text-xl font-semibold text-primary">
-          {product.type === "variable" ? `Desde ${formatPrice(product.price)}` : formatPrice(product.price)}
+        <p className="mt-3 text-xl text-primary">
+          {product.type === "variable"
+            ? <><span className="text-sm font-normal">Desde </span><span className="font-semibold">{formatPrice(product.price)}</span></>
+            : <span className="font-semibold">{formatPrice(product.price)}</span>}
         </p>
       </CardContent>
       <CardFooter className="px-4 pb-4 mt-auto">
