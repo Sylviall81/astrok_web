@@ -12,7 +12,7 @@ import { useTheme } from "next-themes"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, setTheme, resolvedTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
   //const router = useRouter()
 
   const [mounted, setMounted] = useState(false)

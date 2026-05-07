@@ -12,6 +12,7 @@
 }  
 
 .dark {
+  color-scheme: dark;
   --secondary: 210 6% 65%;
   --muted-foreground: 210 5% 70%;
    --muted: 217 33% 17%;
