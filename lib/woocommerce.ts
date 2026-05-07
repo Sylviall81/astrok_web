@@ -103,7 +103,8 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
   })
 
   if (!res.ok) {
-    throw new Error(`WooCommerce API error: ${res.status} ${res.statusText} — ${endpoint}`)
+    const body = await res.text().catch(() => "(no body)")
+    throw new Error(`WooCommerce API error: ${res.status} ${res.statusText} — ${endpoint} — body: ${body.slice(0, 500)}`)
   }
 
   return res.json() as Promise<T>
