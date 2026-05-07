@@ -17,6 +17,10 @@
    --muted: 217 33% 17%;
 }
 
+.dark header {
+  background-color: #0f0f0f;
+}
+
 /* DEBUG temporal */
 /* * {
   outline: 1px solid red;
