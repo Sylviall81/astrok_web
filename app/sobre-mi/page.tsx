@@ -21,7 +21,7 @@ export default function AboutPage() {
             </div>
 
             
-             <div className="prose prose-lg max-w-none">
+             <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-foreground prose-li:text-foreground">
   <p>
     Soy Sylvia, astróloga psicológica con más de 10 años acompañando procesos de autoconocimiento. 
     Combino astrología humanista y evolutiva con herramientas de integración cuerpo-emoción-simbolismo 

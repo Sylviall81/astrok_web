@@ -26,7 +26,7 @@ if (!mounted) return null
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
   return (
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 dark:bg-neutral-dark backdrop-blur">
       <div className="max-w-7xl mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" className="md:hidden dark:hover:bg-white/10" onClick={toggleMenu}>
