@@ -40,8 +40,18 @@ export default function ProductDetailPage() {
         fetch(`/api/products/${found.id}/variations`)
           .then(res => res.json())
           .then(data => {
-            setVariations(data)
-            setSelectedVariation(data[0] ?? null)
+            const optionsOrder = found.attributes?.[0]?.options ?? []
+            const sorted = optionsOrder.length > 0
+              ? [...data].sort((a: WCVariation, b: WCVariation) => {
+                  const aOpt = a.attributes[0]?.option ?? ""
+                  const bOpt = b.attributes[0]?.option ?? ""
+                  const aIdx = optionsOrder.indexOf(aOpt)
+                  const bIdx = optionsOrder.indexOf(bOpt)
+                  return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx)
+                })
+              : data
+            setVariations(sorted)
+            setSelectedVariation(sorted[0] ?? null)
           })
           .catch(err => console.error("Error cargando variaciones:", err))
       }

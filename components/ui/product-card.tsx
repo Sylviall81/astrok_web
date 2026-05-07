@@ -59,11 +59,19 @@ const href = esInfoproducto
         >
           Saber más →
         </Link>
-        <p className="mt-3 text-xl font-semibold text-primary">{formatPrice(product.price)}</p>
+        <p className="mt-3 text-xl font-semibold text-primary">
+          {product.type === "variable" ? `Desde ${formatPrice(product.price)}` : formatPrice(product.price)}
+        </p>
       </CardContent>
       <CardFooter className="px-4 pb-4 mt-auto">
         {esInfoproducto ? (
-          product.type === "variable" ? (
+          product.type === "external" ? (
+            <Link href={href} className="w-full">
+              <Button className="w-full btn-primary hover:bg-primary/90">
+                Ver detalles
+              </Button>
+            </Link>
+          ) : product.type === "variable" ? (
             <Link href={href} className="w-full">
               <Button className="w-full btn-primary hover:bg-primary/90">
                 Elegir opción
