@@ -5,7 +5,7 @@ export default function HeroSection() {
     <section className="relative py-20 md:py-32 overflow-hidden bg-cover bg-center bg-no-repeat" 
     style={{ backgroundImage: "url('https://res.cloudinary.com/dgtuiirc7/image/upload/v1779979279/gpt-image-2_Horizontal_banner_image_for_document_header_4_1_ratio._Iridescent_ethereal_textu-0_adnabs.jpg')" }}>
 
-      <div className="absolute inset-0 bg-sri-yantra-pattern opacity-5 z-0"></div>
+      <div className="absolute inset-0 bg-sri-yantra-pattern bg-no-repeat bg-center bg-contain opacity-5 z-0"></div>
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-lato font-bold text-primary  mb-6 leading-tight">
