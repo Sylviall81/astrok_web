@@ -89,20 +89,19 @@ export type WCOrderDownload = {
 
 async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
   const url = new URL(`${WC_API_BASE}${endpoint}`)
+  const { consumer_key, consumer_secret } = getWCAuthParams()
+
+  // Use query params for auth (avoids WAF/firewall issues with Authorization header)
+  url.searchParams.append("consumer_key", consumer_key)
+  url.searchParams.append("consumer_secret", consumer_secret)
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value))
   }
 
-  const { consumer_key, consumer_secret } = getWCAuthParams()
-  const credentials = btoa(`${consumer_key}:${consumer_secret}`)
-
   const res = await fetch(url.toString(), {
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Basic ${credentials}`,
-      "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
-    },
     cache: "no-store",
+    signal: AbortSignal.timeout(15000),
   })
 
   if (!res.ok) {
