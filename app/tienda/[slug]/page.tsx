@@ -130,9 +130,9 @@ const cleanHtml = useMemo(() => {
 
           {/* Imagen principal + miniaturas */}
           <div className="flex flex-col gap-3">
-            <div className="relative flex-1 min-h-[400px] rounded-lg overflow-hidden">
+            <div className="relative flex-1 min-h-[400px] rounded-lg overflow-hidden bg-background">
               {displayImage !== "/placeholder.svg" ? (
-                <Image src={displayImage} alt={product.name} fill className="rounded-lg w-full object-cover" priority />
+                <Image src={displayImage} alt={product.name} fill className="rounded-lg w-full object-contain" priority />
               ) : (
                 <div className="flex h-full items-center justify-center bg-secondary/10">
                   <span className="text-secondary">Sin imagen</span>
