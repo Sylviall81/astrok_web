@@ -4,14 +4,15 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Calendar, Clock } from "lucide-react"
 import ShareButtons from "@/components/share-buttons"
-import { getFullPostBySlug, formatDate, readingTime } from "@/lib/wordpress"
+import { getFullPostBySlug, getAllPostSlugs, formatDate, readingTime } from "@/lib/wordpress"
 import { generateTOC } from "@/lib/toc"
 import TableOfContents from "@/components/table-contents"
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export async function generateStaticParams() {
-  return []
+  const slugs = await getAllPostSlugs()
+  return slugs.map((slug) => ({ slug }))
 }
 
 // Genera los metadatos SEO del post (título y meta description desde Rank Math)

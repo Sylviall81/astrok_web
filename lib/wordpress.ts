@@ -20,7 +20,7 @@ export type WPTag = {
 }
 
 // Tipo interno que representa la respuesta cruda de la REST API
-// _embedded["wp:featuredmedia"] disponible con ?_embed=wp:featuredmedia (WordPress Core, sin plugins)
+// _embedded["wp:featuredmedia"] y "wp:term" disponibles con ?_embed=wp:featuredmedia,wp:term
 type WPPostRaw = {
   id: number
   slug: string
@@ -37,6 +37,7 @@ type WPPostRaw = {
   rank_math_title?: string
   _embedded?: {
     "wp:featuredmedia"?: Array<{ source_url?: string } | { code: string }>
+    "wp:term"?: Array<Array<{ id: number; name: string; slug: string; taxonomy: string }>>
   }
 }
 
@@ -88,7 +89,6 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>, ret
         "Content-Type": "application/json",
         "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
       },
-      cache: "no-store",
       signal: AbortSignal.timeout(12000),
     })
 
@@ -133,51 +133,27 @@ export async function getAllPostSlugs(): Promise<string[]> {
   return posts.map((p) => p.slug)
 }
 
-// ─── Categorías y Tags ────────────────────────────────────────────────────────
-
-export async function getCategoryById(id: number): Promise<WPCategory | null> {
-  try {
-    return await wpFetch<WPCategory>(`/categories/${id}`)
-  } catch {
-    return null
-  }
-}
-
-export async function getTagById(id: number): Promise<WPTag | null> {
-  try {
-    return await wpFetch<WPTag>(`/tags/${id}`)
-  } catch {
-    return null
-  }
-}
-
-// ─── Imagen destacada (fallback por si se necesita resolver por ID) ───────────
-
-export async function getFeaturedImageUrl(mediaId: number): Promise<string | null> {
-  if (!mediaId) return null
-  try {
-    const media = await wpFetch<{ source_url: string }>(`/media/${mediaId}`)
-    return media.source_url ?? null
-  } catch {
-    return null
-  }
-}
-
 // ─── Post enriquecido (slug + categorías + tags + imagen) ────────────────────
-// La imagen ya viene resuelta en WPPost.featuredImageUrl via jetpack_featured_media_url
+// Una sola petición con _embed=wp:featuredmedia,wp:term devuelve todo junto
 
 export async function getFullPostBySlug(slug: string): Promise<WPPostFull | null> {
-  const post = await getPostBySlug(slug)
-  if (!post) return null
+  const raw = await wpFetch<WPPostRaw[]>("/posts", {
+    slug,
+    status: "publish",
+    _embed: "wp:featuredmedia,wp:term",
+  })
+  if (!raw[0]) return null
 
-  const [categoriesData, tagsData] = await Promise.all([
-    Promise.all(post.categories.map(getCategoryById)).then((cats) =>
-      cats.filter(Boolean) as WPCategory[]
-    ),
-    Promise.all(post.tags.map(getTagById)).then((tags) =>
-      tags.filter(Boolean) as WPTag[]
-    ),
-  ])
+  const post = normalizePost(raw[0])
+  const allTerms = (raw[0]._embedded?.["wp:term"] ?? []).flat()
+
+  const categoriesData = allTerms
+    .filter((t) => t.taxonomy === "category")
+    .map(({ id, name, slug }) => ({ id, name, slug }))
+
+  const tagsData = allTerms
+    .filter((t) => t.taxonomy === "post_tag")
+    .map(({ id, name, slug }) => ({ id, name, slug }))
 
   return { ...post, categoriesData, tagsData }
 }
