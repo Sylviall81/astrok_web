@@ -7,6 +7,11 @@ const nextConfig = {
         destination: "https://cms.astrokaleido.com/wp-content/uploads/:path*",
         permanent: false,
       },
+      {
+        source: "/blog/signos-zodiaco-aries-guerrero-espiritual",
+        destination: "/blog/aries-astrologia-psicologica",
+        permanent: true,
+      },
     ]
   },
   images: {
