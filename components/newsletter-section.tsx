@@ -53,7 +53,7 @@ export default function NewsletterSection() {
   }
 
   return (
-    <section className="py-16 md:py-20 bg-primary text-white">
+    <section id="newsletter" className="py-16 md:py-20 bg-primary text-white">
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-lato font-semibold mb-4">
