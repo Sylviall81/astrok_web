@@ -9,7 +9,8 @@
   --secondary: 210 6% 55%;
   --muted-foreground: 210 5% 40%;
   --muted: 210 5% 96%;
-}  
+  --radius: 0.5rem;
+}
 
 .dark {
   color-scheme: dark;

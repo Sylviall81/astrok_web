@@ -108,6 +108,9 @@ async function wpFetch<T>(endpoint: string, params?: Record<string, string>, ret
 
 // ─── Posts ────────────────────────────────────────────────────────────────────
 
+// Artículos por página en el índice del blog (/blog y /blog/page/[n])
+export const POSTS_PER_PAGE = 9
+
 // Listar posts publicados (para el índice del blog y home section)
 export async function getPosts(params?: Record<string, string>): Promise<WPPost[]> {
   const raw = await wpFetch<WPPostRaw[]>("/posts", {
@@ -119,6 +122,45 @@ export async function getPosts(params?: Record<string, string>): Promise<WPPost[
     ...params,
   })
   return raw.map(normalizePost)
+}
+
+// Listar posts de forma paginada (para el índice del blog con paginador)
+// Devuelve los posts de la página pedida y el total de páginas (cabecera X-WP-TotalPages)
+export async function getPostsPage(
+  page: number,
+  perPage: number,
+): Promise<{ posts: WPPost[]; totalPages: number }> {
+  const url = new URL(`${WP_API_BASE}/posts`)
+  const params: Record<string, string> = {
+    status: "publish",
+    orderby: "date",
+    order: "desc",
+    _embed: "wp:featuredmedia",
+    per_page: String(perPage),
+    page: String(page),
+  }
+  Object.entries(params).forEach(([k, v]) => url.searchParams.append(k, v))
+
+  const res = await fetch(url.toString(), {
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": "Mozilla/5.0 (compatible; AstrokWeb/1.0)",
+    },
+    signal: AbortSignal.timeout(12000),
+  })
+
+  // WordPress devuelve 400 (rest_post_invalid_page_number) si se pide una página fuera de rango
+  if (res.status === 400) {
+    return { posts: [], totalPages: 1 }
+  }
+
+  if (!res.ok) {
+    throw new Error(`WordPress API error: ${res.status} ${res.statusText} — ${url.toString()}`)
+  }
+
+  const totalPages = Number(res.headers.get("X-WP-TotalPages") ?? "1")
+  const raw = (await res.json()) as WPPostRaw[]
+  return { posts: raw.map(normalizePost), totalPages: Number.isNaN(totalPages) ? 1 : totalPages }
 }
 
 // Obtener un post por su slug (para la página de detalle)

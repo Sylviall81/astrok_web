@@ -47,7 +47,7 @@ export default function BlogSection() {
 
         {loading ? skeleton : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            {posts.map((post) => (
+            {posts.slice(0, 3).map((post) => (
               <BlogCard
                 key={post.slug}
                 title={post.title.rendered}
