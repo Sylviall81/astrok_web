@@ -18,9 +18,9 @@ export default function TestimonialsSection() {
   }, [])
 
   return (
-    <section className="py-16 md:py-24 ">
+    <section className="py-12 md:py-16 ">
       <div className="container-custom">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <h2 className="section-title">Lo que dicen mis clientes</h2>
           <p className="section-subtitle mx-auto">
             Experiencias de personas que han encontrado claridad y dirección a través de la astrología psicológica.
@@ -41,7 +41,7 @@ export default function TestimonialsSection() {
             </div>
           </div>
 
-          <div className="flex justify-center mt-8">
+          <div className="flex justify-center mt-6">
             {testimonials.map((_, index) => (
               <button
                 key={index}

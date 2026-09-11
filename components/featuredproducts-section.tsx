@@ -110,7 +110,7 @@ export default function FeaturedProductsSection() {
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                   >
                     {otherProducts.map((product) => (
-                      <div key={product.id} className="flex-none w-48">
+                      <div key={product.id} className="flex-none w-64">
                         <ProductCard
                           product={product}
                           onAddToCart={handleAddToCart}

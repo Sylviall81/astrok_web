@@ -83,7 +83,7 @@ export default function BlogSection() {
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {posts.slice(0, MAX_HOME_POSTS).map((post) => (
-                <div key={post.slug} className="flex-none w-72">
+                <div key={post.slug} className="flex-none w-80 md:w-96">
                   <BlogCard
                     title={post.title.rendered}
                     excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")}
