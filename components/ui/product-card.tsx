@@ -35,7 +35,7 @@ const href = esInfoproducto
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md h-full flex flex-col">
       <Link href={href}>
-        <div className={`relative flex-shrink-0 ${esInfoproducto ? "aspect-square bg-background" : "h-48 bg-muted"}`}>
+        <div className={`relative flex-shrink-0 h-48 ${esInfoproducto ? "bg-background" : "bg-muted"}`}>
           {imagen !== "/placeholder.svg" ? (
             <Image
               src={imagen}
