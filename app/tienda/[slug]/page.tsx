@@ -10,7 +10,7 @@ import { useProducts } from "@/context/products-context"
 import { useNotification } from "@/context/notification-context"
 import { useCart } from "@/context/cart-context"
 import type { WCProduct, WCVariation } from "@/lib/woocommerce"
-import DOMPurify from "dompurify"
+import { sanitizeHtml } from "@/lib/sanitize"
 
 
 
@@ -61,11 +61,11 @@ export default function ProductDetailPage() {
 
 
 const cleanShortHtml = useMemo(() => {
-  return DOMPurify.sanitize(product?.short_description || "")
+  return sanitizeHtml(product?.short_description || "")
 }, [product])
 
 const cleanHtml = useMemo(() => {
-  return DOMPurify.sanitize(product?.description || "")
+  return sanitizeHtml(product?.description || "")
 }, [product])
 
   const displayPrice = selectedVariation?.price || product?.price || "0"

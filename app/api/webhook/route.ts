@@ -11,7 +11,7 @@ const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
 const REPLY_TO = "hola@astrokaleido.com"
 const SYLVIA_EMAIL = "hola@astrokaleido.com"
 const INSTAGRAM_URL = "https://www.instagram.com/astrokaleido/"
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://astrokaleido.com"
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://www.astrokaleido.com"
 
 export async function POST(req: NextRequest) {
   const body = await req.text()

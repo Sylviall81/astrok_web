@@ -57,7 +57,7 @@ export default function BlogCard({
             Leer más →
           </Link>
 
-          {showShareButtons && <ShareButtons url={`https://astrokaleido.com/blog/${slug}`} title={title} />}
+          {showShareButtons && <ShareButtons url={`https://www.astrokaleido.com/blog/${slug}`} title={title} />}
         </div>
       </div>
     </div>
