@@ -64,7 +64,7 @@ export default function FeaturedProductsSection() {
   }
 
   return (
-    <section className="py-8 md:py-12">
+    <section className="py-8 md:py-12 section-alt">
       <div className="container-custom">
         <div className="text-center mb-8">
           <h2 className="section-title">Productos Destacados</h2>

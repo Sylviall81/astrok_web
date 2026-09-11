@@ -23,8 +23,8 @@ export default function BlogCard({
   showShareButtons = false,
 }: BlogCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      
+    <div className="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col">
+
       <div className="relative h-48">
         <Link
           href={`/blog/${slug}`}
@@ -32,7 +32,7 @@ export default function BlogCard({
         />
         <Image src={image || "/placeholder.svg"} alt={title} fill className="object-cover" />
       </div>
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-1">
         <div className="flex items-center text-sm text-gray-500 mb-3">
           <div className="flex items-center mr-4">
             <Calendar className="h-4 w-4 mr-1" />
@@ -49,7 +49,7 @@ export default function BlogCard({
         </Link>
         <p className="text-body mb-4 line-clamp-2">{excerpt}</p>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-auto">
           <Link
             href={`/blog/${slug}`}
             className="text-primary font-lato font-semibold hover:text-accent transition-colors"
