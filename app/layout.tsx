@@ -32,18 +32,23 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${cormorant.variable} ${inter.variable}`}>
-        {/* Google tag (gtag.js) */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-3SPDT837GK"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
+        {/* Google Consent Mode v2: se declara ANTES de cargar gtag.js. Por defecto todo denegado;
+            solo se actualiza a "granted" si el usuario ya había aceptado en una visita anterior.
+            gtag.js NO se carga aquí — eso solo ocurre tras el consentimiento (ver cookie-banner.tsx / lib/analytics.ts). */}
+        <Script id="consent-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-3SPDT837GK');
+            function gtag(){window.dataLayer.push(arguments);}
+            window.gtag = gtag;
+            var storedConsent = null;
+            try { storedConsent = localStorage.getItem('cookie_consent'); } catch (e) {}
+            gtag('consent', 'default', {
+              analytics_storage: storedConsent === 'accepted' ? 'granted' : 'denied',
+              ad_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              wait_for_update: 500
+            });
           `}
         </Script>
            <ThemeProvider

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { loadGA, updateConsent } from "@/lib/analytics"
 
 const COOKIE_KEY = "cookie_consent"
 
@@ -10,18 +11,26 @@ export function CookieBanner() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    if (!localStorage.getItem(COOKIE_KEY)) {
+    const stored = localStorage.getItem(COOKIE_KEY)
+    if (!stored) {
       setVisible(true)
+    } else if (stored === "accepted") {
+      // Visita recurrente que ya había aceptado: el consent default ya se puso en
+      // "granted" en el layout, aquí solo cargamos gtag.js para registrar la sesión.
+      loadGA()
     }
   }, [])
 
   const accept = () => {
     localStorage.setItem(COOKIE_KEY, "accepted")
+    updateConsent(true)
+    loadGA()
     setVisible(false)
   }
 
   const essential = () => {
     localStorage.setItem(COOKIE_KEY, "essential")
+    updateConsent(false)
     setVisible(false)
   }
 
@@ -41,10 +50,18 @@ export function CookieBanner() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-2 shrink-0">
-            <Button variant="outline" size="sm" onClick={essential}>
+            <Button
+              size="sm"
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={essential}
+            >
               Solo esenciales
             </Button>
-            <Button size="sm" className="bg-primary hover:bg-primary/90" onClick={accept}>
+            <Button
+              size="sm"
+              className="bg-primary text-white hover:bg-primary/90"
+              onClick={accept}
+            >
               Aceptar todas
             </Button>
           </div>

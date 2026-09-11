@@ -10,9 +10,10 @@ import type { WCProduct } from "@/lib/woocommerce"
 interface ProductCardProps {
   product: WCProduct
   onAddToCart: (product: WCProduct) => void
+  compact?: boolean
 }
 
-export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, compact = false }: ProductCardProps) {
   const formatPrice = (price: string) => {
     return new Intl.NumberFormat("es-ES", {
       style: "currency",
@@ -90,7 +91,7 @@ const href = esInfoproducto
               className="w-full btn-primary hover:bg-primary/90"
             >
               <ShoppingCart className="mr-2 h-4 w-4" />
-              Añadir al carrito
+              {compact ? "Añadir" : "Añadir al carrito"}
             </Button>
           )
         ) : (

@@ -8,6 +8,10 @@ import type { WCProduct } from "@/lib/woocommerce"
 import { ProductCard } from "./ui/product-card"
 import { useCart } from "@/context/cart-context"
 import { useNotification } from "@/context/notification-context"
+import Link from "next/link"
+
+// Máximo de productos a mostrar en el home (destacados + slider); el resto solo se ve en /tienda
+const MAX_HOME_PRODUCTS = 6
 
 // Helper para obtener la imagen principal del producto
 // const getProductImage = (product: WCProduct): string => {
@@ -27,9 +31,11 @@ export default function FeaturedProductsSection() {
     p.categories?.some(c => c.slug === "infoproductos")
   )
 
-  // Los 3 primeros como destacados, el resto en slider
-  const featuredProducts = productList.slice(0, 3)
-  const otherProducts = productList .slice(3)
+  // Los 3 primeros como destacados, el resto (hasta el máximo) en slider
+  const homeProducts = productList.slice(0, MAX_HOME_PRODUCTS)
+  const featuredProducts = homeProducts.slice(0, 3)
+  const otherProducts = homeProducts.slice(3)
+  const hasMoreProducts = productList.length > MAX_HOME_PRODUCTS
 
   const { addToCart } = useCart()
     const { showNotification } = useNotification()
@@ -104,10 +110,11 @@ export default function FeaturedProductsSection() {
                     style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                   >
                     {otherProducts.map((product) => (
-                      <div key={product.id} className="flex-none w-56">
+                      <div key={product.id} className="flex-none w-48">
                         <ProductCard
                           product={product}
                           onAddToCart={handleAddToCart}
+                          compact
                         />
                       </div>
                     ))}
@@ -121,6 +128,17 @@ export default function FeaturedProductsSection() {
                   </button>
                 </div>
               </>
+            )}
+
+            {hasMoreProducts && (
+              <div className="text-center mt-8">
+                <Link
+                  href="/tienda"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2 text-sm font-medium text-white hover:bg-primary/90 transition-colors"
+                >
+                  Ver todos los productos
+                </Link>
+              </div>
             )}
           </>
         )}

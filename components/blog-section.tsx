@@ -1,14 +1,36 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import BlogCard from "@/components/blog-card"
 import { formatDate, readingTime } from "@/lib/wordpress"
 import type { WPPost } from "@/lib/wordpress"
 import Link from "next/link"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+
+// Máximo de artículos a mostrar en el home (destacados + slider); el resto solo se ve en /blog
+const MAX_HOME_POSTS = 6
 
 export default function BlogSection() {
   const [posts, setPosts] = useState<WPPost[]>([])
   const [loading, setLoading] = useState(true)
+
+  const sliderRef = useRef<HTMLDivElement>(null)
+  const [scrollPosition, setScrollPosition] = useState(0)
+
+  const scroll = (direction: "left" | "right") => {
+    if (sliderRef.current) {
+      const { scrollWidth, clientWidth } = sliderRef.current
+      const scrollAmount = clientWidth * 0.8
+      const maxScroll = scrollWidth - clientWidth
+      const newPosition =
+        direction === "right"
+          ? Math.min(scrollPosition + scrollAmount, maxScroll)
+          : Math.max(scrollPosition - scrollAmount, 0)
+
+      sliderRef.current.scrollTo({ left: newPosition, behavior: "smooth" })
+      setScrollPosition(newPosition)
+    }
+  }
 
   useEffect(() => {
     fetch("/api/posts")
@@ -46,19 +68,41 @@ export default function BlogSection() {
         </div>
 
         {loading ? skeleton : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            {posts.slice(0, 3).map((post) => (
-              <BlogCard
-                key={post.slug}
-                title={post.title.rendered}
-                excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")}
-                image={post.featuredImageUrl ?? "/placeholder.svg?height=300&width=400"}
-                date={formatDate(post.date)}
-                readTime={readingTime(post.content.rendered)}
-                slug={post.slug}
-                showShareButtons={true}
-              />
-            ))}
+          <div className="relative mb-10">
+            <button
+              onClick={() => scroll("left")}
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
+              aria-label="Anterior"
+              disabled={scrollPosition === 0}
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+            <div
+              ref={sliderRef}
+              className="flex items-stretch overflow-x-auto gap-4 pb-4"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+            >
+              {posts.slice(0, MAX_HOME_POSTS).map((post) => (
+                <div key={post.slug} className="flex-none w-72">
+                  <BlogCard
+                    title={post.title.rendered}
+                    excerpt={post.excerpt.rendered.replace(/<[^>]+>/g, "")}
+                    image={post.featuredImageUrl ?? "/placeholder.svg?height=300&width=400"}
+                    date={formatDate(post.date)}
+                    readTime={readingTime(post.content.rendered)}
+                    slug={post.slug}
+                    showShareButtons={false}
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => scroll("right")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white p-2 rounded-full shadow-md text-primary hover:text-accent transition-colors"
+              aria-label="Siguiente"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
           </div>
         )}
 
