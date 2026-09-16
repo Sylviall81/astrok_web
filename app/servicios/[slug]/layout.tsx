@@ -29,9 +29,21 @@ export async function generateMetadata({
 
   const canonicalSlug = product.slug || slug
 
+  const getMeta = (key: string) =>
+    product.meta_data?.find(m => m.key === key)?.value?.trim() || ""
+
+  const rankMathTitle = getMeta("rank_math_title")
+  const rankMathDescription = getMeta("rank_math_description")
+
+  const title = rankMathTitle || `${product.name} | Kaleidoscope Astrología`
+  const description =
+    rankMathDescription ||
+    product.short_description?.replace(/<[^>]+>/g, "").trim() ||
+    undefined
+
   return {
-    title: `${product.name} | Kaleidoscope Astrología`,
-    description: product.short_description?.replace(/<[^>]+>/g, "").trim() || undefined,
+    title,
+    description,
     alternates: {
       canonical: `${BASE_URL}/servicios/${canonicalSlug}`,
     },

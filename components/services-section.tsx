@@ -17,9 +17,9 @@ const stripHtml = (html: string): string => {
 
 // Slugs que siempre aparecen primero, en este orden. Actualiza si cambia el slug en WooCommerce.
 const FEATURED_SLUGS = [
-  "sesion-integral-carta-natal-y-anual",
-  "sesion-individual-pack-3", // ← reemplaza con el slug real del pack
-  "sesion-de-carta-astral",
+  "sesion-integral-carta-natal-y-revolucion-solar",
+  "sesion-individual-pack-3",
+  "sesion-de-carta-natal",
 ]
 
 function sortServices(products: WCProduct[]): WCProduct[] {

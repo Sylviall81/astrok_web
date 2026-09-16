@@ -6,9 +6,9 @@ import type { WCProduct } from "@/lib/woocommerce"
 
 // Mismo orden que en la sección de servicios del home
 const FEATURED_SLUGS = [
-  "sesion-integral-carta-natal-y-anual",
-  "sesion-de-carta-astral",
-  "SLUG-DEL-PACK-3-SESIONES", // ← reemplaza con el slug real del pack
+  "sesion-integral-carta-natal-y-revolucion-solar",
+  "sesion-de-carta-natal",
+  "sesion-individual-pack-3",
 ]
 
 function sortServices(products: WCProduct[]): WCProduct[] {

@@ -12,6 +12,16 @@ const nextConfig = {
         destination: "/blog/aries-astrologia-psicologica",
         permanent: true,
       },
+      {
+        source: "/servicios/sesion-de-carta-astral",
+        destination: "/servicios/sesion-de-carta-natal",
+        permanent: true,
+      },
+      {
+        source: "/servicios/sesion-integral-carta-natal-y-anual",
+        destination: "/servicios/sesion-integral-carta-natal-y-revolucion-solar",
+        permanent: true,
+      },
     ]
   },
   images: {
