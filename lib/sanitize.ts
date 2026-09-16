@@ -1,13 +1,17 @@
-import DOMPurify from "dompurify";
+import sanitizeHtmlLib from "sanitize-html";
 
-// dompurify necesita un DOM real: en el render de servidor (SSR) no existe
-// `window` y DOMPurify.sanitize revienta con un 500 para toda la página.
-// Se sanea solo en cliente; en servidor se devuelve vacío (el cliente rehidrata igual).
+// sanitize-html es JS puro (sin DOM real, sin dependencias nativas), así que
+// funciona igual en servidor y cliente — a diferencia de dompurify/jsdom, que
+// en el bundle serverless de Vercel falla con un ERR_REQUIRE_ESM al cargar
+// una dependencia transitiva de jsdom (html-encoding-sniffer -> @exodus/bytes).
 export function sanitizeHtml(html: string) {
-  if (typeof window === "undefined") return ""
-
-  return DOMPurify.sanitize(html, {
-    FORBID_ATTR: ["style"], // 👈 ESTO arregla tu problema de colores
-    FORBID_TAGS: ["script"]
+  return sanitizeHtmlLib(html, {
+    allowedTags: [...sanitizeHtmlLib.defaults.allowedTags, "img"],
+    allowedAttributes: {
+      ...sanitizeHtmlLib.defaults.allowedAttributes,
+      "*": ["class", "id"],
+    },
+    // 👈 ESTO arregla tu problema de colores (equivalente al FORBID_ATTR de dompurify)
+    disallowedTagsMode: "discard",
   })
 }
