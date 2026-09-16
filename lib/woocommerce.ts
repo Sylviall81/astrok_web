@@ -3,8 +3,6 @@
 // En local usamos Basic Auth con usuario/password de WP
 // En producción con HTTPS usaremos consumer_key/consumer_secret
 
-import { cache } from "react"
-
 const WC_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL || "http://kaleidoastro.local"
 const WC_API_BASE = `${WC_URL}/wp-json/wc/v3`
 
@@ -215,20 +213,6 @@ export async function getProductBySlug(slug: string): Promise<WCProduct | null> 
 export async function getProductById(id: number): Promise<WCProduct> {
   return wcFetch<WCProduct>(`/products/${id}`)
 }
-
-// Resuelve un producto de servicio por slug real o, si el segmento de la URL
-// es numérico, por ID de WooCommerce. Memoizado por request con React `cache`
-// para que generateMetadata y la página no dupliquen la misma llamada a la API.
-export const resolveServiceProduct = cache(async (slug: string): Promise<WCProduct | null> => {
-  if (/^\d+$/.test(slug)) {
-    try {
-      return await getProductById(Number(slug))
-    } catch {
-      return null
-    }
-  }
-  return getProductBySlug(slug)
-})
 
 // Obtener las variaciones de un producto variable
 export async function getProductVariations(productId: number): Promise<WCVariation[]> {
