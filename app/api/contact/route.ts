@@ -3,6 +3,19 @@ import { Resend } from "resend"
 const resend = new Resend(process.env.RESEND_API_KEY)
 const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL
 
+async function alertWpSaveFailure(detail: string) {
+  try {
+    await resend.emails.send({
+      from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+      to: "hola@astrokaleido.com",
+      subject: "⚠️ Fallo guardando contacto en WordPress",
+      html: `<p>Un envío del formulario de contacto llegó por email pero no se pudo guardar en WordPress.</p><pre>${detail}</pre>`,
+    })
+  } catch (error) {
+    console.error("Error enviando alerta de fallo WP:", error)
+  }
+}
+
 export async function POST(req: Request) {
   const data = await req.json()
 
@@ -21,10 +34,15 @@ export async function POST(req: Request) {
     })
       .then(async (res) => {
         if (!res.ok) {
-          console.error("Error guardando contacto en WP:", res.status, await res.text())
+          const body = await res.text()
+          console.error("Error guardando contacto en WP:", res.status, body)
+          await alertWpSaveFailure(`HTTP ${res.status}: ${body}`)
         }
       })
-      .catch((error) => console.error("Error guardando contacto en WP:", error))
+      .catch(async (error) => {
+        console.error("Error guardando contacto en WP:", error)
+        await alertWpSaveFailure(String(error))
+      })
       .finally(() => clearTimeout(timeout))
   }
 
