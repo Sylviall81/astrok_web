@@ -19,7 +19,12 @@ export async function POST(req: Request) {
       body: JSON.stringify({ title: data.name, status: "publish", acf: { name: data.name, email: data.email, message: data.message } }),
       signal: controller.signal,
     })
-      .catch(() => {})
+      .then(async (res) => {
+        if (!res.ok) {
+          console.error("Error guardando contacto en WP:", res.status, await res.text())
+        }
+      })
+      .catch((error) => console.error("Error guardando contacto en WP:", error))
       .finally(() => clearTimeout(timeout))
   }
 
