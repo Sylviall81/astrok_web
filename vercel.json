@@ -1,0 +1,28 @@
+{
+  "redirects": [
+    { "source": "/aries-astrologia-psicologica", "destination": "/blog/aries-astrologia-psicologica", "permanent": true },
+    { "source": "/aries-astrologia-psicologica/", "destination": "/blog/aries-astrologia-psicologica", "permanent": true },
+    { "source": "/tauro-astrologia-psicologica", "destination": "/blog/tauro-astrologia-psicologica", "permanent": true },
+    { "source": "/tauro-astrologia-psicologica/", "destination": "/blog/tauro-astrologia-psicologica", "permanent": true },
+    { "source": "/geminis-astrologia-psicologica", "destination": "/blog/geminis-astrologia-psicologica", "permanent": true },
+    { "source": "/geminis-astrologia-psicologica/", "destination": "/blog/geminis-astrologia-psicologica", "permanent": true },
+    { "source": "/cancer-astrologia-psicologica", "destination": "/blog/cancer-astrologia-psicologica", "permanent": true },
+    { "source": "/cancer-astrologia-psicologica/", "destination": "/blog/cancer-astrologia-psicologica", "permanent": true },
+    { "source": "/leo-astrologia-psicologica", "destination": "/blog/leo-astrologia-psicologica", "permanent": true },
+    { "source": "/leo-astrologia-psicologica/", "destination": "/blog/leo-astrologia-psicologica", "permanent": true },
+    { "source": "/virgo-astrologia-psicologica", "destination": "/blog/virgo-astrologia-psicologica", "permanent": true },
+    { "source": "/virgo-astrologia-psicologica/", "destination": "/blog/virgo-astrologia-psicologica", "permanent": true },
+    { "source": "/libra-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/libra-astrologia-psicologica/", "destination": "/blog", "permanent": false },
+    { "source": "/escorpio-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/escorpio-astrologia-psicologica/", "destination": "/blog", "permanent": false },
+    { "source": "/sagitario-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/sagitario-astrologia-psicologica/", "destination": "/blog", "permanent": false },
+    { "source": "/capricornio-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/capricornio-astrologia-psicologica/", "destination": "/blog", "permanent": false },
+    { "source": "/acuario-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/acuario-astrologia-psicologica/", "destination": "/blog", "permanent": false },
+    { "source": "/piscis-astrologia-psicologica", "destination": "/blog", "permanent": false },
+    { "source": "/piscis-astrologia-psicologica/", "destination": "/blog", "permanent": false }
+  ]
+}

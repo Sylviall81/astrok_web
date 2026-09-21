@@ -22,16 +22,6 @@ const nextConfig = {
         destination: "/servicios/sesion-integral-carta-natal-y-revolucion-solar",
         permanent: true,
       },
-      {
-        source: "/tauro-astrologia-psicologica/",
-        destination: "/blog/tauro-astrologia-psicologica/",
-        permanent: true,
-      },
-      {
-        source: "/tauro-astrologia-psicologica",
-        destination: "/blog/tauro-astrologia-psicologica",
-        permanent: true,
-      },
     ]
   },
   images: {
