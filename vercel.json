@@ -20,9 +20,9 @@
     { "source": "/sagitario-astrologia-psicologica/", "destination": "/blog/sagitario-astrologia-psicologica", "permanent": true },
     { "source": "/capricornio-astrologia-psicologica", "destination": "/blog/capricornio-astrologia-psicologica", "permanent": true },
     { "source": "/capricornio-astrologia-psicologica/", "destination": "/blog/capricornio-astrologia-psicologica", "permanent": true },
-    { "source": "/acuario-astrologia-psicologica", "destination": "/blog", "permanent": false },
-    { "source": "/acuario-astrologia-psicologica/", "destination": "/blog", "permanent": false },
-    { "source": "/piscis-astrologia-psicologica", "destination": "/blog", "permanent": false },
-    { "source": "/piscis-astrologia-psicologica/", "destination": "/blog", "permanent": false }
+    { "source": "/acuario-astrologia-psicologica", "destination": "/blog/acuario-astrologia-psicologica", "permanent": true },
+    { "source": "/acuario-astrologia-psicologica/", "destination": "/blog/acuario-astrologia-psicologica", "permanent": true },
+    { "source": "/piscis-astrologia-psicologica", "destination": "/blog/piscis-astrologia-psicologica", "permanent": true },
+    { "source": "/piscis-astrologia-psicologica/", "destination": "/blog/piscis-astrologia-psicologica", "permanent": true }
   ]
 }
