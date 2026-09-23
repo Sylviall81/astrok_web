@@ -6,6 +6,7 @@ import { Calendar, Clock } from "lucide-react"
 import ShareButtons from "@/components/share-buttons"
 import { getFullPostBySlug, getAllPostSlugs, formatDate, readingTime } from "@/lib/wordpress"
 import { generateTOC } from "@/lib/toc"
+import { normalizeInternalLinks } from "@/lib/internal-links"
 import TableOfContents from "@/components/table-contents"
 
 export const revalidate = 3600
@@ -38,13 +39,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  const post = await getFullPostBySlug(slug)
+  const [post, postSlugs] = await Promise.all([getFullPostBySlug(slug), getAllPostSlugs()])
 
   if (!post) notFound()
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || ""
 
-  const { headings, html } = generateTOC(post.content.rendered)
+  const { headings, html } = generateTOC(normalizeInternalLinks(post.content.rendered, postSlugs))
   return (
     <section className="py-16 md:py-24">
       <div className="container-custom">
