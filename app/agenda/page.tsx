@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Agenda | Kaleidoscope Astrología",
   description:
     "Reserva tu sesión de astrología psicológica online. Elige fecha para explorar tu carta natal y avanzar en tu camino de autodescubrimiento con confianza.",
+  alternates: {
+    canonical: "/agenda",
+  },
 }
 
 export default function Page() {

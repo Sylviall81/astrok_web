@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Blog | Kaleidoscope Astrología",
   description:
     "Artículos sobre astrología evolutiva, signos, tránsitos y reflexión interna. Profundiza en tu mapa y gana herramientas prácticas para tu vida.",
+  alternates: {
+    canonical: "/blog",
+  },
 }
 
 export default async function BlogPage() {

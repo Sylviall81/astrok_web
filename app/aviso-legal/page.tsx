@@ -1,3 +1,14 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Aviso legal | Kaleidoscope Astrología",
+  description:
+    "Aviso legal de astrokaleido.com: datos identificativos del titular, condiciones de uso del sitio web y propiedad intelectual.",
+  alternates: {
+    canonical: "/aviso-legal",
+  },
+}
+
 export default function AvisoLegalPage() {
   return (
     <section className="py-16 md:py-24">

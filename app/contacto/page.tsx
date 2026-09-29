@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Contacto | Kaleidoscope Astrología",
   description:
     "¿Buscas claridad astrológica? Escríbeme para consultas personalizadas o reserva sesión. Te respondo pronto para guiarte en tu proceso.",
+  alternates: {
+    canonical: "/contacto",
+  },
 }
 
 export default function ContactPage() {

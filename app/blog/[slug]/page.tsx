@@ -23,10 +23,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await getFullPostBySlug(slug)
   if (!post) return {}
 
+  // metadataBase (app/layout.tsx) lo convierte en https://www.astrokaleido.com/blog/<slug>
+  const canonical = `/blog/${post.slug}`
+
   return {
     title: post.rank_math_title || post.title.rendered,
     description: post.rank_math_description || post.excerpt.rendered.replace(/<[^>]+>/g, ""),
+    alternates: {
+      canonical,
+    },
     openGraph: {
+      url: canonical,
       title: post.title.rendered,
       description: post.excerpt.rendered.replace(/<[^>]+>/g, ""),
       images: post.featuredImageUrl ? [{ url: post.featuredImageUrl }] : [],

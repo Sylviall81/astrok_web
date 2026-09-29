@@ -23,6 +23,16 @@
     { "source": "/acuario-astrologia-psicologica", "destination": "/blog/acuario-astrologia-psicologica", "permanent": true },
     { "source": "/acuario-astrologia-psicologica/", "destination": "/blog/acuario-astrologia-psicologica", "permanent": true },
     { "source": "/piscis-astrologia-psicologica", "destination": "/blog/piscis-astrologia-psicologica", "permanent": true },
-    { "source": "/piscis-astrologia-psicologica/", "destination": "/blog/piscis-astrologia-psicologica", "permanent": true }
+    { "source": "/piscis-astrologia-psicologica/", "destination": "/blog/piscis-astrologia-psicologica", "permanent": true },
+    { "source": "/planetas-en-la-carta-natal", "destination": "/blog/planetas-en-la-carta-natal", "permanent": true },
+    { "source": "/planetas-en-la-carta-natal/", "destination": "/blog/planetas-en-la-carta-natal", "permanent": true },
+    { "source": "/cesta-de-barbault-julio-2026", "destination": "/blog/cesta-de-barbault-julio-2026", "permanent": true },
+    { "source": "/cesta-de-barbault-julio-2026/", "destination": "/blog/cesta-de-barbault-julio-2026", "permanent": true },
+    { "source": "/jupiter-en-leo-2026", "destination": "/blog/jupiter-en-leo-2026", "permanent": true },
+    { "source": "/jupiter-en-leo-2026/", "destination": "/blog/jupiter-en-leo-2026", "permanent": true },
+    { "source": "/5-pasos-interpretar-tu-carta-natal", "destination": "/blog/5-pasos-interpretar-tu-carta-natal", "permanent": true },
+    { "source": "/5-pasos-interpretar-tu-carta-natal/", "destination": "/blog/5-pasos-interpretar-tu-carta-natal", "permanent": true },
+    { "source": "/los-4-elementos-en-astrologia", "destination": "/blog/los-4-elementos-en-astrologia", "permanent": true },
+    { "source": "/los-4-elementos-en-astrologia/", "destination": "/blog/los-4-elementos-en-astrologia", "permanent": true }
   ]
 }

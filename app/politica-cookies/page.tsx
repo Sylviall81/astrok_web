@@ -1,3 +1,14 @@
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Política de cookies | Kaleidoscope Astrología",
+  description:
+    "Política de cookies de astrokaleido.com: qué cookies se utilizan, para qué sirven y cómo gestionar tu consentimiento.",
+  alternates: {
+    canonical: "/politica-cookies",
+  },
+}
+
 export default function PoliticaCookiesPage() {
   return (
     <section className="py-16 md:py-24">

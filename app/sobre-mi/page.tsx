@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Sobre mí | Kaleidoscope Astrología",
   description:
     "Sylvia Llorente, astróloga psicológica con +10 años en acompañamiento evolutivo. Conoce mi enfoque y formación.",
+  alternates: {
+    canonical: "/sobre-mi",
+  },
 }
 
 export default function AboutPage() {

@@ -15,10 +15,16 @@ export async function generateStaticParams() {
   }
 }
 
-export const metadata: Metadata = {
-  title: "Blog | Kaleidoscope Astrología",
-  description:
-    "Artículos sobre astrología evolutiva, signos, tránsitos y reflexión interna. Profundiza en tu mapa y gana herramientas prácticas para tu vida.",
+export async function generateMetadata({ params }: { params: Promise<{ n: string }> }): Promise<Metadata> {
+  const { n } = await params
+  return {
+    title: "Blog | Kaleidoscope Astrología",
+    description:
+      "Artículos sobre astrología evolutiva, signos, tránsitos y reflexión interna. Profundiza en tu mapa y gana herramientas prácticas para tu vida.",
+    alternates: {
+      canonical: `/blog/page/${n}`,
+    },
+  }
 }
 
 export default async function BlogPaginatedPage({ params }: { params: Promise<{ n: string }> }) {
