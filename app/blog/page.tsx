@@ -15,15 +15,10 @@ export const metadata: Metadata = {
 }
 
 export default async function BlogPage() {
-  let posts: Awaited<ReturnType<typeof getPostsPage>>["posts"] = []
-  let totalPages = 1
-  try {
-    const result = await getPostsPage(1, POSTS_PER_PAGE)
-    posts = result.posts
-    totalPages = result.totalPages
-  } catch {
-    // WordPress no disponible temporalmente
-  }
+  // Sin try/catch a propósito: si WordPress falla durante una regeneración ISR,
+  // Next.js descarta el render y sigue sirviendo la última versión buena en vez
+  // de cachear una lista vacía durante una hora.
+  const { posts, totalPages } = await getPostsPage(1, POSTS_PER_PAGE)
 
   return <BlogList posts={posts} currentPage={1} totalPages={totalPages} />
 }
