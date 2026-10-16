@@ -75,6 +75,9 @@ export type WCVariation = {
   sale_price: string
   attributes: { id: number; name: string; option: string }[]
   stock_status: string
+  status?: string        // "publish" | "private" | "draft"
+  purchasable?: boolean
+  downloadable?: boolean
   image?: WCImage
 }
 
@@ -229,6 +232,78 @@ export const resolveServiceProduct = cache(async (slug: string): Promise<WCProdu
   }
   return getProductBySlug(slug)
 })
+
+// ─── Precio para cobrar ───────────────────────────────────────────────────────
+
+// Error de validación del carrito: /api/checkout lo devuelve como 400 y el
+// mensaje se muestra tal cual al usuario.
+export class CheckoutValidationError extends Error {}
+
+export type ChargeableItem = {
+  name: string
+  price: string
+  image: string | null
+  downloadable: boolean
+}
+
+const isWCNotFound = (err: unknown) =>
+  err instanceof Error && /^WooCommerce API error: (400|404) /.test(err.message)
+
+// Nombre, precio e imagen vigentes de WooCommerce para cobrar una línea del
+// carrito. Siempre sin caché (wcFetch usa no-store): nunca se cobra con datos
+// del navegador ni con una copia cacheada del catálogo.
+export async function getChargeableItem(productId: number, variationId: number | null): Promise<ChargeableItem> {
+  let product: WCProduct
+  try {
+    product = await wcFetch<WCProduct>(`/products/${productId}`)
+  } catch (err) {
+    if (isWCNotFound(err)) throw new CheckoutValidationError("Uno de los productos del carrito ya no está disponible. Quítalo e inténtalo de nuevo.")
+    throw err
+  }
+
+  if (product.status !== "publish" || !product.purchasable) {
+    throw new CheckoutValidationError(`"${product.name}" ya no está disponible. Quítalo del carrito e inténtalo de nuevo.`)
+  }
+
+  if (product.type === "variable" && !variationId) {
+    throw new CheckoutValidationError(`Falta elegir una opción de "${product.name}". Quítalo del carrito y vuelve a añadirlo desde su ficha.`)
+  }
+  if (product.type !== "variable" && variationId) {
+    throw new CheckoutValidationError(`La opción elegida de "${product.name}" no es válida. Quítalo del carrito y vuelve a añadirlo.`)
+  }
+
+  let item: ChargeableItem = {
+    name: product.name,
+    price: product.price,
+    image: product.images?.[0]?.src ?? null,
+    downloadable: product.downloadable,
+  }
+
+  if (variationId) {
+    let variation: WCVariation
+    try {
+      variation = await wcFetch<WCVariation>(`/products/${productId}/variations/${variationId}`)
+    } catch (err) {
+      if (isWCNotFound(err)) throw new CheckoutValidationError(`La opción elegida de "${product.name}" ya no está disponible. Quítalo del carrito y vuelve a añadirlo.`)
+      throw err
+    }
+    if (variation.status !== "publish" || !variation.purchasable) {
+      throw new CheckoutValidationError(`La opción elegida de "${product.name}" ya no está disponible. Quítalo del carrito y vuelve a añadirlo.`)
+    }
+    item = {
+      name: `${product.name} — ${variation.attributes.map(a => a.option).join(", ")}`,
+      price: variation.price,
+      image: variation.image?.src || item.image,
+      downloadable: variation.downloadable ?? product.downloadable,
+    }
+  }
+
+  if (!(parseFloat(item.price) > 0)) {
+    throw new CheckoutValidationError(`"${item.name}" no tiene un precio válido ahora mismo. Escríbenos y lo revisamos.`)
+  }
+
+  return item
+}
 
 // Obtener las variaciones de un producto variable
 export async function getProductVariations(productId: number): Promise<WCVariation[]> {

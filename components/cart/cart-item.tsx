@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Minus, Plus, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { LocalCartItem } from "@/context/cart-context"
+import { MAX_QTY_PER_LINE } from "@/lib/cart-limits"
 
 interface CartItemProps {
   item: LocalCartItem
@@ -56,6 +57,7 @@ export function CartItem({ item, onUpdateQuantity, onRemove }: CartItemProps) {
           size="icon"
           className="h-8 w-8"
           onClick={() => onUpdateQuantity(id, quantity + 1)}
+          disabled={quantity >= MAX_QTY_PER_LINE}
         >
           <Plus className="h-4 w-4" />
         </Button>

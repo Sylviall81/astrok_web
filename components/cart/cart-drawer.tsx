@@ -29,21 +29,25 @@ export function CartDrawer() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // Solo qué y cuánto: nombre, precio e imagen los pone el servidor desde WooCommerce
           items: cartItems.map((item) => ({
             id: item.product.id,
             variationId: item.variationId ?? null,
-            name: item.product.name,
-            price: item.product.price,
             quantity: item.quantity,
-            image: item.product.images?.[0]?.src || null,
-            downloadable: item.product.downloadable,
           })),
         }),
       })
 
+      const data = await response.json().catch(() => ({}))
+
+      // 400 = el carrito no es válido (producto retirado, falta opción, cantidad...):
+      // se muestra el motivo que da el servidor.
+      if (response.status === 400 && data.error) {
+        showNotification("error", "Revisa tu carrito", data.error)
+        return
+      }
       if (!response.ok) throw new Error("Error en la respuesta del servidor")
 
-      const data = await response.json()
       if (data.url) {
         window.location.href = data.url
       } else {
