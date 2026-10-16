@@ -1,22 +1,11 @@
 import type { Metadata } from "next"
-import { getProductBySlug, getProductById } from "@/lib/woocommerce"
+import { resolveProduct } from "@/lib/woocommerce"
 
 const BASE_URL = "https://www.astrokaleido.com"
 
-// Resuelve el producto igual que la página cliente: por slug real o, si el
-// segmento es numérico, por el ID de WooCommerce (para poder apuntar el
-// canonical siempre a la URL "oficial" por slug y evitar contenido duplicado).
-async function resolveProduct(slug: string) {
-  if (/^\d+$/.test(slug)) {
-    try {
-      return await getProductById(Number(slug))
-    } catch {
-      return null
-    }
-  }
-  return getProductBySlug(slug)
-}
-
+// resolveProduct (memoizado) es la misma llamada que hace la página, así que no
+// se duplica la petición a WooCommerce. El canonical apunta siempre a la URL
+// "oficial" por slug aunque se entre por ID, para evitar contenido duplicado.
 export async function generateMetadata({
   params,
 }: {
@@ -25,7 +14,7 @@ export async function generateMetadata({
   const { slug } = await params
   const product = await resolveProduct(slug).catch(() => null)
 
-  if (!product) return {}
+  if (!product || product.status !== "publish") return {}
 
   const canonicalSlug = product.slug || slug
 
