@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import type { WCProduct } from "@/lib/woocommerce"
+import { MAX_QTY_PER_LINE } from "@/lib/cart-limits"
 
 export type LocalCartItem = {
   id: string
@@ -63,7 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       )
       if (existingIndex >= 0) {
         return prev.map((item, i) =>
-          i === existingIndex ? { ...item, quantity: item.quantity + 1 } : item
+          i === existingIndex ? { ...item, quantity: Math.min(item.quantity + 1, MAX_QTY_PER_LINE) } : item
         )
       }
       return [...prev, { id: generateId(), product, quantity: 1, variationId }]
@@ -73,7 +74,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const updateQuantity = (id: string, quantity: number) => {
     setCartItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, quantity } : item))
+      prev.map((item) => (item.id === id ? { ...item, quantity: Math.min(quantity, MAX_QTY_PER_LINE) } : item))
     )
   }
 
