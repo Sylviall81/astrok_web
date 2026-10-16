@@ -89,7 +89,21 @@ export type WCOrderDownload = {
 
 // ─── Funciones de fetch ───────────────────────────────────────────────────────
 
-async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
+export class WCApiError extends Error {
+  constructor(message: string, public status: number) {
+    super(message)
+  }
+}
+
+// Segundos que se cachean las lecturas de catálogo (productos y variaciones).
+// Pedidos y descargas siguen sin caché.
+const CATALOG_REVALIDATE = 300
+
+async function wcFetch<T>(
+  endpoint: string,
+  params?: Record<string, string>,
+  opts?: { revalidate?: number },
+): Promise<T> {
   const url = new URL(`${WC_API_BASE}${endpoint}`)
   const { consumer_key, consumer_secret } = getWCAuthParams()
 
@@ -102,13 +116,16 @@ async function wcFetch<T>(endpoint: string, params?: Record<string, string>): Pr
   }
 
   const res = await fetch(url.toString(), {
-    cache: "no-store",
+    ...(opts?.revalidate ? { next: { revalidate: opts.revalidate } } : { cache: "no-store" }),
     signal: AbortSignal.timeout(15000),
   })
 
   if (!res.ok) {
     const body = await res.text().catch(() => "(no body)")
-    throw new Error(`WooCommerce API error: ${res.status} ${res.statusText} — ${endpoint} — body: ${body.slice(0, 500)}`)
+    throw new WCApiError(
+      `WooCommerce API error: ${res.status} ${res.statusText} — ${endpoint} — body: ${body.slice(0, 500)}`,
+      res.status,
+    )
   }
 
   return res.json() as Promise<T>
@@ -202,37 +219,41 @@ export async function getProducts(params?: Record<string, string>): Promise<WCPr
     status: "publish",
     per_page: "100",
     ...params,
-  })
+  }, { revalidate: CATALOG_REVALIDATE })
 }
 
 // Obtener un producto por su slug
 export async function getProductBySlug(slug: string): Promise<WCProduct | null> {
-  const products = await wcFetch<WCProduct[]>("/products", { slug })
+  const products = await wcFetch<WCProduct[]>("/products", { slug }, { revalidate: CATALOG_REVALIDATE })
   return products[0] ?? null
 }
 
 // Obtener un producto por su ID
 export async function getProductById(id: number): Promise<WCProduct> {
-  return wcFetch<WCProduct>(`/products/${id}`)
+  return wcFetch<WCProduct>(`/products/${id}`, undefined, { revalidate: CATALOG_REVALIDATE })
 }
 
-// Resuelve un producto de servicio por slug real o, si el segmento de la URL
-// es numérico, por ID de WooCommerce. Memoizado por request con React `cache`
-// para que generateMetadata y la página no dupliquen la misma llamada a la API.
-export const resolveServiceProduct = cache(async (slug: string): Promise<WCProduct | null> => {
+// Resuelve un producto por slug real o, si el segmento de la URL es numérico,
+// por ID de WooCommerce. Memoizado por request con React `cache` para que
+// generateMetadata y la página no dupliquen la misma llamada a la API.
+// Devuelve null solo si el producto no existe; un fallo de la API se propaga.
+export const resolveProduct = cache(async (slug: string): Promise<WCProduct | null> => {
   if (/^\d+$/.test(slug)) {
     try {
       return await getProductById(Number(slug))
-    } catch {
-      return null
+    } catch (err) {
+      if (err instanceof WCApiError && err.status === 404) return null
+      throw err
     }
   }
   return getProductBySlug(slug)
 })
 
+export const resolveServiceProduct = resolveProduct
+
 // Obtener las variaciones de un producto variable
 export async function getProductVariations(productId: number): Promise<WCVariation[]> {
-  return wcFetch<WCVariation[]>(`/products/${productId}/variations`)
+  return wcFetch<WCVariation[]>(`/products/${productId}/variations`, undefined, { revalidate: CATALOG_REVALIDATE })
 }
 
 // Obtener productos por categoría

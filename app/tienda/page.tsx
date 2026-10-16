@@ -1,11 +1,10 @@
-"use client"
+import { getProducts } from "@/lib/woocommerce"
+import { TiendaClient } from "./tienda-client"
 
-import { useProducts } from "@/context/products-context"
-import { ProductList } from "@/app/servicios/product-list"
+export const revalidate = 300
 
-export default function TiendaPage() {
-  const { products, loading, error } = useProducts()
-
+export default async function TiendaPage() {
+  const products = await getProducts()
   const infoproductos = products.filter(p =>
     p.categories?.some(c => c.slug === "infoproductos")
   )
@@ -20,13 +19,7 @@ export default function TiendaPage() {
           </p>
         </div>
 
-        {loading ? (
-          <p className="text-center">Cargando productos...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
-        ) : (
-          <ProductList products={infoproductos} />
-        )}
+        <TiendaClient initialProducts={infoproductos} />
       </div>
     </div>
   )
