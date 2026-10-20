@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server"
 import { timingSafeEqual } from "node:crypto"
 
 // Revalidación bajo demanda, llamada desde WordPress (mu-plugin astrok-revalidate.php)
-// al publicar, actualizar, despublicar o enviar a la papelera un post.
+// al publicar, actualizar, despublicar o enviar a la papelera un post. También
+// renueva el catálogo de productos.
 // Body: { slug?: string, oldSlug?: string } — oldSlug solo si cambió el permalink.
 
 const SLUG_RE = /^[a-z0-9-]+$/
@@ -32,6 +33,14 @@ export async function POST(req: NextRequest) {
   revalidatePath("/blog/page/[n]", "page") // un post nuevo desplaza la paginación
   revalidatePath("/api/posts") // lo que lee la sección de artículos del home
   for (const slug of slugs) revalidatePath(`/blog/${slug}`)
+
+  // Catálogo de WooCommerce: el listado que leen el home y /servicios (vía
+  // /api/products), la tienda y las fichas. Barato: solo marca la caché como caducada.
+  revalidatePath("/api/products")
+  revalidatePath("/servicios")
+  revalidatePath("/servicios/[slug]", "page")
+  revalidatePath("/tienda")
+  revalidatePath("/tienda/[slug]", "page")
 
   return NextResponse.json({ revalidated: true, slugs })
 }
