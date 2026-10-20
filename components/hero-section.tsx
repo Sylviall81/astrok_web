@@ -3,7 +3,7 @@ import Link from "next/link"
 export default function HeroSection() {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden bg-cover bg-center bg-no-repeat" 
-    style={{ backgroundImage: "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto/v1792500788/Dise%C3%B1o_sin_t%C3%ADtulo_c2mite.png')" }}>
+    style={{ backgroundImage: "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_2000/v1792510634/copy_of_stocksnap-stars-2616537_wftmfa.jpg')" }}>
 
       <div className="absolute inset-0 bg-sri-yantra-pattern bg-no-repeat bg-center bg-contain z-0"></div>
       <div className="container-custom relative z-10">
