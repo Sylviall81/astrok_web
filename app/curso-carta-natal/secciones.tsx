@@ -155,7 +155,7 @@ export function PartesAlTodo() {
           {partes.map(({ titulo, texto }) => (
             <div key={titulo} className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl text-primary mb-2">{titulo}</h3>
-              <p className="text-body text-sm leading-relaxed">{texto}</p>
+              <p className="text-body lg:text-sm leading-relaxed">{texto}</p>
             </div>
           ))}
         </div>
@@ -480,8 +480,8 @@ export function PreguntasFrecuentes() {
           <h2 className="section-title text-center">Preguntas frecuentes</h2>
           <div className="divide-y divide-dorado/40 border-y border-dorado/40">
             {preguntas.map(({ pregunta, respuesta }) => (
-              <details key={pregunta} className="group py-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-lato text-xl font-semibold text-primary [&::-webkit-details-marker]:hidden">
+              <details key={pregunta} className="group">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 font-lato text-xl font-semibold text-primary [&::-webkit-details-marker]:hidden">
                   {pregunta}
                   <span
                     aria-hidden="true"
@@ -490,7 +490,7 @@ export function PreguntasFrecuentes() {
                     +
                   </span>
                 </summary>
-                <div className="pt-4 text-body leading-relaxed">{respuesta}</div>
+                <div className="pb-5 text-body leading-relaxed">{respuesta}</div>
               </details>
             ))}
           </div>
@@ -508,7 +508,7 @@ export function Preinscripcion() {
         <h2 className="section-title text-white text-center">Preinscríbete</h2>
         <div className="bg-white rounded-lg p-6 md:p-10 shadow-md">
           <PreinscripcionForm />
-          <p className="mt-6 text-center text-sm text-muted-foreground">
+          <p className="mt-6 text-center lg:text-sm text-muted-foreground">
             La preinscripción no te compromete a nada.
           </p>
         </div>

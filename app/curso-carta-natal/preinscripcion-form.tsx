@@ -45,10 +45,10 @@ const ESTADO_INICIAL = {
 }
 
 const inputClass =
-  "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+  "w-full min-h-11 lg:min-h-0 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
 const labelClass = "block text-sm font-medium text-primary mb-1"
 const legendClass = "text-sm font-medium text-primary mb-2"
-const opcionClass = "flex items-center gap-2 text-body cursor-pointer"
+const opcionClass = "flex min-h-11 lg:min-h-0 items-center gap-2 text-body cursor-pointer"
 const checkClass = "w-4 h-4 shrink-0 cursor-pointer accent-primary"
 
 function GrupoRadio({
@@ -67,7 +67,7 @@ function GrupoRadio({
   return (
     <fieldset>
       <legend className={legendClass}>{leyenda}</legend>
-      <div className="space-y-2">
+      <div className="lg:space-y-2">
         {opciones.map((opcion) => (
           <label key={opcion.valor} className={opcionClass}>
             <input
@@ -214,7 +214,7 @@ export default function PreinscripcionForm() {
 
       <fieldset>
         <legend className={legendClass}>¿Te iría mejor otro horario? (opcional)</legend>
-        <div className="space-y-2">
+        <div className="lg:space-y-2">
           {HORARIOS.map((opcion) => (
             <label key={opcion.valor} className={opcionClass}>
               <input
@@ -237,11 +237,11 @@ export default function PreinscripcionForm() {
             className={`${inputClass} mt-3`}
           />
         )}
-        <p className="mt-2 text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
+        <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
       </fieldset>
 
-      <div className="space-y-3 border-t border-neutral-light pt-6">
-        <label className="flex items-start gap-2 text-body cursor-pointer">
+      <div className="border-t border-neutral-light pt-4 lg:pt-6 lg:space-y-3">
+        <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
           <input
             type="checkbox"
             checked={form.claseAbierta}
@@ -251,7 +251,7 @@ export default function PreinscripcionForm() {
           Quiero ir a la clase abierta del 12 de diciembre
         </label>
 
-        <label className="flex items-start gap-2 text-body cursor-pointer">
+        <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
           <input
             type="checkbox"
             checked={form.privacidad}
@@ -267,7 +267,7 @@ export default function PreinscripcionForm() {
           </span>
         </label>
 
-        <label className="flex items-start gap-2 text-body cursor-pointer">
+        <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
           <input
             type="checkbox"
             checked={form.newsletter}
