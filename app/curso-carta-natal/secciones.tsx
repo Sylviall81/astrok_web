@@ -51,7 +51,8 @@ export function Cabecera() {
 
   return (
     <section className="relative overflow-hidden bg-primary py-20 md:py-28">
-      <SriYantraDorado className="absolute inset-0 opacity-10" />
+      {/* Con margen: el dibujo llega al borde del PNG y, a sangre, se veía cortado */}
+      <SriYantraDorado className="absolute inset-x-4 inset-y-8 opacity-[0.22]" />
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight">
