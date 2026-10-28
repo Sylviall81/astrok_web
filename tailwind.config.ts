@@ -31,6 +31,8 @@ const config: Config = {
         accent: "#AA9CB8", // Lila suave
         "neutral-light": "#f2f2f2", // Gris claro
         "neutral-dark": "#000309", // Casi negro
+        crema: "#F6F5EF", // Fondo de secciones claras y círculos de iconos
+        dorado: "#B09A7B", // Solo accesorio: ornamentos y líneas finas
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
