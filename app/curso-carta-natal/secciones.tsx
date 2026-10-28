@@ -1,4 +1,5 @@
 import type React from "react"
+import Image from "next/image"
 import { HuecoIcono, HuecoImagen, Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
 import PreinscripcionForm from "./preinscripcion-form"
@@ -224,13 +225,24 @@ export function ComoSeVive() {
   return (
     <section className="py-16 md:py-24">
       <div className="container-custom">
-        <div className="text-center mb-12">
-          <h2 className="section-title">Cómo se vive</h2>
-          <p className="text-body text-lg leading-relaxed max-w-3xl mx-auto">
-            Desde la primera clase lees parte de tu propia carta. Las clases combinan teoría y práctica. Además de ver
-            tus tendencias, nos preguntamos desde dónde haces lo que haces y qué necesidad hay detrás, también de lo
-            que no haces.
-          </p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
+          <div className="relative aspect-[3/2] rounded-lg overflow-hidden order-last lg:order-first">
+            <Image
+              src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1793218215/kaleidoscope__web_eszgmg.jpg"
+              alt="Manos sobre una carta natal impresa, junto a libros de astrología y una vela"
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <div>
+            <h2 className="section-title">Cómo se vive</h2>
+            <p className="text-body text-lg leading-relaxed">
+              Desde la primera clase lees parte de tu propia carta. Las clases combinan teoría y práctica. Además de ver
+              tus tendencias, nos preguntamos desde dónde haces lo que haces y qué necesidad hay detrás, también de lo
+              que no haces.
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -278,19 +290,30 @@ export function Recorrido() {
     <section id="recorrido" className={`py-16 md:py-24 bg-crema ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <h2 className="section-title text-center">Recorrido</h2>
-        <ol className="max-w-4xl mx-auto divide-y divide-dorado/40 border-y border-dorado/40">
-          {bloques.map(({ titulo, texto }, i) => (
-            <li key={titulo} className="grid grid-cols-[3rem_1fr] md:grid-cols-[5rem_1fr] gap-4 py-8">
-              <span aria-hidden="true" className="font-lato text-3xl text-dorado leading-none">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3 className="text-2xl text-primary mb-2">{titulo}</h3>
-                <p className="text-body leading-relaxed">{texto}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-12 items-start max-w-6xl mx-auto">
+          <div className="relative aspect-[3/2] rounded-lg overflow-hidden lg:sticky lg:top-32">
+            <Image
+              src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1793218217/IMG_9694_web_pcq8zv.jpg"
+              alt="Carta natal en una tablilla junto al libro Las doce casas"
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-cover"
+            />
+          </div>
+          <ol className="divide-y divide-dorado/40 border-y border-dorado/40">
+            {bloques.map(({ titulo, texto }, i) => (
+              <li key={titulo} className="grid grid-cols-[3rem_1fr] md:grid-cols-[5rem_1fr] gap-4 py-8">
+                <span aria-hidden="true" className="font-lato text-3xl text-dorado leading-none">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 className="text-2xl text-primary mb-2">{titulo}</h3>
+                  <p className="text-body leading-relaxed">{texto}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   )
@@ -406,8 +429,15 @@ export function QuienSoy() {
     <section className="py-16 md:py-24">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
-          {/* TODO: foto real de Sylvia con luz natural */}
-          <HuecoImagen etiqueta="Foto de Sylvia" className="h-[400px] md:h-[480px]" />
+          <div className="relative h-[400px] md:h-[480px] rounded-lg overflow-hidden">
+            <Image
+              src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1793218211/IMG_9543_web_fvtgd4.jpg"
+              alt="Sylvia Llorente"
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="object-cover object-[center_65%]"
+            />
+          </div>
           <div>
             <h2 className="section-title">Quién soy</h2>
             <p className="text-body leading-relaxed mb-6">
