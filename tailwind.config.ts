@@ -102,6 +102,7 @@ const config: Config = {
        },
       backgroundImage: {
         "sri-yantra-pattern": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_1200/v1792509645/KALEIDOSCOPE_sriyantra_real_violeta_1_qcumzv.png')",
+        "sri-yantra-dorado": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_1600/v1793218516/KALEIDOSCOPE_sriyantra_real_dorado_1_vxk6oj.png')",
       },
     },
   },

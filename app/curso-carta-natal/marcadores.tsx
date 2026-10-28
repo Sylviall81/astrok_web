@@ -27,16 +27,6 @@ export function HuecoIcono() {
   return <div aria-hidden="true" className="h-14 w-14 shrink-0 rounded-full border border-dorado bg-crema" />
 }
 
-// Sri Yantra en dorado: el PNG (el mismo que bg-sri-yantra-pattern) se usa como máscara
-// sobre un fondo dorado, porque el archivo es violeta.
-const SRI_YANTRA_URL =
-  "https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_1200/v1792509645/KALEIDOSCOPE_sriyantra_real_violeta_1_qcumzv.png"
-
-export function SriYantraDorado({ className = "" }: { className?: string }) {
-  const mask = `url('${SRI_YANTRA_URL}') center / contain no-repeat`
-  return <div aria-hidden="true" className={`bg-dorado ${className}`} style={{ mask, WebkitMask: mask }} />
-}
-
 // Desplazamiento de las anclas para que el menú (h-16) y, en escritorio, la barra de la landing (h-12) no tapen la sección
 export const SCROLL_ANCLA = "scroll-mt-16 lg:scroll-mt-28"
 

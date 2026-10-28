@@ -1,5 +1,5 @@
 import type React from "react"
-import { HuecoIcono, HuecoImagen, Pendiente, SCROLL_ANCLA, SeccionCielo, SriYantraDorado } from "./marcadores"
+import { HuecoIcono, HuecoImagen, Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
 import PreinscripcionForm from "./preinscripcion-form"
 
@@ -52,13 +52,22 @@ export function Cabecera() {
   return (
     <section className="relative overflow-hidden bg-primary py-20 md:py-28">
       {/* Con margen: el dibujo llega al borde del PNG y, a sangre, se veía cortado */}
-      <SriYantraDorado className="absolute inset-x-4 inset-y-8 opacity-[0.22]" />
+      {/* TODO: versión elegida, dorado al 75 % con líneas finas. Falta el SVG con trazo #B09A7B; mientras, PNG dorado al 50 % */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-4 inset-y-8 bg-sri-yantra-dorado bg-contain bg-center bg-no-repeat opacity-50"
+      />
       <div className="container-custom relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="relative max-w-3xl mx-auto text-center">
+          {/* Degradado violeta detrás del texto: tapa las líneas del Sri Yantra bajo las letras y se desvanece hacia fuera */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-y-0 -inset-x-8 -z-10 bg-[radial-gradient(closest-side,rgba(74,63,116,0.95)_60%,rgba(74,63,116,0)_100%)] md:bg-[radial-gradient(closest-side,rgba(74,63,116,0.95)_35%,rgba(74,63,116,0)_100%)]"
+          />
           <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight">
             Tu carta natal: de las partes al todo
           </h1>
-          <p className="text-xl md:text-2xl text-white/85 mb-8 font-lato">
+          <p className="text-xl md:text-2xl text-white/85 mb-8 font-lato font-semibold md:font-normal">
             Curso vivencial de iniciación a la astrología psicológica
           </p>
           <ul className="flex flex-wrap justify-center gap-3 mb-10">
