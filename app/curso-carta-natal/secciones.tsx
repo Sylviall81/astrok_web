@@ -1,9 +1,45 @@
 import type React from "react"
-import { HuecoIcono, HuecoImagen, Pendiente, SeccionCielo } from "./marcadores"
+import { HuecoIcono, HuecoImagen, Pendiente, SCROLL_ANCLA, SeccionCielo, SriYantraDorado } from "./marcadores"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
 import PreinscripcionForm from "./preinscripcion-form"
 
 // Textos: contenido_landing.md (versión del 28/10/2026). No añadir textos que no estén allí.
+
+/* Barra de anclas bajo el menú general: fija en escritorio (lg), deslizable y no fija en móvil */
+export function NavegacionCurso() {
+  const anclas = [
+    { href: "#para-quien", texto: "Para quién es" },
+    { href: "#recorrido", texto: "Recorrido" },
+    { href: "#precio", texto: "Precio" },
+    { href: "#clase-abierta", texto: "Clase abierta" },
+    { href: "#preguntas", texto: "Preguntas" },
+  ]
+
+  return (
+    <nav
+      aria-label="Secciones del curso"
+      className="z-40 border-b border-neutral-light bg-white/90 backdrop-blur lg:sticky lg:top-16"
+    >
+      <div className="container-custom flex h-12 items-center gap-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {anclas.map(({ href, texto }) => (
+          <a
+            key={href}
+            href={href}
+            className="flex h-full items-center text-sm text-muted-foreground transition-colors hover:text-primary"
+          >
+            {texto}
+          </a>
+        ))}
+        <a
+          href="#preinscripcion"
+          className="ml-auto flex min-h-11 shrink-0 items-center rounded-md bg-primary px-4 text-sm lg:min-h-0 lg:py-1.5 font-semibold text-white transition-all hover:bg-opacity-90"
+        >
+          Preinscríbete
+        </a>
+      </div>
+    </nav>
+  )
+}
 
 /* 1. Cabecera: violeta liso + Sri Yantra al 6 %, sin cielo estrellado */
 export function Cabecera() {
@@ -15,11 +51,7 @@ export function Cabecera() {
 
   return (
     <section className="relative overflow-hidden bg-primary py-20 md:py-28">
-      {/* El PNG del Sri Yantra es violeta: se pasa a blanco para que se vea tono sobre tono */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-sri-yantra-pattern bg-contain bg-center bg-no-repeat opacity-[0.06] brightness-0 invert"
-      />
+      <SriYantraDorado className="absolute inset-0 opacity-10" />
       <div className="container-custom relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl text-white mb-6 leading-tight">
@@ -76,7 +108,7 @@ export function FichaRapida() {
 /* 2. Para quién es: dos tarjetas con la tarjeta oscura en el centro */
 export function ParaQuien() {
   return (
-    <section className="py-16 md:py-24">
+    <section id="para-quien" className={`py-16 md:py-24 ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <h2 className="section-title text-center">Para quién es</h2>
 
@@ -233,7 +265,7 @@ export function Recorrido() {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-crema">
+    <section id="recorrido" className={`py-16 md:py-24 bg-crema ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <h2 className="section-title text-center">Recorrido</h2>
         <ol className="max-w-4xl mx-auto divide-y divide-dorado/40 border-y border-dorado/40">
@@ -292,7 +324,7 @@ export function Precio() {
   ]
 
   return (
-    <SeccionCielo>
+    <SeccionCielo id="precio" className={SCROLL_ANCLA}>
       <div className="text-center mb-12">
         <h2 className="section-title text-white">Precio</h2>
         <p className="text-lg text-white max-w-2xl mx-auto">
@@ -337,7 +369,7 @@ export function Precio() {
 /* 8. Clase abierta: bloque grande y centrado */
 export function ClaseAbierta() {
   return (
-    <section className="py-16 md:py-24 bg-crema">
+    <section id="clase-abierta" className={`py-16 md:py-24 bg-crema ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <div className="max-w-4xl mx-auto bg-white border-2 border-dorado/40 rounded-lg p-10 md:p-16 shadow-md text-center flex flex-col items-center">
           <h2 className="section-title mb-3">¿Quieres probar antes?</h2>
@@ -474,7 +506,7 @@ export function PreguntasFrecuentes() {
   ]
 
   return (
-    <section className="py-16 md:py-24">
+    <section id="preguntas" className={`py-16 md:py-24 ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <div className="max-w-3xl mx-auto">
           <h2 className="section-title text-center">Preguntas frecuentes</h2>
@@ -503,7 +535,7 @@ export function PreguntasFrecuentes() {
 /* 12. Formulario de preinscripción: cielo estrellado suave con tarjeta blanca */
 export function Preinscripcion() {
   return (
-    <SeccionCielo id="preinscripcion" className="scroll-mt-16">
+    <SeccionCielo id="preinscripcion" className={SCROLL_ANCLA}>
       <div className="max-w-2xl mx-auto">
         <h2 className="section-title text-white text-center">Preinscríbete</h2>
         <div className="bg-white rounded-lg p-6 md:p-10 shadow-md">

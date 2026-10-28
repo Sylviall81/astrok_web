@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import {
+  NavegacionCurso,
   Cabecera,
   FichaRapida,
   ParaQuien,
@@ -32,6 +33,7 @@ export const metadata: Metadata = {
 export default function CursoCartaNatalPage() {
   return (
     <>
+      <NavegacionCurso />
       <Cabecera />
       <FichaRapida />
       <ParaQuien />
