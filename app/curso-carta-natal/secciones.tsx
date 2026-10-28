@@ -63,7 +63,7 @@ export function Cabecera() {
           </p>
           <ul className="flex flex-wrap justify-center gap-3 mb-10">
             {datos.map((dato) => (
-              <li key={dato} className="rounded-full border border-white/30 px-4 py-1.5 text-sm text-white/90">
+              <li key={dato} className="rounded-full border border-white/30 bg-primary/75 px-4 py-1.5 text-sm text-white/90">
                 {dato}
               </li>
             ))}
