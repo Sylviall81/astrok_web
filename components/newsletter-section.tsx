@@ -74,7 +74,7 @@ export default function NewsletterSection() {
                 required
                 maxLength={254}
                 autoComplete="email"
-                className="flex-grow px-4 py-3 rounded-md text-body focus:outline-none focus:ring-2 focus:ring-accent"
+                className="min-w-0 flex-grow px-4 py-3 rounded-md text-body focus:outline-none focus:ring-2 focus:ring-accent"
               />
               <button
                 type="submit"

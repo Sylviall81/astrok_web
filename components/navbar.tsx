@@ -7,12 +7,14 @@ import { Menu, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 //import { useRouter } from "next/navigation"
 
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
   //const router = useRouter()
 
   const [mounted, setMounted] = useState(false)
@@ -22,6 +24,9 @@ useEffect(() => {
 }, [])
 
 if (!mounted) return null
+
+// La landing del curso lleva su propia barra (app/curso-carta-natal/navegacion-curso.tsx)
+if (pathname?.startsWith("/curso-carta-natal")) return null
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 

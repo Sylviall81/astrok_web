@@ -1,0 +1,100 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import Image from "next/image"
+import { Home, Moon, Sun } from "lucide-react"
+import { useTheme } from "next-themes"
+
+// Única barra de la landing: el navbar general se oculta en esta ruta (components/navbar.tsx).
+// Escritorio: una fila. Móvil: logo, casita y modo oscuro arriba; debajo, todas las anclas a la vista
+// (sin deslizar) y Preinscríbete a todo el ancho.
+const ANCLAS = [
+  { href: "#para-quien", texto: "Para quién es" },
+  { href: "#recorrido", texto: "Recorrido" },
+  { href: "#precio", texto: "Precio" },
+  { href: "#clase-abierta", texto: "Clase abierta" },
+  { href: "#preguntas", texto: "Preguntas", textoMovil: "FAQ" },
+]
+
+const BOTON =
+  "flex min-h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 lg:px-6"
+
+const LOGO_CLARO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
+const LOGO_OSCURO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1776253747/logoBlanco_gs6lzj.png"
+
+export function NavegacionCurso() {
+  const { resolvedTheme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+
+  const oscuro = mounted && resolvedTheme === "dark"
+
+  const ancla = "flex h-full shrink-0 items-center text-muted-foreground transition-colors hover:text-primary dark:hover:text-white"
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/95 backdrop-blur">
+      <div className="container-custom flex h-16 items-center gap-3 lg:h-20 lg:gap-6">
+        <div className="flex shrink-0 items-center gap-1 lg:gap-3">
+          <Link href="/" aria-label="Kaleidoscope, ir a la página de inicio">
+            <Image
+              src={oscuro ? LOGO_OSCURO : LOGO_CLARO}
+              alt="Logotipo Kaleidoscope"
+              width={400}
+              height={100}
+              className="h-7 w-auto object-contain lg:h-10"
+            />
+          </Link>
+          <Link
+            href="/"
+            aria-label="Ir a la página de inicio"
+            className="flex h-10 w-9 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10"
+          >
+            <Home className="h-5 w-5" />
+          </Link>
+        </div>
+
+        <nav aria-label="Secciones del curso" className="mx-auto hidden h-full items-center gap-7 lg:flex">
+          {ANCLAS.map(({ href, texto }) => (
+            <a key={href} href={href} className={`${ancla} text-sm`}>
+              {texto}
+            </a>
+          ))}
+        </nav>
+
+        <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0 lg:gap-2">
+          <button
+            type="button"
+            aria-label={oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+            onClick={() => setTheme(oscuro ? "light" : "dark")}
+            className="flex h-10 w-9 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10"
+          >
+            {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
+          <a href="#preinscripcion" className={`${BOTON} hidden lg:flex`}>
+            Preinscríbete
+          </a>
+        </div>
+      </div>
+
+      <div className="border-t border-black/5 dark:border-white/10 lg:hidden">
+        <nav aria-label="Secciones del curso" className="container-custom flex h-11 items-center justify-between">
+          {ANCLAS.map(({ href, texto, textoMovil }) => (
+            <a key={href} href={href} className={`${ancla} text-[0.8rem]`}>
+              {textoMovil ?? texto}
+            </a>
+          ))}
+        </nav>
+        <div className="container-custom pb-2.5">
+          <a href="#preinscripcion" className={`${BOTON} min-h-10 w-full justify-center`}>
+            Preinscríbete
+          </a>
+        </div>
+      </div>
+    </header>
+  )
+}

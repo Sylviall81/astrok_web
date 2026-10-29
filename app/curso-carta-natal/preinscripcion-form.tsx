@@ -45,9 +45,9 @@ const ESTADO_INICIAL = {
 }
 
 const inputClass =
-  "w-full min-h-11 lg:min-h-0 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-const labelClass = "block text-sm font-medium text-primary mb-1"
-const legendClass = "text-sm font-medium text-primary mb-2"
+  "w-full min-h-11 px-4 py-3 bg-crema border border-black/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-muted dark:border-white/15 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-accent"
+const labelClass = "block text-sm font-medium text-primary dark:text-accent mb-1"
+const legendClass = "text-sm font-medium text-primary dark:text-accent mb-2"
 const opcionClass = "flex min-h-11 lg:min-h-0 items-center gap-2 text-body cursor-pointer"
 const checkClass = "w-4 h-4 shrink-0 cursor-pointer accent-primary"
 
@@ -57,19 +57,32 @@ function GrupoRadio({
   opciones,
   valor,
   onChange,
+  disposicion = "lista",
 }: {
   nombre: string
   leyenda: string
   opciones: { valor: string; texto: string }[]
   valor: string
   onChange: (valor: string) => void
+  // lista: una opción por línea; fila: en línea; casillas: recuadros en rejilla (como en el diseño de referencia)
+  disposicion?: "lista" | "fila" | "casillas"
 }) {
+  const contenedor = {
+    lista: "lg:space-y-2",
+    fila: "flex flex-wrap gap-x-6",
+    casillas: "grid grid-cols-2 gap-2 md:grid-cols-4",
+  }[disposicion]
+  const etiquetaOpcion =
+    disposicion === "casillas"
+      ? `${opcionClass} rounded-lg border border-black/10 bg-crema px-3 py-2.5 has-[:checked]:border-primary dark:border-white/15 dark:bg-muted dark:has-[:checked]:border-accent`
+      : opcionClass
+
   return (
     <fieldset>
       <legend className={legendClass}>{leyenda}</legend>
-      <div className="lg:space-y-2">
+      <div className={contenedor}>
         {opciones.map((opcion) => (
-          <label key={opcion.valor} className={opcionClass}>
+          <label key={opcion.valor} className={etiquetaOpcion}>
             <input
               type="radio"
               name={nombre}
@@ -202,6 +215,7 @@ export default function PreinscripcionForm() {
         opciones={PRECIOS}
         valor={form.precio}
         onChange={(v) => set("precio", v)}
+        disposicion="casillas"
       />
 
       <GrupoRadio
@@ -210,6 +224,7 @@ export default function PreinscripcionForm() {
         opciones={EXPERIENCIA}
         valor={form.experiencia}
         onChange={(v) => set("experiencia", v)}
+        disposicion="fila"
       />
 
       <fieldset>
@@ -240,7 +255,7 @@ export default function PreinscripcionForm() {
         <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
       </fieldset>
 
-      <div className="border-t border-neutral-light pt-4 lg:pt-6 lg:space-y-3">
+      <div className="border-t border-neutral-light dark:border-white/10 pt-4 lg:pt-6 lg:space-y-3">
         <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
           <input
             type="checkbox"

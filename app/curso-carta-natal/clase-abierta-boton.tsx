@@ -9,7 +9,7 @@ export default function ClaseAbiertaBoton() {
     <a
       href="#preinscripcion"
       onClick={() => window.dispatchEvent(new Event(EVENTO_CLASE_ABIERTA))}
-      className="btn-secondary px-10"
+      className="btn-secondary px-10 dark:border-accent dark:text-accent dark:hover:bg-accent/10"
     >
       Quiero ir a la clase abierta
     </a>

@@ -6,6 +6,7 @@ import {
   ParaQuien,
   PartesAlTodo,
   ComoSeVive,
+  PuenteRecorrido,
   Recorrido,
   Fechas,
   Precio,
@@ -39,6 +40,7 @@ export default function CursoCartaNatalPage() {
       <ParaQuien />
       <PartesAlTodo />
       <ComoSeVive />
+      <PuenteRecorrido />
       <Recorrido />
       <Fechas />
       <Precio />
