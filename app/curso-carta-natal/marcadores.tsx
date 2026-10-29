@@ -28,8 +28,8 @@ export function HuecoIcono() {
 }
 
 // Desplazamiento de las anclas para que la barra de la landing no tape la sección
-// (móvil: h-16 + anclas h-11 + botón ≈ 10 rem; escritorio: h-20)
-export const SCROLL_ANCLA = "scroll-mt-40 lg:scroll-mt-20"
+// (móvil: h-16 + anclas h-11 ≈ 7 rem; escritorio: h-20)
+export const SCROLL_ANCLA = "scroll-mt-28 lg:scroll-mt-20"
 
 // Cielo estrellado de la portada (mismo archivo que components/hero-section.tsx),
 // suavizado con una capa violeta para que las estrellas queden tenues y el texto blanco se lea bien.

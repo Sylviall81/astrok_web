@@ -7,8 +7,8 @@ import { Home, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 // Única barra de la landing: el navbar general se oculta en esta ruta (components/navbar.tsx).
-// Escritorio: una fila. Móvil: logo, casita y modo oscuro arriba; debajo, todas las anclas a la vista
-// (sin deslizar) y Preinscríbete a todo el ancho.
+// Escritorio: una fila. Móvil: logo, casita, modo oscuro y Preinscríbete en pequeño arriba;
+// debajo, todas las anclas a la vista (sin deslizar).
 const ANCLAS = [
   { href: "#para-quien", texto: "Para quién es" },
   { href: "#recorrido", texto: "Recorrido" },
@@ -17,8 +17,6 @@ const ANCLAS = [
   { href: "#preguntas", texto: "Preguntas", textoMovil: "FAQ" },
 ]
 
-const BOTON =
-  "flex min-h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-white transition-all hover:bg-opacity-90 lg:px-6"
 
 const LOGO_CLARO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
 const LOGO_OSCURO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1776253747/logoBlanco_gs6lzj.png"
@@ -46,13 +44,13 @@ export function NavegacionCurso() {
               alt="Logotipo Kaleidoscope"
               width={400}
               height={100}
-              className="h-7 w-auto object-contain lg:h-10"
+              className="h-[18px] w-auto object-contain min-[380px]:h-5 lg:h-10"
             />
           </Link>
           <Link
             href="/"
             aria-label="Ir a la página de inicio"
-            className="flex h-10 w-9 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10"
+            className="flex h-10 w-8 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10 lg:w-9"
           >
             <Home className="h-5 w-5" />
           </Link>
@@ -71,11 +69,14 @@ export function NavegacionCurso() {
             type="button"
             aria-label={oscuro ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
             onClick={() => setTheme(oscuro ? "light" : "dark")}
-            className="flex h-10 w-9 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10"
+            className="flex h-10 w-8 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10 lg:w-9"
           >
             {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </button>
-          <a href="#preinscripcion" className={`${BOTON} hidden lg:flex`}>
+          <a
+            href="#preinscripcion"
+            className="flex min-h-9 items-center rounded-lg bg-primary px-3 text-xs font-semibold text-white transition-all hover:bg-opacity-90 lg:min-h-10 lg:px-6 lg:text-sm"
+          >
             Preinscríbete
           </a>
         </div>
@@ -89,11 +90,6 @@ export function NavegacionCurso() {
             </a>
           ))}
         </nav>
-        <div className="container-custom pb-2.5">
-          <a href="#preinscripcion" className={`${BOTON} min-h-10 w-full justify-center`}>
-            Preinscríbete
-          </a>
-        </div>
       </div>
     </header>
   )

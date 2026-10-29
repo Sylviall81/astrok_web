@@ -8,10 +8,11 @@ import { GLIFOS_PLANETAS, GLIFOS_SIGNOS } from "./carta-glifos"
 // Se anima una sola vez, cuando la carta entra en pantalla. Con prefers-reduced-motion se muestra completa.
 //
 // Cada palabra sale grande en el centro de la carta, su capa aparece medio segundo después y luego:
-// - en escritorio (lg) vuela hasta el título de su tarjeta en "De las partes al todo" ([data-capa-titulo]),
-//   que permanece oculto hasta que la palabra aterriza;
-// - en móvil y tableta, donde las tarjetas quedan lejos, se desvanece y el título de su tarjeta se marca
-//   un instante con la línea fina dorada.
+// - en escritorio (lg) vuela hasta el título de su tarjeta en "De las partes al todo" ([data-capa-titulo])
+//   y se funde con él;
+// - en móvil y tableta, donde las tarjetas quedan lejos, se desvanece en el centro.
+// En los dos casos, al terminar, su tarjeta se resalta un momento (data-resaltado en la tarjeta: título algo
+// más grande, línea fina dorada debajo y borde violeta). Los títulos se ven siempre, nunca se ocultan.
 
 // Datos de astro-seek: 16/01/2027, 10:30, Barcelona, Placidus (longitud eclíptica en grados: Aries 0 = 0°)
 const ELEMENTO = ["fuego", "tierra", "aire", "agua"] as const // Aries, Tauro, Géminis, Cáncer...
@@ -92,7 +93,8 @@ const RADIO_PLANETA = (() => {
 const TIEMPOS = [0, 800, 3400, 6000, 8600] // ms en que sale cada palabra
 const VUELO = 2400 // ms: aparece en el centro, se queda mientras sale su capa y aterriza en su sitio
 const CAPA_EN = 500 // ms desde que sale la palabra hasta que aparece su capa
-const MARCADO = 900 // ms que dura la línea dorada bajo el título
+const FUNDIDO = 300 // ms en que la palabra, ya sobre el título, se funde con él (solo escritorio)
+const RESALTE = 1200 // ms que la tarjeta queda resaltada
 const PALABRAS = ["", "Estructura y elementos", "Signos", "Planetas", "Casas"]
 
 function Glifo({ d, x, y, tam, fill }: { d: string; x: number; y: number; tam: number; fill: string }) {
@@ -129,9 +131,6 @@ export default function CartaEnCapas() {
       return
     }
 
-    // En escritorio, cada título espera a que su palabra aterrice
-    if (escritorio) titulos.forEach((t) => (t.style.opacity = "0"))
-
     const timers: ReturnType<typeof setTimeout>[] = []
     const animaciones: Animation[] = []
     const encender = (i: number) => setCapas((c) => c.map((v, n) => v || n === i))
@@ -145,31 +144,39 @@ export default function CartaEnCapas() {
       const base = parseFloat(getComputedStyle(span).fontSize)
       const s = Math.min(34, caja.clientWidth * 0.085) / base
       const centro = `translate(0px, 0px) scale(${s})`
-      let final: Keyframe = { transform: centro, opacity: 0, offset: 1 }
-      if (escritorio && destino) {
+      const aterriza = escritorio && destino
+      // En escritorio la animación dura VUELO + FUNDIDO: aterriza en el mismo momento que en el original
+      // y después se funde con el título; los offsets del original se reescalan a esa duración
+      const duracion = aterriza ? VUELO + FUNDIDO : VUELO
+      const k = VUELO / duracion
+      const fotogramas: Keyframe[] = [
+        { transform: centro, opacity: 0, offset: 0 },
+        { transform: centro, opacity: 1, offset: 0.17 * k },
+        { transform: centro, opacity: 1, offset: 0.6 * k },
+      ]
+      if (aterriza) {
         const a = span.getBoundingClientRect()
         const b = destino.getBoundingClientRect()
         const dx = b.left + b.width / 2 - (a.left + a.width / 2)
         const dy = b.top + b.height / 2 - (a.top + a.height / 2)
-        final = { transform: `translate(${dx}px, ${dy}px) scale(1)`, opacity: 1, offset: 1 }
+        const sobreTitulo = `translate(${dx}px, ${dy}px) scale(1)`
+        fotogramas.push({ transform: sobreTitulo, opacity: 1, offset: k }, { transform: sobreTitulo, opacity: 0, offset: 1 })
+      } else {
+        fotogramas.push({ transform: centro, opacity: 0, offset: 1 })
       }
-      const vuelo = span.animate(
-        [
-          { transform: centro, opacity: 0, offset: 0 },
-          { transform: centro, opacity: 1, offset: 0.17 },
-          { transform: centro, opacity: 1, offset: 0.6 },
-          final,
-        ],
-        { duration: VUELO, easing: "ease-in-out" },
-      )
+      const vuelo = span.animate(fotogramas, { duration: duracion, easing: "ease-in-out" })
       animaciones.push(vuelo)
-      vuelo.onfinish = () => {
-        span.textContent = ""
-        if (!destino) return
-        destino.style.opacity = "1"
-        destino.dataset.marcado = ""
-        timers.push(setTimeout(() => delete destino.dataset.marcado, MARCADO))
-      }
+      vuelo.onfinish = () => (span.textContent = "")
+
+      // La tarjeta se resalta cuando la palabra llega (escritorio) o se desvanece (móvil)
+      const tarjeta = destino?.closest<HTMLElement>("li")
+      if (!tarjeta) return
+      timers.push(
+        setTimeout(() => {
+          tarjeta.dataset.resaltado = ""
+          timers.push(setTimeout(() => delete tarjeta.dataset.resaltado, RESALTE))
+        }, VUELO),
+      )
     }
 
     const empezar = () => {
@@ -201,8 +208,8 @@ export default function CartaEnCapas() {
       timers.forEach(clearTimeout)
       animaciones.forEach((a) => a.cancel())
       titulos.forEach((t) => {
-        t.style.opacity = ""
-        delete t.dataset.marcado
+        const tarjeta = t.closest<HTMLElement>("li")
+        if (tarjeta) delete tarjeta.dataset.resaltado
       })
     }
   }, [])
@@ -212,9 +219,9 @@ export default function CartaEnCapas() {
     eje: Math.max(11, 11 / escala),
     casa: Math.max(23, 12.5 / escala),
     signo: Math.max(30, 12 / escala),
-    planeta: Math.max(33, 13 / escala),
+    planeta: Math.max(33, 19 / escala), // en móvil, glifo de unos 19 px reales
   }
-  const capa = (i: number) => `transition-opacity duration-[900ms] ease-in-out motion-reduce:transition-none ${capas[i] ? "opacity-100" : "opacity-0"}`
+  const capa = (i: number) => `transition-opacity [transition-duration:900ms] ease-in-out motion-reduce:transition-none ${capas[i] ? "opacity-100" : "opacity-0"}`
   const ejes: [number, string][] = [
     [ASC, "ASC"],
     [(ASC + 180) % 360, "DSC"],
@@ -350,7 +357,7 @@ export default function CartaEnCapas() {
                   }}
                 >
                   <line x1={a} y1={b} x2={c} y2={d} stroke={DORADO} strokeWidth={2} />
-                  <circle cx={tx} cy={ty} r={(21 * tam.planeta) / 33} fill={FONDO} />
+                  <circle cx={tx} cy={ty} r={Math.max(21, tam.planeta * 0.55)} fill={FONDO} />
                   <Glifo d={GLIFOS_PLANETAS[n]} x={tx} y={ty} tam={tam.planeta} fill={LINEA} />
                 </g>
               )
@@ -368,7 +375,7 @@ export default function CartaEnCapas() {
       </div>
 
       <div
-        className={`mt-3 flex flex-wrap justify-center gap-4 text-xs text-[var(--carta-linea)] transition-opacity duration-[800ms] ease-in-out motion-reduce:transition-none ${
+        className={`mt-3 flex flex-wrap justify-center gap-4 text-xs text-[var(--carta-linea)] transition-opacity [transition-duration:800ms] ease-in-out motion-reduce:transition-none ${
           leyenda ? "opacity-100" : "opacity-0"
         }`}
       >

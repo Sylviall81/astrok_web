@@ -267,7 +267,11 @@ export function PartesAlTodo() {
           <div aria-hidden="true" className="absolute left-0 right-0 top-[3.25rem] hidden h-px bg-dorado/60 lg:block" />
           <ol className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {partes.map(({ titulo, texto }, i) => (
-              <li key={titulo} className={`${TARJETA} ${TARJETA_CREMA} p-6`}>
+              // data-resaltado lo pone la carta animada un momento al terminar cada capa
+              <li
+                key={titulo}
+                className={`group ${TARJETA} ${TARJETA_CREMA} p-6 transition-[border-color,box-shadow] duration-500 data-[resaltado]:border-primary data-[resaltado]:shadow-md dark:data-[resaltado]:border-accent`}
+              >
                 <span
                   aria-hidden="true"
                   className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg border-2 border-primary bg-white font-lato text-2xl font-semibold text-primary dark:border-accent dark:bg-transparent dark:text-accent"
@@ -275,10 +279,10 @@ export function PartesAlTodo() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className={`${SUBTITULO} text-2xl mb-2`}>
-                  {/* Aquí aterriza la palabra de su capa en la carta; data-marcado pinta la línea dorada un instante */}
+                  {/* Aquí aterriza la palabra de su capa en la carta. Al resaltar la tarjeta: algo más grande y línea dorada debajo */}
                   <span
                     data-capa-titulo={i + 1}
-                    className="relative inline-block after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-dorado after:transition-[width] after:duration-700 after:ease-in-out data-[marcado]:after:w-3/5"
+                    className="relative inline-block origin-left transition-transform duration-500 ease-in-out group-data-[resaltado]:scale-110 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-dorado after:transition-[width] after:duration-700 after:ease-in-out group-data-[resaltado]:after:w-3/5"
                   >
                     {titulo}
                   </span>
@@ -311,7 +315,7 @@ export function ComoSeVive() {
   ]
 
   return (
-    <section className={`pt-16 pb-12 md:pt-24 md:pb-16 ${FONDO_CREMA}`}>
+    <section className={`py-16 md:py-24 ${FONDO_CREMA}`}>
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-12">
           <div className="relative aspect-[3/2] rounded-2xl overflow-hidden shadow-sm order-last lg:order-first">
@@ -348,25 +352,6 @@ export function ComoSeVive() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* Puente entre "Cómo se vive" y "Recorrido": la foto se monta sobre el cambio de fondo (mitad crema, mitad blanco) */
-export function PuenteRecorrido() {
-  return (
-    <div className="bg-[linear-gradient(to_bottom,#F6F5EF_50%,#ffffff_50%)] dark:bg-[linear-gradient(to_bottom,hsl(var(--muted))_50%,transparent_50%)]">
-      <div className="container-custom">
-        <div className="relative aspect-[16/9] md:aspect-[7/2] rounded-2xl overflow-hidden shadow-md">
-          <Image
-            src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1793218217/IMG_9694_web_pcq8zv.jpg"
-            alt="Carta natal en una tablilla junto al libro Las doce casas"
-            fill
-            sizes="(min-width: 1280px) 1216px, 100vw"
-            className="object-cover"
-          />
-        </div>
-      </div>
-    </div>
   )
 }
 
@@ -419,7 +404,7 @@ export function Recorrido() {
   )
 
   return (
-    <section id="recorrido" className={`pt-12 pb-16 md:pt-16 md:pb-24 ${FONDO_BLANCO} ${SCROLL_ANCLA}`}>
+    <section id="recorrido" className={`py-16 md:py-24 ${FONDO_BLANCO} ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         {/* ETIQUETA NUEVA (por revisar): etiqueta y texto lateral */}
         <Encabezado
@@ -540,8 +525,11 @@ export function ClaseAbierta() {
         >
           <div className="max-w-2xl">
             {/* ETIQUETA NUEVA (por revisar) */}
-            <p className={`${ETIQUETA} mb-4 inline-flex items-center gap-2 rounded-full bg-crema px-3 py-1.5 dark:bg-white/10`}>
-              <Ticket aria-hidden="true" className="h-3.5 w-3.5" />
+            {/* Si en móvil ocupa dos líneas, la pastilla pasa a esquinas redondeadas para envolverlas bien */}
+            <p
+              className={`${ETIQUETA} mb-4 inline-flex max-w-full items-center gap-2 rounded-xl bg-crema px-3 py-1.5 leading-snug dark:bg-white/10 md:rounded-full`}
+            >
+              <Ticket aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
               Encuentro abierto y gratuito
             </p>
             <h2 className={`${TITULO} mb-2`}>¿Quieres probar antes?</h2>
@@ -556,7 +544,7 @@ export function ClaseAbierta() {
               <Pendiente>Qué se hace en la clase, en una frase</Pendiente>
             </div>
           </div>
-          <div className="shrink-0">
+          <div className="w-full shrink-0 md:w-auto">
             <ClaseAbiertaBoton />
           </div>
         </div>
