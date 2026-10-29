@@ -6,6 +6,8 @@ import { GLIFOS_PLANETAS, GLIFOS_SIGNOS } from "./carta-glifos"
 // Carta natal que se construye por capas: estructura y elementos → signos → planetas → casas.
 // Pasado a componente desde carta_en_capas.html (versión aprobada), con los mismos datos, orden y tiempos.
 // Se anima una sola vez, cuando la carta entra en pantalla. Con prefers-reduced-motion se muestra completa.
+// Por defecto (HTML del servidor) la carta sale completa y estática: si el JavaScript no llega a ejecutarse,
+// se ve entera en lugar de un hueco. Solo se vacía para animarse si al cargar todavía no está a la vista.
 //
 // Cada palabra sale grande en el centro de la carta, su capa aparece medio segundo después y luego:
 // - en escritorio (lg) vuela hasta el título de su tarjeta en "De las partes al todo" ([data-capa-titulo])
@@ -104,8 +106,10 @@ function Glifo({ d, x, y, tam, fill }: { d: string; x: number; y: number; tam: n
 export default function CartaEnCapas() {
   const contenedor = useRef<HTMLDivElement>(null)
   const palabra = useRef<HTMLSpanElement>(null)
-  const [capas, setCapas] = useState([false, false, false, false, false])
-  const [leyenda, setLeyenda] = useState(false)
+  const [capas, setCapas] = useState([true, true, true, true, true])
+  const [leyenda, setLeyenda] = useState(true)
+  // Mientras se vacía la carta para animarla, sin transiciones: desaparece de golpe y fuera de la vista
+  const [sinTransicion, setSinTransicion] = useState(false)
   // Ancho real / ancho del viewBox: los textos pequeños se agrandan para que se lean en móvil
   const [escala, setEscala] = useState(520 / ANCHO_VIEWBOX)
 
@@ -125,11 +129,15 @@ export default function CartaEnCapas() {
     const sinMovimiento = matchMedia("(prefers-reduced-motion: reduce)").matches
     const escritorio = matchMedia("(min-width: 1024px)").matches
 
-    if (sinMovimiento) {
-      setCapas([true, true, true, true, true])
-      setLeyenda(true)
-      return
-    }
+    // Sin movimiento, o si la carta ya está a la vista al cargar: se queda completa, sin animación ni parpadeo
+    const r = caja.getBoundingClientRect()
+    const aLaVista = r.top < innerHeight && r.bottom > 0
+    if (sinMovimiento || aLaVista) return
+
+    setSinTransicion(true)
+    setCapas([false, false, false, false, false])
+    setLeyenda(false)
+    let marco = requestAnimationFrame(() => (marco = requestAnimationFrame(() => setSinTransicion(false))))
 
     const timers: ReturnType<typeof setTimeout>[] = []
     const animaciones: Animation[] = []
@@ -197,13 +205,22 @@ export default function CartaEnCapas() {
       ([e]) => {
         if (!e.isIntersecting) return
         io.disconnect()
-        document.fonts.ready.then(empezar)
+        // Red de seguridad: pase lo que pase, al final de la animación la carta queda completa
+        timers.push(
+          setTimeout(() => {
+            setCapas([true, true, true, true, true])
+            setLeyenda(true)
+          }, TIEMPOS[4] + VUELO + 1500),
+        )
+        // No esperar indefinidamente a las fuentes
+        Promise.race([document.fonts.ready, new Promise((ok) => setTimeout(ok, 1000))]).then(empezar)
       },
       { threshold: 0.5 },
     )
     io.observe(caja)
 
     return () => {
+      cancelAnimationFrame(marco)
       io.disconnect()
       timers.forEach(clearTimeout)
       animaciones.forEach((a) => a.cancel())
@@ -231,7 +248,7 @@ export default function CartaEnCapas() {
 
   return (
     <div
-      className="rounded-2xl border border-black/5 bg-[var(--carta-bg)] p-4 shadow-sm [--carta-bg:#F6F5EF] [--carta-linea:#4A3F74] dark:border-white/10 dark:[--carta-bg:hsl(var(--muted))] dark:[--carta-linea:#F6F5EF] md:p-6"
+      className={`${sinTransicion ? "[&_*]:!transition-none" : ""} rounded-2xl border border-black/5 bg-[var(--carta-bg)] p-4 shadow-sm [--carta-bg:#F6F5EF] [--carta-linea:#4A3F74] dark:border-white/10 dark:[--carta-bg:hsl(var(--muted))] dark:[--carta-linea:#F6F5EF] md:p-6`}
     >
       <div ref={contenedor} className="relative mx-auto w-full max-w-[520px]">
         <svg
