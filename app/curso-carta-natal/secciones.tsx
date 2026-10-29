@@ -15,7 +15,8 @@ import {
   Users,
   Video,
 } from "lucide-react"
-import { HuecoImagen, Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
+import { Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
+import CartaEnCapas from "./carta-en-capas"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
 import PreinscripcionForm from "./preinscripcion-form"
 
@@ -228,7 +229,7 @@ export function ParaQuien() {
   )
 }
 
-/* 3. De las partes al todo: cuatro tarjetas numeradas unidas por una línea fina */
+/* 3. De las partes al todo: carta natal animada por capas y cuatro tarjetas numeradas unidas por una línea fina */
 export function PartesAlTodo() {
   const partes = [
     {
@@ -248,7 +249,7 @@ export function PartesAlTodo() {
         className="absolute -right-10 bottom-6 h-40 w-40 bg-sri-yantra-pattern bg-contain bg-no-repeat opacity-10"
       />
       <div className="container-custom relative">
-        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10 lg:gap-16 items-center mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-12">
           <div>
             {/* ETIQUETA NUEVA (por revisar) */}
             <p className={`${ETIQUETA} mb-3`}>Metodología caleidoscópica</p>
@@ -258,8 +259,7 @@ export function PartesAlTodo() {
               vemos cómo se relacionan entre ellas y, al final, armamos el todo.
             </p>
           </div>
-          {/* TODO: carta natal descompuesta en capas (planetas, signos, casas) que se juntan en la rueda completa. Canva o SVG animado. */}
-          <HuecoImagen etiqueta="Carta natal en capas" className="aspect-square max-w-sm w-full mx-auto dark:bg-muted" />
+          <CartaEnCapas />
         </div>
 
         <div className="relative">
@@ -274,7 +274,15 @@ export function PartesAlTodo() {
                 >
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className={`${SUBTITULO} text-2xl mb-2`}>{titulo}</h3>
+                <h3 className={`${SUBTITULO} text-2xl mb-2`}>
+                  {/* Aquí aterriza la palabra de su capa en la carta; data-marcado pinta la línea dorada un instante */}
+                  <span
+                    data-capa-titulo={i + 1}
+                    className="relative inline-block after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-dorado after:transition-[width] after:duration-700 after:ease-in-out data-[marcado]:after:w-3/5"
+                  >
+                    {titulo}
+                  </span>
+                </h3>
                 <p className="text-body leading-relaxed lg:text-[0.95rem]">{texto}</p>
               </li>
             ))}
