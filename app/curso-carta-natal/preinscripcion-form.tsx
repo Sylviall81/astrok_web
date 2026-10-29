@@ -3,33 +3,9 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { EVENTO_CLASE_ABIERTA } from "./clase-abierta-boton"
+import { EXPERIENCIA, HORARIOS, MOTIVOS, PRECIOS } from "./opciones"
 
 // Mismo aspecto que components/contact-form.tsx. Envía a /api/preinscripcion (Brevo).
-
-const MOTIVOS = [
-  { valor: "curso", texto: "Quiero hacer el curso" },
-  { valor: "pensando", texto: "Me lo estoy pensando" },
-  { valor: "clase-abierta", texto: "De momento, solo la clase abierta" },
-]
-
-const PRECIOS = [
-  { valor: "apoyo", texto: "Apoyo" },
-  { valor: "estandar", texto: "Estándar" },
-  { valor: "solidario", texto: "Solidario" },
-  { valor: "no-lo-se", texto: "Aún no lo sé" },
-]
-
-const EXPERIENCIA = [
-  { valor: "nada", texto: "Nada" },
-  { valor: "algo", texto: "Algo" },
-  { valor: "bastante", texto: "Bastante" },
-]
-
-const HORARIOS = [
-  { valor: "entre-semana-tarde", texto: "Entre semana por la tarde" },
-  { valor: "entre-semana-noche", texto: "Entre semana por la noche" },
-  { valor: "otro", texto: "Otro" },
-]
 
 const ESTADO_INICIAL = {
   nombre: "",
@@ -43,6 +19,9 @@ const ESTADO_INICIAL = {
   privacidad: false,
   newsletter: false,
 }
+
+const ERROR_ENVIO =
+  "No hemos podido guardar tu preinscripción. Tus respuestas siguen en el formulario: vuelve a intentarlo en unos minutos o escríbeme a hola@astrokaleido.com."
 
 const inputClass =
   "w-full min-h-11 px-4 py-3 bg-crema border border-black/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-muted dark:border-white/15 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-accent"
@@ -146,21 +125,21 @@ export default function PreinscripcionForm() {
       })
 
       const data = await res.json().catch(() => ({}))
-      if (!res.ok) throw new Error(data.message || "Error en el envío")
+      // Errores de los datos (400): el mensaje del servidor dice qué revisar
+      if (res.status === 400) {
+        setStatus({ type: "error", message: data.message || "Revisa los campos del formulario." })
+        return
+      }
+      if (!res.ok) throw new Error(data.message)
 
       setStatus({
         type: "success",
         message: "¡Gracias! Ya estás en la lista de preinscripción. Te escribo cuando abran las inscripciones.",
       })
       setForm(ESTADO_INICIAL)
-    } catch (err) {
-      setStatus({
-        type: "error",
-        message:
-          err instanceof Error && err.message !== "Error en el envío"
-            ? err.message
-            : "Hubo un error al enviar la preinscripción. Inténtalo de nuevo.",
-      })
+    } catch {
+      // Brevo o la conexión han fallado: el formulario no se vacía, así que no se pierde nada de lo escrito
+      setStatus({ type: "error", message: ERROR_ENVIO })
     } finally {
       setLoading(false)
     }
