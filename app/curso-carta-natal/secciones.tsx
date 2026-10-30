@@ -128,8 +128,17 @@ export function Cabecera() {
             href="#preinscripcion"
             className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-3.5 md:py-4 shadow-md"
           >
-            Apúntate
+            Avísame cuando abra
           </a>
+          <p className="mt-4 text-sm md:text-base text-white/80">
+            ¿Prefieres probar primero?{" "}
+            <a
+              href="#clase-abierta"
+              className="underline decoration-white/40 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
+            >
+              Ven a la clase abierta y gratuita del 12 de diciembre
+            </a>
+          </p>
         </div>
       </div>
     </section>
@@ -505,13 +514,13 @@ export function Precio() {
 
       <div className="text-center">
         <p className="text-white text-lg mb-8">
-          Las inscripciones se abren en diciembre. Apúntate y te escribo cuando abran.
+          Las inscripciones se abren en diciembre. Déjame tus datos y te escribo cuando abran.
         </p>
         <a
           href="#preinscripcion"
           className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-4"
         >
-          Apúntate
+          Avísame cuando abra
         </a>
       </div>
     </SeccionCielo>
@@ -537,7 +546,7 @@ export function ClaseAbierta() {
             </p>
             <h2 className={`${TITULO} mb-2`}>¿Quieres probar antes?</h2>
             <p className="font-lato italic text-2xl text-primary/80 dark:text-accent/90 mb-5">
-              Clase abierta y gratuita de una hora, el sábado 12 de diciembre.
+              Clase abierta y gratuita, el sábado 12 de diciembre.
             </p>
             <div aria-hidden="true" className="w-16 h-px bg-dorado mb-5" />
             {/* TODO: hora de la clase abierta */}
@@ -683,9 +692,9 @@ export function PreguntasFrecuentes() {
       respuesta: <Pendiente>Devoluciones</Pendiente>,
     },
     {
-      pregunta: "¿Apuntarme me reserva la plaza?",
+      pregunta: "¿Dejar mis datos me reserva la plaza?",
       respuesta:
-        "No. La plaza se reserva al inscribirte. Apuntarte sirve para que te escriba cuando abran las inscripciones.",
+        "No. La plaza se reserva al inscribirte. Dejar tus datos sirve para que te escriba cuando abran las inscripciones.",
     },
   ]
 
@@ -722,12 +731,12 @@ export function Preinscripcion() {
       <div className="container-custom">
         <div className={`${TARJETA} ${TARJETA_BLANCA} max-w-3xl mx-auto p-6 md:p-14`}>
           <Encabezado
-            titulo="Apúntate"
-            subtitulo="A la clase abierta, al curso o a las dos cosas. Sin compromiso y sin pagar nada. Puedes darte de baja cuando quieras."
+            titulo="Te aviso"
+            subtitulo="Déjame tus datos y te escribo cuando abran las inscripciones. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso y sin pagar nada."
             centrado
           />
           <PreinscripcionForm />
-          <p className="mt-6 text-center lg:text-sm text-muted-foreground">Apuntarte no te compromete a nada.</p>
+          <p className="mt-6 text-center lg:text-sm text-muted-foreground">Dejar tus datos no te compromete a nada.</p>
         </div>
       </div>
     </section>

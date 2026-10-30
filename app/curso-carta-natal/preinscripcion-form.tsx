@@ -25,7 +25,7 @@ const ERROR_ENVIO =
 
 // Mensaje al enviar, según si viene a la clase abierta y si le interesa el curso
 const mensajeEnviado = (claseAbierta: boolean, motivo: string) => {
-  if (!claseAbierta) return "¡Gracias! Te he apuntado. Te escribo cuando abran las inscripciones."
+  if (!claseAbierta) return "¡Gracias! Te escribo cuando abran las inscripciones."
   if (motivo === "no") return "¡Ya tienes tu plaza en la clase abierta! Unos días antes te mando el enlace de Zoom."
   return "¡Gracias! Te he apuntado a la clase abierta. Unos días antes te mando el enlace de Zoom, y te escribo cuando abran las inscripciones."
 }
@@ -286,7 +286,7 @@ export default function PreinscripcionForm() {
       </div>
 
       <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
-        {loading ? "Enviando..." : "Apúntate"}
+        {loading ? "Enviando..." : "Enviar"}
       </button>
 
       {status.type && (

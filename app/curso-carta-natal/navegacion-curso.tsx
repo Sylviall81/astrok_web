@@ -7,13 +7,13 @@ import { Home, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 // Única barra de la landing: el navbar general se oculta en esta ruta (components/navbar.tsx).
-// Escritorio: una fila. Móvil: logo, casita, modo oscuro y Apúntate en pequeño arriba;
+// Escritorio: una fila. Móvil: logo, casita, modo oscuro y "Avísame cuando abra" en pequeño (en dos líneas) arriba;
 // debajo, todas las anclas a la vista (sin deslizar).
 const ANCLAS = [
   { href: "#para-quien", texto: "Para quién es" },
   { href: "#recorrido", texto: "Recorrido" },
   { href: "#precio", texto: "Precio" },
-  { href: "#clase-abierta", texto: "Clase abierta" },
+  { href: "#clase-abierta", texto: "Clase gratis" },
   { href: "#preguntas", texto: "Preguntas", textoMovil: "FAQ" },
 ]
 
@@ -75,9 +75,9 @@ export function NavegacionCurso() {
           </button>
           <a
             href="#preinscripcion"
-            className="flex min-h-9 items-center rounded-lg bg-primary px-3 text-xs font-semibold text-white transition-all hover:bg-opacity-90 lg:min-h-10 lg:px-6 lg:text-sm"
+            className="flex min-h-9 max-w-[6.5rem] items-center rounded-lg bg-primary px-3 py-1 text-center text-xs font-semibold leading-tight text-white transition-all hover:bg-opacity-90 lg:min-h-10 lg:max-w-none lg:px-6 lg:py-0 lg:text-sm"
           >
-            Apúntate
+            Avísame cuando abra
           </a>
         </div>
       </div>
