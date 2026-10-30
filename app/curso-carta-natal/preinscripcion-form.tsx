@@ -3,6 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { EVENTO_CLASE_ABIERTA } from "./clase-abierta-boton"
+import { EDICION } from "./edicion"
 import { EXPERIENCIA, HORARIOS, MOTIVOS, PRECIOS } from "./opciones"
 
 // Mismo aspecto que components/contact-form.tsx. Envía a /api/preinscripcion (Brevo).
@@ -198,7 +199,7 @@ export default function PreinscripcionForm() {
           onChange={(e) => set("claseAbierta", e.target.checked)}
           className={`${checkClass} mt-1`}
         />
-        Quiero ir a la clase abierta del 12 de diciembre
+        Quiero ir a la clase abierta del {EDICION.claseAbierta.fecha}
       </label>
 
       <GrupoRadio

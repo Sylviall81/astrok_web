@@ -18,6 +18,7 @@ import {
 import { Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
 import CartaEnCapas from "./carta-en-capas"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
+import { EDICION } from "./edicion"
 import PreinscripcionForm from "./preinscripcion-form"
 
 export { NavegacionCurso } from "./navegacion-curso"
@@ -87,9 +88,9 @@ function Icono({ icono: I }: { icono: React.ComponentType<{ className?: string }
 /* 1. Cabecera: violeta liso + Sri Yantra dorado; la ficha rápida se monta sobre su borde inferior */
 export function Cabecera() {
   const datos = [
-    { icono: CalendarDays, texto: "12 encuentros en directo" },
+    { icono: CalendarDays, texto: `${EDICION.encuentros} encuentros en directo` },
     { icono: BookOpen, texto: "Práctica con tu propia carta natal" },
-    { icono: History, texto: "Grabaciones disponibles durante 3 meses" },
+    { icono: History, texto: `Grabaciones disponibles durante ${EDICION.grabacionesMeses} meses` },
   ]
 
   return (
@@ -105,7 +106,7 @@ export function Cabecera() {
           {/* ETIQUETA NUEVA (por revisar) */}
           <p className="mb-5 md:mb-8 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 md:px-4 py-1 md:py-1.5 text-[0.65rem] md:text-xs font-semibold uppercase tracking-[0.12em] md:tracking-[0.15em] text-white/90 backdrop-blur-sm">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
-            Edición 2027 · Plazas reducidas
+            Edición {EDICION.anio} · Plazas reducidas
           </p>
           <h1 className="text-[2.6rem] md:text-6xl lg:text-[4.25rem] text-white mb-4 md:mb-6 leading-[1.1] md:leading-tight">
             Tu carta natal: <span className="not-italic font-semibold text-dorado">de las partes al todo</span>
@@ -113,7 +114,7 @@ export function Cabecera() {
           <p className="font-lato italic text-xl md:text-3xl text-white/90 mb-6 md:mb-10">
             Curso vivencial de iniciación a la astrología psicológica
           </p>
-          <ul className="flex flex-wrap lg:flex-nowrap justify-center gap-2 md:gap-3 mb-7 md:mb-10">
+          <ul className="flex flex-wrap lg:flex-nowrap justify-center gap-2 md:gap-3 mb-6 md:mb-8">
             {datos.map(({ icono: I, texto }) => (
               <li
                 key={texto}
@@ -124,19 +125,23 @@ export function Cabecera() {
               </li>
             ))}
           </ul>
+          <p className="max-w-2xl mx-auto text-base md:text-lg text-white/90 leading-relaxed mb-7 md:mb-10">
+            Las inscripciones se abrirán próximamente. Déjame tus datos, sin compromiso y sin pagar nada, y te aviso
+            cuando puedas reservar tu plaza.
+          </p>
           <a
             href="#preinscripcion"
             className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-3.5 md:py-4 shadow-md"
           >
-            Avísame cuando abra
+            Me interesa el curso
           </a>
-          <p className="mt-4 text-sm md:text-base text-white/80">
-            ¿Prefieres probar primero?{" "}
+          <p className="mt-6 md:mt-8 text-sm text-white/75">
+            ¿Quieres ver antes cómo trabajo?{" "}
             <a
               href="#clase-abierta"
               className="underline decoration-white/40 underline-offset-4 transition-colors hover:text-white hover:decoration-white"
             >
-              Ven a la clase abierta y gratuita del 12 de diciembre
+              Ven a la clase gratuita
             </a>
           </p>
         </div>
@@ -148,9 +153,9 @@ export function Cabecera() {
 /* Ficha rápida: tarjeta blanca que se monta sobre el final de la cabecera */
 export function FichaRapida() {
   const ficha = [
-    { etiqueta: "Duración", dato: "12 semanas" },
+    { etiqueta: "Duración", dato: `${EDICION.semanas} semanas` },
     { etiqueta: "Formato", dato: "En directo por Zoom" },
-    { etiqueta: "Grupo", dato: "10 personas como máximo" },
+    { etiqueta: "Grupo", dato: `${EDICION.maxPersonas} personas como máximo` },
     { etiqueta: "Requisitos", dato: "Sin conocimientos previos" },
     { etiqueta: "Acompaña", dato: "Sylvia Llorente" },
   ]
@@ -423,7 +428,7 @@ export function Recorrido() {
           etiqueta="Estructura del programa"
           titulo="Recorrido"
           linea
-          lateral={<p className="text-sm font-medium text-muted-foreground">12 semanas · 4 bloques progresivos</p>}
+          lateral={<p className="text-sm font-medium text-muted-foreground">{EDICION.semanas} semanas · 4 bloques progresivos</p>}
         />
 
         <ol className="space-y-4">{bloques.map((b, i) => fila(b, i))}</ol>
@@ -436,15 +441,15 @@ export function Recorrido() {
 export function Fechas() {
   // Rótulos de cada caja: ETIQUETA NUEVA (por revisar)
   const fechas = [
-    { icono: CalendarDays, rotulo: "Calendario", texto: "Del 16 de enero al 10 de abril de 2027" },
+    { icono: CalendarDays, rotulo: "Calendario", texto: `Del ${EDICION.inicio} al ${EDICION.fin}` },
     {
       icono: Clock,
       rotulo: "Horario",
-      texto: "Sábados de 10:30 a 12:30, hora de Barcelona, sin clase el 27 de marzo",
+      texto: `${EDICION.horario}, sin clase el ${EDICION.sinClase}`,
     },
     { icono: Video, rotulo: "Canal", texto: "En directo por Zoom" },
-    { icono: Users, rotulo: "Grupo", texto: "Grupo de 10 personas como máximo" },
-    { icono: History, rotulo: "Grabaciones", texto: "Grabaciones disponibles hasta el 10 de julio de 2027" },
+    { icono: Users, rotulo: "Grupo", texto: `Grupo de ${EDICION.maxPersonas} personas como máximo` },
+    { icono: History, rotulo: "Grabaciones", texto: `Grabaciones disponibles hasta el ${EDICION.grabacionesHasta}` },
   ]
 
   return (
@@ -514,13 +519,13 @@ export function Precio() {
 
       <div className="text-center">
         <p className="text-white text-lg mb-8">
-          Las inscripciones se abren en diciembre. Déjame tus datos y te escribo cuando abran.
+          Las inscripciones se abrirán próximamente. Déjame tus datos y te escribo cuando abran.
         </p>
         <a
           href="#preinscripcion"
           className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-4"
         >
-          Avísame cuando abra
+          Me interesa el curso
         </a>
       </div>
     </SeccionCielo>
@@ -546,7 +551,7 @@ export function ClaseAbierta() {
             </p>
             <h2 className={`${TITULO} mb-2`}>¿Quieres probar antes?</h2>
             <p className="font-lato italic text-2xl text-primary/80 dark:text-accent/90 mb-5">
-              Clase abierta y gratuita, el sábado 12 de diciembre.
+              Clase abierta y gratuita, el {EDICION.claseAbierta.dia} {EDICION.claseAbierta.fecha}.
             </p>
             <div aria-hidden="true" className="w-16 h-px bg-dorado mb-5" />
             {/* TODO: hora de la clase abierta */}
@@ -663,9 +668,9 @@ export function PreguntasFrecuentes() {
         "Sin hora no se pueden saber con certeza el Ascendente ni las casas, y el bloque de casas lo trabajamos con tu carta. Antes de inscribirte, intenta conseguirla: en España suele aparecer en el certificado literal de nacimiento del Registro Civil, y a veces la recuerda la familia. Si no la encuentras, escríbeme y lo miramos.",
     },
     {
-      pregunta: "¿Y si un sábado no puedo conectarme?",
+      pregunta: "¿Y si no puedo conectarme el día de la clase?",
       respuesta:
-        "Todas las clases se graban. Las subo durante la semana siguiente a cada clase y las tienes hasta el 10 de julio de 2027.",
+        `Todas las clases se graban. Las subo durante la semana siguiente a cada clase y las tienes hasta el ${EDICION.grabacionesHasta}.`,
     },
     {
       pregunta: "¿Para qué usas mis datos de nacimiento?",
@@ -675,7 +680,7 @@ export function PreguntasFrecuentes() {
     {
       pregunta: "¿Qué pasa si no se llega al mínimo de personas?",
       respuesta:
-        "Para que el grupo funcione hacen falta al menos 4 personas. Si el 8 de enero no hemos llegado, el curso empieza el 30 de enero. Si esa fecha no te va bien, o si tampoco llegamos entonces, te devuelvo el dinero entero o te guardo la plaza para la siguiente edición, como prefieras.",
+        `Para que el grupo funcione hacen falta al menos ${EDICION.minPersonas} personas. Si el ${EDICION.fechaMinimo} no hemos llegado, el curso empieza el ${EDICION.inicioAlternativo}. Si esa fecha no te va bien, o si tampoco llegamos entonces, te devuelvo el dinero entero o te guardo la plaza para la siguiente edición, como prefieras.`,
     },
     {
       pregunta: "¿Puedo hacerlo desde fuera de España?",
@@ -731,7 +736,7 @@ export function Preinscripcion() {
       <div className="container-custom">
         <div className={`${TARJETA} ${TARJETA_BLANCA} max-w-3xl mx-auto p-6 md:p-14`}>
           <Encabezado
-            titulo="Te aviso"
+            titulo="¿Te interesa? Cuéntame"
             subtitulo="Déjame tus datos y te escribo cuando abran las inscripciones. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso y sin pagar nada."
             centrado
           />
