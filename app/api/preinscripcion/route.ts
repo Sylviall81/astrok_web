@@ -38,14 +38,15 @@ export async function POST(req: Request) {
   const nombre = typeof data.nombre === "string" ? data.nombre.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : ""
   const motivo = textoDe(MOTIVOS, data.motivo)
-  // Con "De momento, no" el precio no se pregunta: llega vacío y se guarda vacío
+  // Precio y horario solo se preguntan con "Sí" o "Me lo estoy pensando". Con "De momento, no"
+  // no se muestran: se ignora lo que llegue y se guardan vacíos
   const sinCurso = data.motivo === "no"
   const precio = sinCurso ? "" : textoDe(PRECIOS, data.precio)
   const nivel = textoDe(EXPERIENCIA, data.experiencia)
-  const horarios = Array.isArray(data.horarios)
+  const horarios = !sinCurso && Array.isArray(data.horarios)
     ? HORARIOS.filter((h) => data.horarios.includes(h.valor)).map((h) => h.texto)
     : []
-  const marcaOtro = Array.isArray(data.horarios) && data.horarios.includes("otro")
+  const marcaOtro = !sinCurso && Array.isArray(data.horarios) && data.horarios.includes("otro")
   const horarioOtro = marcaOtro && typeof data.horarioOtro === "string" ? data.horarioOtro.trim().slice(0, 200) : ""
 
   if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || (!sinCurso && !precio) || !nivel) {

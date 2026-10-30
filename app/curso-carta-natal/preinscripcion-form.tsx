@@ -117,8 +117,9 @@ export default function PreinscripcionForm() {
         : [...prev.horarios, valor],
     }))
 
-  // Con "De momento, no" no se pregunta el precio (se oculta y no se envía, pero se recuerda si vuelve a cambiar)
-  const preguntaPrecio = form.motivo !== "no"
+  // Precio y horario solo se preguntan con "Sí" o "Me lo estoy pensando". Ocultos no se envían,
+  // pero se recuerda lo marcado por si vuelve a cambiar de respuesta
+  const preguntasCurso = form.motivo === "si" || form.motivo === "pensando"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -131,8 +132,9 @@ export default function PreinscripcionForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          precio: preguntaPrecio ? form.precio : "",
-          horarioOtro: form.horarios.includes("otro") ? form.horarioOtro : "",
+          precio: preguntasCurso ? form.precio : "",
+          horarios: preguntasCurso ? form.horarios : [],
+          horarioOtro: preguntasCurso && form.horarios.includes("otro") ? form.horarioOtro : "",
         }),
       })
 
@@ -203,25 +205,6 @@ export default function PreinscripcionForm() {
       </label>
 
       <GrupoRadio
-        nombre="motivo"
-        leyenda="¿Te interesa hacer el curso?"
-        opciones={MOTIVOS}
-        valor={form.motivo}
-        onChange={(v) => set("motivo", v)}
-      />
-
-      {preguntaPrecio && (
-        <GrupoRadio
-          nombre="precio"
-          leyenda="¿Qué precio te planteas?"
-          opciones={PRECIOS}
-          valor={form.precio}
-          onChange={(v) => set("precio", v)}
-          disposicion="casillas"
-        />
-      )}
-
-      <GrupoRadio
         nombre="experiencia"
         leyenda="¿Has estudiado astrología antes?"
         opciones={EXPERIENCIA}
@@ -230,33 +213,54 @@ export default function PreinscripcionForm() {
         disposicion="fila"
       />
 
-      <fieldset>
-        <legend className={legendClass}>¿Te iría mejor otro horario? (opcional)</legend>
-        <div className="lg:space-y-2">
-          {HORARIOS.map((opcion) => (
-            <label key={opcion.valor} className={opcionClass}>
-              <input
-                type="checkbox"
-                checked={form.horarios.includes(opcion.valor)}
-                onChange={() => toggleHorario(opcion.valor)}
-                className={checkClass}
-              />
-              {opcion.texto}
-            </label>
-          ))}
-        </div>
-        {form.horarios.includes("otro") && (
-          <input
-            type="text"
-            aria-label="Otro horario"
-            value={form.horarioOtro}
-            onChange={(e) => set("horarioOtro", e.target.value)}
-            maxLength={200}
-            className={`${inputClass} mt-3`}
+      <GrupoRadio
+        nombre="motivo"
+        leyenda="¿Te interesa hacer el curso?"
+        opciones={MOTIVOS}
+        valor={form.motivo}
+        onChange={(v) => set("motivo", v)}
+      />
+
+      {preguntasCurso && (
+        <>
+          <GrupoRadio
+            nombre="precio"
+            leyenda="¿Qué precio de la escala te encaja más?"
+            opciones={PRECIOS}
+            valor={form.precio}
+            onChange={(v) => set("precio", v)}
+            disposicion="casillas"
           />
-        )}
-        <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
-      </fieldset>
+
+          <fieldset>
+            <legend className={legendClass}>¿Te iría mejor otro horario? (opcional)</legend>
+            <div className="lg:space-y-2">
+              {HORARIOS.map((opcion) => (
+                <label key={opcion.valor} className={opcionClass}>
+                  <input
+                    type="checkbox"
+                    checked={form.horarios.includes(opcion.valor)}
+                    onChange={() => toggleHorario(opcion.valor)}
+                    className={checkClass}
+                  />
+                  {opcion.texto}
+                </label>
+              ))}
+            </div>
+            {form.horarios.includes("otro") && (
+              <input
+                type="text"
+                aria-label="Otro horario"
+                value={form.horarioOtro}
+                onChange={(e) => set("horarioOtro", e.target.value)}
+                maxLength={200}
+                className={`${inputClass} mt-3`}
+              />
+            )}
+            <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
+          </fieldset>
+        </>
+      )}
 
       <div className="border-t border-neutral-light dark:border-white/10 pt-4 lg:pt-6 lg:space-y-3">
         <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
