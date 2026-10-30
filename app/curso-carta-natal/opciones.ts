@@ -4,9 +4,9 @@
 export type Opcion = { valor: string; texto: string }
 
 export const MOTIVOS: Opcion[] = [
-  { valor: "curso", texto: "Quiero hacer el curso" },
+  { valor: "si", texto: "Sí" },
   { valor: "pensando", texto: "Me lo estoy pensando" },
-  { valor: "clase-abierta", texto: "De momento, solo la clase abierta" },
+  { valor: "no", texto: "De momento, no" },
 ]
 
 export const PRECIOS: Opcion[] = [

@@ -7,7 +7,7 @@ import { Home, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 // Única barra de la landing: el navbar general se oculta en esta ruta (components/navbar.tsx).
-// Escritorio: una fila. Móvil: logo, casita, modo oscuro y Preinscríbete en pequeño arriba;
+// Escritorio: una fila. Móvil: logo, casita, modo oscuro y Apúntate en pequeño arriba;
 // debajo, todas las anclas a la vista (sin deslizar).
 const ANCLAS = [
   { href: "#para-quien", texto: "Para quién es" },
@@ -77,7 +77,7 @@ export function NavegacionCurso() {
             href="#preinscripcion"
             className="flex min-h-9 items-center rounded-lg bg-primary px-3 text-xs font-semibold text-white transition-all hover:bg-opacity-90 lg:min-h-10 lg:px-6 lg:text-sm"
           >
-            Preinscríbete
+            Apúntate
           </a>
         </div>
       </div>

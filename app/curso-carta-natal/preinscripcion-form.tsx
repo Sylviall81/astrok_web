@@ -21,7 +21,14 @@ const ESTADO_INICIAL = {
 }
 
 const ERROR_ENVIO =
-  "No hemos podido guardar tu preinscripción. Tus respuestas siguen en el formulario: vuelve a intentarlo en unos minutos o escríbeme a hola@astrokaleido.com."
+  "No se han podido guardar tus datos. Tus respuestas siguen en el formulario: vuelve a intentarlo en unos minutos o escríbeme a hola@astrokaleido.com."
+
+// Mensaje al enviar, según si viene a la clase abierta y si le interesa el curso
+const mensajeEnviado = (claseAbierta: boolean, motivo: string) => {
+  if (!claseAbierta) return "¡Gracias! Te he apuntado. Te escribo cuando abran las inscripciones."
+  if (motivo === "no") return "¡Ya tienes tu plaza en la clase abierta! Unos días antes te mando el enlace de Zoom."
+  return "¡Gracias! Te he apuntado a la clase abierta. Unos días antes te mando el enlace de Zoom, y te escribo cuando abran las inscripciones."
+}
 
 const inputClass =
   "w-full min-h-11 px-4 py-3 bg-crema border border-black/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-muted dark:border-white/15 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-accent"
@@ -109,6 +116,9 @@ export default function PreinscripcionForm() {
         : [...prev.horarios, valor],
     }))
 
+  // Con "De momento, no" no se pregunta el precio (se oculta y no se envía, pero se recuerda si vuelve a cambiar)
+  const preguntaPrecio = form.motivo !== "no"
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -120,6 +130,7 @@ export default function PreinscripcionForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          precio: preguntaPrecio ? form.precio : "",
           horarioOtro: form.horarios.includes("otro") ? form.horarioOtro : "",
         }),
       })
@@ -134,7 +145,7 @@ export default function PreinscripcionForm() {
 
       setStatus({
         type: "success",
-        message: "¡Gracias! Ya estás en la lista de preinscripción. Te escribo cuando abran las inscripciones.",
+        message: mensajeEnviado(form.claseAbierta, form.motivo),
       })
       setForm(ESTADO_INICIAL)
     } catch {
@@ -180,22 +191,34 @@ export default function PreinscripcionForm() {
         />
       </div>
 
+      <label className="flex min-h-11 lg:min-h-0 items-start gap-2 text-body cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.claseAbierta}
+          onChange={(e) => set("claseAbierta", e.target.checked)}
+          className={`${checkClass} mt-1`}
+        />
+        Quiero ir a la clase abierta del 12 de diciembre
+      </label>
+
       <GrupoRadio
         nombre="motivo"
-        leyenda="¿Qué te trae por aquí?"
+        leyenda="¿Te interesa hacer el curso?"
         opciones={MOTIVOS}
         valor={form.motivo}
         onChange={(v) => set("motivo", v)}
       />
 
-      <GrupoRadio
-        nombre="precio"
-        leyenda="¿Qué precio te planteas?"
-        opciones={PRECIOS}
-        valor={form.precio}
-        onChange={(v) => set("precio", v)}
-        disposicion="casillas"
-      />
+      {preguntaPrecio && (
+        <GrupoRadio
+          nombre="precio"
+          leyenda="¿Qué precio te planteas?"
+          opciones={PRECIOS}
+          valor={form.precio}
+          onChange={(v) => set("precio", v)}
+          disposicion="casillas"
+        />
+      )}
 
       <GrupoRadio
         nombre="experiencia"
@@ -238,16 +261,6 @@ export default function PreinscripcionForm() {
         <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
           <input
             type="checkbox"
-            checked={form.claseAbierta}
-            onChange={(e) => set("claseAbierta", e.target.checked)}
-            className={`${checkClass} mt-1`}
-          />
-          Quiero ir a la clase abierta del 12 de diciembre
-        </label>
-
-        <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">
-          <input
-            type="checkbox"
             checked={form.privacidad}
             onChange={(e) => set("privacidad", e.target.checked)}
             required
@@ -273,7 +286,7 @@ export default function PreinscripcionForm() {
       </div>
 
       <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
-        {loading ? "Enviando..." : "Preinscríbete"}
+        {loading ? "Enviando..." : "Apúntate"}
       </button>
 
       {status.type && (

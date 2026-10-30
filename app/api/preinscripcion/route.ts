@@ -38,7 +38,9 @@ export async function POST(req: Request) {
   const nombre = typeof data.nombre === "string" ? data.nombre.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : ""
   const motivo = textoDe(MOTIVOS, data.motivo)
-  const precio = textoDe(PRECIOS, data.precio)
+  // Con "De momento, no" el precio no se pregunta: llega vacío y se guarda vacío
+  const sinCurso = data.motivo === "no"
+  const precio = sinCurso ? "" : textoDe(PRECIOS, data.precio)
   const nivel = textoDe(EXPERIENCIA, data.experiencia)
   const horarios = Array.isArray(data.horarios)
     ? HORARIOS.filter((h) => data.horarios.includes(h.valor)).map((h) => h.texto)
@@ -46,7 +48,7 @@ export async function POST(req: Request) {
   const marcaOtro = Array.isArray(data.horarios) && data.horarios.includes("otro")
   const horarioOtro = marcaOtro && typeof data.horarioOtro === "string" ? data.horarioOtro.trim().slice(0, 200) : ""
 
-  if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || !precio || !nivel) {
+  if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || (!sinCurso && !precio) || !nivel) {
     return json({ message: "Revisa los campos del formulario." }, 400)
   }
 
@@ -104,8 +106,8 @@ export async function POST(req: Request) {
         <ul>
           <li>Nombre: ${escapeHtml(nombre)}</li>
           <li>Email: ${escapeHtml(email)}</li>
-          <li>Qué le trae: ${motivo}</li>
-          <li>Precio: ${precio}</li>
+          <li>¿Le interesa el curso?: ${motivo}</li>
+          <li>Precio: ${precio || "—"}</li>
           <li>Astrología antes: ${nivel}</li>
           <li>Otro horario: ${horarios.join(", ") || "—"}${horarioOtro ? ` (${escapeHtml(horarioOtro)})` : ""}</li>
           <li>Clase abierta: ${claseAbierta ? "sí" : "no"}</li>
