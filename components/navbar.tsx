@@ -41,8 +41,9 @@ if (pathname?.startsWith("/curso-carta-natal")) return null
           <Link href="/" className="flex items-center gap-2 ">
           <Image
               src={theme === 'dark' 
-                ? 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1776253747/logoBlanco_gs6lzj.png' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
+                ? '/logo-blanco.svg' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
               alt="Logotipo Kaleidoscope"
+              unoptimized={theme === 'dark'}
               width={400}
               height={100}
               className="h-10 w-auto object-contain"

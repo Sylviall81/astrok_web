@@ -19,7 +19,8 @@ const ANCLAS = [
 
 
 const LOGO_CLARO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png"
-const LOGO_OSCURO = "https://res.cloudinary.com/dgtuiirc7/image/upload/v1776253747/logoBlanco_gs6lzj.png"
+// SVG sin margen alrededor: el PNG blanco de Cloudinary tenía mucho aire y en modo oscuro el logo se veía más pequeño
+const LOGO_OSCURO = "/logo-blanco.svg"
 
 export function NavegacionCurso() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -42,6 +43,7 @@ export function NavegacionCurso() {
             <Image
               src={oscuro ? LOGO_OSCURO : LOGO_CLARO}
               alt="Logotipo Kaleidoscope"
+              unoptimized={oscuro}
               width={400}
               height={100}
               className="h-[18px] w-auto object-contain min-[380px]:h-5 lg:h-10"
