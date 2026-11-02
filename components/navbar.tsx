@@ -13,7 +13,8 @@ import { usePathname } from "next/navigation"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  // resolvedTheme y no theme: con el tema del sistema, theme vale "system" aunque se vea oscuro
+  const { resolvedTheme: theme, setTheme } = useTheme()
   const pathname = usePathname()
   //const router = useRouter()
 
