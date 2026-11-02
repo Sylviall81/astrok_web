@@ -9,12 +9,10 @@ import { GLIFOS_PLANETAS, GLIFOS_SIGNOS } from "./carta-glifos"
 // Por defecto (HTML del servidor) la carta sale completa y estática: si el JavaScript no llega a ejecutarse,
 // se ve entera en lugar de un hueco. Solo se vacía para animarse si al cargar todavía no está a la vista.
 //
-// Cada palabra sale grande en el centro de la carta, su capa aparece medio segundo después y luego:
-// - en escritorio (lg) vuela hasta el título de su tarjeta en "De las partes al todo" ([data-capa-titulo])
-//   y se funde con él;
-// - en móvil y tableta, donde las tarjetas quedan lejos, se desvanece en el centro.
-// En los dos casos, al terminar, su tarjeta se resalta un momento (data-resaltado en la tarjeta: título algo
-// más grande, línea fina dorada debajo y borde violeta). Los títulos se ven siempre, nunca se ocultan.
+// Cada palabra sale en el centro de la carta, crece y se desvanece ahí mismo. Medio segundo después de salir
+// aparecen a la vez su capa en la carta y su tarjeta en "De las partes al todo" ([data-capa-titulo]), que
+// además se resalta un momento (data-resaltado: título algo más grande, línea fina dorada y borde violeta).
+// Las tarjetas solo se ocultan (data-oculta) si la animación va a ejecutarse; al final siempre quedan visibles.
 
 // Datos de astro-seek: 16/01/2027, 10:30, Barcelona, Placidus (longitud eclíptica en grados: Aries 0 = 0°)
 const ELEMENTO = ["fuego", "tierra", "aire", "agua"] as const // Aries, Tauro, Géminis, Cáncer...
@@ -93,9 +91,8 @@ const RADIO_PLANETA = (() => {
 
 // Orden de aparición: 0 círculo, 1 estructura y elementos, 2 signos, 3 planetas, 4 casas
 const TIEMPOS = [0, 800, 3400, 6000, 8600] // ms en que sale cada palabra
-const VUELO = 2400 // ms: aparece en el centro, se queda mientras sale su capa y aterriza en su sitio
-const CAPA_EN = 500 // ms desde que sale la palabra hasta que aparece su capa
-const FUNDIDO = 300 // ms en que la palabra, ya sobre el título, se funde con él (solo escritorio)
+const PALABRA = 2000 // ms: aparece en el centro, se queda mientras sale su capa, crece y se desvanece
+const CAPA_EN = 500 // ms desde que sale la palabra hasta que aparecen su capa y su tarjeta
 const RESALTE = 1200 // ms que la tarjeta queda resaltada
 const PALABRAS = ["", "Estructura y elementos", "Signos", "Planetas", "Casas"]
 
@@ -125,9 +122,10 @@ export default function CartaEnCapas() {
     const caja = contenedor.current
     if (!caja) return
     const titulos = [...(caja.closest("section")?.querySelectorAll<HTMLElement>("[data-capa-titulo]") ?? [])]
-    const titulo = (paso: number) => titulos.find((t) => t.dataset.capaTitulo === String(paso))
+    const tarjeta = (paso: number) =>
+      titulos.find((t) => t.dataset.capaTitulo === String(paso))?.closest<HTMLElement>("li") ?? undefined
+    const tarjetas = titulos.map((t) => t.closest<HTMLElement>("li")).filter((t) => t !== null)
     const sinMovimiento = matchMedia("(prefers-reduced-motion: reduce)").matches
-    const escritorio = matchMedia("(min-width: 1024px)").matches
 
     // Sin movimiento, o si la carta ya está a la vista al cargar: se queda completa, sin animación ni parpadeo
     const r = caja.getBoundingClientRect()
@@ -137,54 +135,41 @@ export default function CartaEnCapas() {
     setSinTransicion(true)
     setCapas([false, false, false, false, false])
     setLeyenda(false)
+    tarjetas.forEach((t) => (t.dataset.oculta = ""))
+    const mostrarTarjetas = () => tarjetas.forEach((t) => delete t.dataset.oculta)
     let marco = requestAnimationFrame(() => (marco = requestAnimationFrame(() => setSinTransicion(false))))
 
     const timers: ReturnType<typeof setTimeout>[] = []
     const animaciones: Animation[] = []
     const encender = (i: number) => setCapas((c) => c.map((v, n) => v || n === i))
 
-    const volar = (paso: number) => {
+    const mostrarPalabra = (paso: number) => {
       const span = palabra.current
-      const destino = titulo(paso)
       if (!span) return
       span.textContent = PALABRAS[paso]
       // El tamaño en el centro imita al original (unos 34 px), sin pasarse del ancho de la carta en móvil
       const base = parseFloat(getComputedStyle(span).fontSize)
       const s = Math.min(34, caja.clientWidth * 0.085) / base
-      const centro = `translate(0px, 0px) scale(${s})`
-      const aterriza = escritorio && destino
-      // En escritorio la animación dura VUELO + FUNDIDO: aterriza en el mismo momento que en el original
-      // y después se funde con el título; los offsets del original se reescalan a esa duración
-      const duracion = aterriza ? VUELO + FUNDIDO : VUELO
-      const k = VUELO / duracion
-      const fotogramas: Keyframe[] = [
-        { transform: centro, opacity: 0, offset: 0 },
-        { transform: centro, opacity: 1, offset: 0.17 * k },
-        { transform: centro, opacity: 1, offset: 0.6 * k },
-      ]
-      if (aterriza) {
-        const a = span.getBoundingClientRect()
-        const b = destino.getBoundingClientRect()
-        const dx = b.left + b.width / 2 - (a.left + a.width / 2)
-        const dy = b.top + b.height / 2 - (a.top + a.height / 2)
-        const sobreTitulo = `translate(${dx}px, ${dy}px) scale(1)`
-        fotogramas.push({ transform: sobreTitulo, opacity: 1, offset: k }, { transform: sobreTitulo, opacity: 0, offset: 1 })
-      } else {
-        fotogramas.push({ transform: centro, opacity: 0, offset: 1 })
-      }
-      const vuelo = span.animate(fotogramas, { duration: duracion, easing: "ease-in-out" })
-      animaciones.push(vuelo)
-      vuelo.onfinish = () => (span.textContent = "")
-
-      // La tarjeta se resalta cuando la palabra llega (escritorio) o se desvanece (móvil)
-      const tarjeta = destino?.closest<HTMLElement>("li")
-      if (!tarjeta) return
-      timers.push(
-        setTimeout(() => {
-          tarjeta.dataset.resaltado = ""
-          timers.push(setTimeout(() => delete tarjeta.dataset.resaltado, RESALTE))
-        }, VUELO),
+      const animacion = span.animate(
+        [
+          { transform: `scale(${s * 0.9})`, opacity: 0, offset: 0 },
+          { transform: `scale(${s})`, opacity: 1, offset: 0.2 },
+          { transform: `scale(${s})`, opacity: 1, offset: 0.6 },
+          { transform: `scale(${s * 1.35})`, opacity: 0, offset: 1 },
+        ],
+        { duration: PALABRA, easing: "ease-in-out" },
       )
+      animaciones.push(animacion)
+      animacion.onfinish = () => (span.textContent = "")
+    }
+
+    // La tarjeta aparece con su capa y se resalta un momento
+    const mostrarTarjeta = (paso: number) => {
+      const t = tarjeta(paso)
+      if (!t) return
+      delete t.dataset.oculta
+      t.dataset.resaltado = ""
+      timers.push(setTimeout(() => delete t.dataset.resaltado, RESALTE))
     }
 
     const empezar = () => {
@@ -192,9 +177,14 @@ export default function CartaEnCapas() {
         timers.push(
           setTimeout(() => {
             if (i === 0) return encender(0) // el círculo base no lleva palabra
-            volar(i)
-            timers.push(setTimeout(() => encender(i), CAPA_EN))
-            if (i === 1) timers.push(setTimeout(() => setLeyenda(true), VUELO))
+            mostrarPalabra(i)
+            timers.push(
+              setTimeout(() => {
+                encender(i)
+                mostrarTarjeta(i)
+              }, CAPA_EN),
+            )
+            if (i === 1) timers.push(setTimeout(() => setLeyenda(true), PALABRA))
           }, t),
         ),
       )
@@ -210,7 +200,8 @@ export default function CartaEnCapas() {
           setTimeout(() => {
             setCapas([true, true, true, true, true])
             setLeyenda(true)
-          }, TIEMPOS[4] + VUELO + 1500),
+            mostrarTarjetas()
+          }, TIEMPOS[4] + PALABRA + 1500),
         )
         // No esperar indefinidamente a las fuentes
         Promise.race([document.fonts.ready, new Promise((ok) => setTimeout(ok, 1000))]).then(empezar)
@@ -224,9 +215,9 @@ export default function CartaEnCapas() {
       io.disconnect()
       timers.forEach(clearTimeout)
       animaciones.forEach((a) => a.cancel())
-      titulos.forEach((t) => {
-        const tarjeta = t.closest<HTMLElement>("li")
-        if (tarjeta) delete tarjeta.dataset.resaltado
+      tarjetas.forEach((t) => {
+        delete t.dataset.resaltado
+        delete t.dataset.oculta
       })
     }
   }, [])

@@ -284,10 +284,10 @@ export function PartesAlTodo() {
           <div aria-hidden="true" className="absolute left-0 right-0 top-[3.25rem] hidden h-px bg-dorado/60 lg:block" />
           <ol className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {partes.map(({ titulo, texto }, i) => (
-              // data-resaltado lo pone la carta animada un momento al terminar cada capa
+              // La carta animada pone data-oculta hasta que sale su capa y data-resaltado un momento al salir
               <li
                 key={titulo}
-                className={`group ${TARJETA} ${TARJETA_CREMA} p-6 transition-[border-color,box-shadow] duration-500 data-[resaltado]:border-primary data-[resaltado]:shadow-md dark:data-[resaltado]:border-accent`}
+                className={`group ${TARJETA} ${TARJETA_CREMA} p-6 transition-[border-color,box-shadow,opacity,transform] duration-700 ease-in-out data-[oculta]:translate-y-3 data-[oculta]:opacity-0 data-[resaltado]:border-primary data-[resaltado]:shadow-md motion-reduce:transition-none dark:data-[resaltado]:border-accent`}
               >
                 <span
                   aria-hidden="true"
@@ -296,7 +296,7 @@ export function PartesAlTodo() {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className={`${SUBTITULO} text-2xl mb-2`}>
-                  {/* Aquí aterriza la palabra de su capa en la carta. Al resaltar la tarjeta: algo más grande y línea dorada debajo */}
+                  {/* La carta animada busca la tarjeta por data-capa-titulo. Al resaltarla: algo más grande y línea dorada debajo */}
                   <span
                     data-capa-titulo={i + 1}
                     className="relative inline-block origin-left transition-transform duration-500 ease-in-out group-data-[resaltado]:scale-110 after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-dorado after:transition-[width] after:duration-700 after:ease-in-out group-data-[resaltado]:after:w-3/5"
