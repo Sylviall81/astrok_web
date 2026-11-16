@@ -17,7 +17,7 @@ export default function AboutSection() {
             <h3 className="section-subtitle"> Soy Sylvia: astróloga, investigadora, migrante y neurodivergente. </h3>
 
              <p className="text-body mb-8">
-            Ofrezco un espacio seguro con una mirada humana y compasiva. Durante más de 7 años, la astrología psicológica ha sido mi principal herramienta para facilitar procesos de autodescubrimiento y transformación respetando la singularidad de cada historia.
+            Ofrezco un espacio seguro con una mirada humana y compasiva. Durante más de 10 años, la astrología psicológica ha sido mi principal herramienta para facilitar procesos de autodescubrimiento y transformación respetando la singularidad de cada historia.
             </p>
             <p className="text-body mb-6">
               Traduzco el lenguaje de las estrellas para que leas tu mapa interior con claridad — no para predecir tu vida, sino para vivirla con conciencia, autenticidad y aceptación.

@@ -21,7 +21,7 @@ export default function TestimonialsSection() {
     <section className="py-12 md:py-16 ">
       <div className="container-custom">
         <div className="text-center mb-8">
-          <h2 className="section-title">Lo que dicen mis clientes</h2>
+          <h2 className="section-title">Lo que dicen de mi trabajo</h2>
           <p className="section-subtitle mx-auto">
             Experiencias de personas que han encontrado claridad y dirección a través de la astrología psicológica.
           </p>

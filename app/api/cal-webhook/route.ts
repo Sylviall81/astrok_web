@@ -15,7 +15,7 @@ interface CalWebhookPayload extends CalBooking {
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY)
-const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
+const FROM = "Astrokaleido <hola@mail.astrokaleido.com>"
 const REPLY_TO = "hola@astrokaleido.com"
 const SYLVIA_EMAIL = "hola@astrokaleido.com"
 const INSTAGRAM_URL = "https://www.instagram.com/astrokaleido/"
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       from: FROM,
       replyTo: REPLY_TO,
       to: customerEmail,
-      subject: "Tu reserva está confirmada — Kaleidoscope Astrología",
+      subject: "Tu reserva está confirmada — Astrokaleido",
       html: buildConfirmacionEmail(customerName, eventTitle, formattedDate),
     })
 
@@ -106,7 +106,7 @@ function buildConfirmacionEmail(name: string, eventTitle: string, fecha: string 
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0; padding:0; background-color:#ede8f3;">
   <div style="max-width:560px; margin:40px auto; background:#fff; padding:48px; border-radius:8px; font-family:Georgia,serif; color:#2c2c2c;">
-    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Kaleidoscope Astrología</p>
+    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Astrokaleido</p>
 
     <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4; color:#4a3f74;">Hola ${name},</h1>
 
@@ -140,7 +140,7 @@ function buildConfirmacionEmail(name: string, eventTitle: string, fecha: string 
     <p style="font-size:16px; line-height:1.75; margin:0;">
       Un abrazo,<br>
       <strong>Sylvia Llorente</strong><br>
-      <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
+      <span style="color:#AA9CB8;">Astrokaleido</span>
     </p>
   </div>
 </body>

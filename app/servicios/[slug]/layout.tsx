@@ -21,7 +21,7 @@ export async function generateMetadata({
   const rankMathTitle = getMeta("rank_math_title")
   const rankMathDescription = getMeta("rank_math_description")
 
-  const title = rankMathTitle || `${product.name} | Kaleidoscope Astrología`
+  const title = rankMathTitle || `${product.name} | Astrokaleido`
   const description =
     rankMathDescription ||
     product.short_description?.replace(/<[^>]+>/g, "").trim() ||

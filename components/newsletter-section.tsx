@@ -57,10 +57,10 @@ export default function NewsletterSection() {
       <div className="container-custom">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-lato font-semibold mb-4">
-            Únete a nuestra comunidad
+            Recibe mi newsletter
           </h2>
           <p className="text-lg mb-8 opacity-90">
-            Recibe contenido exclusivo sobre astrología psicológica y herramientas de autodescubrimiento.
+            Una vez al mes te envío las fechas clave del cielo y cómo leerlas desde la astrología psicológica. Cuando hay cursos o clases nuevas, te aviso ahí.
           </p>
 
           <form onSubmit={handleSubmit} className="max-w-md mx-auto">
