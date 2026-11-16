@@ -73,11 +73,10 @@ export default function AboutPage() {
     <li>Astro-Terapéutica · Pablo Flores Laymuns</li>
     <li>Técnica Gestalt · La Silla Vacía</li>
     <li>Barro y Arte Ritual · Slow Art BCN (Anaïs Pineda Ruegg)</li>
-    <li>Somatic Experience · formación introductoria en curso</li>
   </ul>
 
   <p>
-    ¿List@ para explorar tu mapa astrológico?
+    ¿Quieres explorar tu mapa astrológico?
   </p>
 </div>
 
