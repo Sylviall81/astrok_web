@@ -32,6 +32,13 @@ export default function AboutPage() {
   </p>
 
   <p>
+    Soy doctora en Ciencias Políticas, y eso se nota en cómo explico: con estructura, investigación,
+    fuentes y actualización constante. De ahí vienen también mi conciencia social, de clase y de raza,
+    y mi perspectiva de género. Integro la espiritualidad con la realidad social, para no cargar a
+    cada persona con malestares que muchas veces son sistémicos.
+  </p>
+
+  <p>
     Pero más que la formación, lo que me define es cómo entiendo este trabajo: no soy quien tiene 
     las respuestas. Soy quien te acompaña a encontrar las tuyas.
   </p>
@@ -68,6 +75,7 @@ export default function AboutPage() {
   <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
   <ul>
     
+    <li>Doctorado en Ciencias Políticas · Universidad de Santiago de Compostela (2014)</li>
     <li>Astrología Psicológica · Cosmograma (Aleix Mercadé)</li>
     <li>Astrología Psicológica · Geocosmos Barcelona (Lluís Gisbert)</li>
     <li>Astro-Terapéutica · Pablo Flores Laymuns</li>
