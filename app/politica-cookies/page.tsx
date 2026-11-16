@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Política de cookies | Kaleidoscope Astrología",
+  title: "Política de cookies | Astrokaleido",
   description:
     "Política de cookies de astrokaleido.com: qué cookies se utilizan, para qué sirven y cómo gestionar tu consentimiento.",
   alternates: {

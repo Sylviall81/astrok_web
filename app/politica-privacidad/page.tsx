@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Política de privacidad | Kaleidoscope Astrología",
+  title: "Política de privacidad | Astrokaleido",
   description:
     "Política de privacidad de astrokaleido.com: qué datos personales se tratan, con qué finalidad y cómo ejercer tus derechos según el RGPD.",
   alternates: {

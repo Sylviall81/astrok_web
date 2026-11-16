@@ -7,7 +7,7 @@ import { signDownloadUrl } from "@/lib/signed-url"
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2024-06-20" })
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-const FROM = "Kaleidoscope Astrología <hola@mail.astrokaleido.com>"
+const FROM = "Astrokaleido <hola@mail.astrokaleido.com>"
 const REPLY_TO = "hola@astrokaleido.com"
 const SYLVIA_EMAIL = "hola@astrokaleido.com"
 const INSTAGRAM_URL = "https://www.instagram.com/astrokaleido/"
@@ -104,7 +104,7 @@ export async function POST(req: NextRequest) {
     subject: `Nueva venta — ${isServicio ? "Sesión" : "Infoproducto"}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 500px;">
-        <h2 style="color: #2c2c2c;">Nueva venta en Kaleidoscope</h2>
+        <h2 style="color: #2c2c2c;">Nueva venta en Astrokaleido</h2>
         <p><strong>Cliente:</strong> ${session.customer_details?.name ?? "—"}</p>
         <p><strong>Email:</strong> ${customerEmail ?? "—"}</p>
         <p><strong>Productos:</strong><br>${productSummary}</p>
@@ -136,11 +136,11 @@ function buildInfoproductoEmail(name: string, downloads: { productName: string; 
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0; padding:0; background-color:#ede8f3;">
   <div style="max-width:560px; margin:40px auto; background:#fff; padding:48px; border-radius:8px; font-family:Georgia,serif; color:#2c2c2c;">
-    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Kaleidoscope Astrología</p>
+    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Astrokaleido</p>
 
     <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4; color:#4a3f74;">Hola ${name},</h1>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Kaleidoscope Astrología y en mi trabajo.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Astrokaleido y en mi trabajo.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Tu compra se ha realizado correctamente. Aquí tienes tu enlace de descarga:</p>
 
@@ -160,7 +160,7 @@ function buildInfoproductoEmail(name: string, downloads: { productName: string; 
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
       <strong>Sylvia Llorente</strong><br>
-      <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
+      <span style="color:#AA9CB8;">Astrokaleido</span>
     </p>
   </div>
 </body>
@@ -173,11 +173,11 @@ function buildServicioEmail(name: string): string {
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0; padding:0; background-color:#ede8f3;">
   <div style="max-width:560px; margin:40px auto; background:#fff; padding:48px; border-radius:8px; font-family:Georgia,serif; color:#2c2c2c;">
-    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Kaleidoscope Astrología</p>
+    <p style="font-size:12px; letter-spacing:0.14em; text-transform:uppercase; color:#4a3f74; font-weight:600; margin:0 0 36px;">Astrokaleido</p>
 
     <h1 style="font-size:22px; font-weight:normal; margin:0 0 28px; line-height:1.4; color:#4a3f74;">Hola ${name},</h1>
 
-    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Kaleidoscope Astrología y en mi acompañamiento.</p>
+    <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">Gracias por confiar en Astrokaleido y en mi acompañamiento.</p>
 
     <p style="font-size:16px; line-height:1.75; margin:0 0 20px;">He recibido correctamente tu solicitud de sesión y la propuesta de fecha. En un plazo de 24–48 horas confirmaré personalmente la disponibilidad y te escribiré con los siguientes pasos.</p>
 
@@ -191,7 +191,7 @@ function buildServicioEmail(name: string): string {
 
     <p style="font-size:16px; line-height:1.75; margin:0;">Un abrazo,<br>
       <strong>Sylvia Llorente</strong><br>
-      <span style="color:#AA9CB8;">Kaleidoscope Astrología</span>
+      <span style="color:#AA9CB8;">Astrokaleido</span>
     </p>
   </div>
 </body>

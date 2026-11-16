@@ -19,7 +19,7 @@ export async function generateMetadata({
   const canonicalSlug = product.slug || slug
 
   return {
-    title: `${product.name} | Kaleidoscope Astrología`,
+    title: `${product.name} | Astrokaleido`,
     description: product.short_description?.replace(/<[^>]+>/g, "").trim() || undefined,
     alternates: {
       canonical: `${BASE_URL}/tienda/${canonicalSlug}`,

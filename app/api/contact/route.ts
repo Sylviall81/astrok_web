@@ -6,7 +6,7 @@ const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL
 async function alertWpSaveFailure(detail: string) {
   try {
     await resend.emails.send({
-      from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+      from: "Astrokaleido <hola@mail.astrokaleido.com>",
       to: "hola@astrokaleido.com",
       subject: "⚠️ Fallo guardando contacto en WordPress",
       html: `<p>Un envío del formulario de contacto llegó por email pero no se pudo guardar en WordPress.</p><pre>${detail}</pre>`,
@@ -48,12 +48,12 @@ export async function POST(req: Request) {
 
   try {
     await resend.emails.send({
-      from: "Kaleidoscope Astrología <hola@mail.astrokaleido.com>",
+      from: "Astrokaleido <hola@mail.astrokaleido.com>",
       replyTo: data.email,
       to: "hola@astrokaleido.com",
-      subject: "Nuevo contacto de Kaleidoscope Web",
+      subject: "Nuevo contacto de la web de Astrokaleido",
       html: `
-        <h2>Nuevo mensaje desde Kaleidoscope</h2>
+        <h2>Nuevo mensaje desde Astrokaleido</h2>
         <p><strong>Nombre:</strong> ${data.name}</p>
         <p><strong>Email:</strong> ${data.email}</p>
         <p><strong>Mensaje:</strong> ${data.message}</p>

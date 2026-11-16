@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Aviso legal | Kaleidoscope Astrología",
+  title: "Aviso legal | Astrokaleido",
   description:
     "Aviso legal de astrokaleido.com: datos identificativos del titular, condiciones de uso del sitio web y propiedad intelectual.",
   alternates: {
