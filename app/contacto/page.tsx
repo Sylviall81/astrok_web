@@ -5,7 +5,7 @@ import { Mail, Clock, Phone } from "lucide-react"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Contacto | Kaleidoscope Astrología",
+  title: "Contacto | Astrokaleido",
   description:
     "¿Buscas claridad astrológica? Escríbeme para consultas personalizadas o reserva sesión. Te respondo pronto para guiarte en tu proceso.",
   alternates: {

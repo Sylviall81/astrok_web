@@ -6,7 +6,7 @@ import type { Metadata } from "next"
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Blog | Kaleidoscope Astrología",
+  title: "Blog | Astrokaleido",
   description:
     "Artículos sobre astrología evolutiva, signos, tránsitos y reflexión interna. Profundiza en tu mapa y gana herramientas prácticas para tu vida.",
   alternates: {

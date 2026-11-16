@@ -3,7 +3,7 @@ import Link from "next/link"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Sobre mí | Kaleidoscope Astrología",
+  title: "Sobre mí | Astrokaleido",
   description:
     "Sylvia Llorente, astróloga psicológica con +10 años en acompañamiento evolutivo. Conoce mi enfoque y formación.",
   alternates: {
@@ -29,6 +29,13 @@ export default function AboutPage() {
     Soy Sylvia, astróloga psicológica con más de 10 años acompañando procesos de autoconocimiento. 
     Combino astrología humanista y evolutiva con herramientas de integración cuerpo-emoción-simbolismo 
     para que descubras tu mapa interior y navegues tus tránsitos con claridad y confianza.
+  </p>
+
+  <p>
+    Soy doctora en Ciencias Políticas, y eso se nota en cómo explico: con estructura, investigación,
+    fuentes y actualización constante. De ahí vienen también mi conciencia social, de clase y de raza,
+    y mi perspectiva de género. Integro la espiritualidad con la realidad social, para no cargar a
+    cada persona con malestares que muchas veces son sistémicos.
   </p>
 
   <p>
@@ -68,16 +75,16 @@ export default function AboutPage() {
   <h2 className="text-2xl font-lato font-semibold text-primary mt-8 mb-4">Formación</h2>
   <ul>
     
+    <li>Doctorado en Ciencias Políticas · Universidad de Santiago de Compostela (2014)</li>
     <li>Astrología Psicológica · Cosmograma (Aleix Mercadé)</li>
     <li>Astrología Psicológica · Geocosmos Barcelona (Lluís Gisbert)</li>
     <li>Astro-Terapéutica · Pablo Flores Laymuns</li>
     <li>Técnica Gestalt · La Silla Vacía</li>
     <li>Barro y Arte Ritual · Slow Art BCN (Anaïs Pineda Ruegg)</li>
-    <li>Somatic Experience · formación introductoria en curso</li>
   </ul>
 
   <p>
-    ¿List@ para explorar tu mapa astrológico?
+    ¿Quieres explorar tu mapa astrológico?
   </p>
 </div>
 
