@@ -1,5 +1,5 @@
 import { Resend } from "resend"
-import { EXPERIENCIA, HORARIOS, MOTIVOS, PRECIOS, textoDe } from "@/app/curso-carta-natal/opciones"
+import { EXPERIENCIA, HORARIOS, MOTIVOS, textoDe } from "@/app/curso-carta-natal/opciones"
 
 // Preinscripción del curso "Tu carta natal: de las partes al todo" (/curso-carta-natal).
 // Crea o actualiza el contacto en Brevo, en la lista de preinscripción (BREVO_PREINSCRIPCION_LIST_ID) y,
@@ -38,10 +38,9 @@ export async function POST(req: Request) {
   const nombre = typeof data.nombre === "string" ? data.nombre.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : ""
   const motivo = textoDe(MOTIVOS, data.motivo)
-  // Precio y horario solo se preguntan con "Sí" o "Me lo estoy pensando". Con "De momento, no"
-  // no se muestran: se ignora lo que llegue y se guardan vacíos
+  // El horario solo se pregunta con "Sí" o "Me lo estoy pensando". Con "De momento, no"
+  // no se muestra: se ignora lo que llegue y se guarda vacío
   const sinCurso = data.motivo === "no"
-  const precio = sinCurso ? "" : textoDe(PRECIOS, data.precio)
   const nivel = textoDe(EXPERIENCIA, data.experiencia)
   const horarios = !sinCurso && Array.isArray(data.horarios)
     ? HORARIOS.filter((h) => data.horarios.includes(h.valor)).map((h) => h.texto)
@@ -49,7 +48,7 @@ export async function POST(req: Request) {
   const marcaOtro = !sinCurso && Array.isArray(data.horarios) && data.horarios.includes("otro")
   const horarioOtro = marcaOtro && typeof data.horarioOtro === "string" ? data.horarioOtro.trim().slice(0, 200) : ""
 
-  if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || (!sinCurso && !precio) || !nivel) {
+  if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || !nivel) {
     return json({ message: "Revisa los campos del formulario." }, 400)
   }
 
@@ -64,7 +63,6 @@ export async function POST(req: Request) {
   const attributes = {
     NOMBRE: nombre,
     PRE_MOTIVO: motivo,
-    PRE_PRECIO: precio,
     PRE_NIVEL: nivel,
     PRE_HORARIO: horarios.join(", "),
     PRE_HORARIO_OTRO: horarioOtro,
@@ -108,7 +106,6 @@ export async function POST(req: Request) {
           <li>Nombre: ${escapeHtml(nombre)}</li>
           <li>Email: ${escapeHtml(email)}</li>
           <li>¿Le interesa el curso?: ${motivo}</li>
-          <li>Precio: ${precio || "—"}</li>
           <li>Astrología antes: ${nivel}</li>
           <li>Otro horario: ${horarios.join(", ") || "—"}${horarioOtro ? ` (${escapeHtml(horarioOtro)})` : ""}</li>
           <li>Clase abierta: ${claseAbierta ? "sí" : "no"}</li>

@@ -4,7 +4,7 @@ import type React from "react"
 import { useEffect, useState } from "react"
 import { EVENTO_CLASE_ABIERTA } from "./clase-abierta-boton"
 import { EDICION } from "./edicion"
-import { EXPERIENCIA, HORARIOS, MOTIVOS, PRECIOS } from "./opciones"
+import { EXPERIENCIA, HORARIOS, MOTIVOS } from "./opciones"
 
 // Mismo aspecto que components/contact-form.tsx. Envía a /api/preinscripcion (Brevo).
 
@@ -12,7 +12,6 @@ const ESTADO_INICIAL = {
   nombre: "",
   email: "",
   motivo: "",
-  precio: "",
   experiencia: "",
   horarios: [] as string[],
   horarioOtro: "",
@@ -117,7 +116,7 @@ export default function PreinscripcionForm() {
         : [...prev.horarios, valor],
     }))
 
-  // Precio y horario solo se preguntan con "Sí" o "Me lo estoy pensando". Ocultos no se envían,
+  // El horario solo se pregunta con "Sí" o "Me lo estoy pensando". Oculto no se envía,
   // pero se recuerda lo marcado por si vuelve a cambiar de respuesta
   const preguntasCurso = form.motivo === "si" || form.motivo === "pensando"
 
@@ -132,7 +131,6 @@ export default function PreinscripcionForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          precio: preguntasCurso ? form.precio : "",
           horarios: preguntasCurso ? form.horarios : [],
           horarioOtro: preguntasCurso && form.horarios.includes("otro") ? form.horarioOtro : "",
         }),
@@ -223,15 +221,6 @@ export default function PreinscripcionForm() {
 
       {preguntasCurso && (
         <>
-          <GrupoRadio
-            nombre="precio"
-            leyenda="¿Qué precio de la escala te encaja más?"
-            opciones={PRECIOS}
-            valor={form.precio}
-            onChange={(v) => set("precio", v)}
-            disposicion="casillas"
-          />
-
           <fieldset>
             <legend className={legendClass}>¿Te iría mejor otro horario? (opcional)</legend>
             <div className="lg:space-y-2">

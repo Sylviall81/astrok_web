@@ -9,13 +9,6 @@ export const MOTIVOS: Opcion[] = [
   { valor: "no", texto: "De momento, no" },
 ]
 
-export const PRECIOS: Opcion[] = [
-  { valor: "apoyo", texto: "Apoyo" },
-  { valor: "estandar", texto: "Estándar" },
-  { valor: "solidario", texto: "Solidario" },
-  { valor: "no-lo-se", texto: "Aún no lo sé" },
-]
-
 export const EXPERIENCIA: Opcion[] = [
   { valor: "nada", texto: "Nada" },
   { valor: "algo", texto: "Algo" },
