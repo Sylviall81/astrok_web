@@ -12,7 +12,7 @@ import { useTheme } from "next-themes"
 const ANCLAS = [
   { href: "#para-quien", texto: "Para quién es" },
   { href: "#recorrido", texto: "Recorrido" },
-  { href: "#precio", texto: "Precio" },
+  { href: "#precio", texto: "Inscripciones" },
   { href: "#clase-abierta", texto: "Clase gratis" },
   { href: "#preguntas", texto: "Preguntas", textoMovil: "FAQ" },
 ]

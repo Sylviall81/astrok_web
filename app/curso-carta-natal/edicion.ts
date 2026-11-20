@@ -19,14 +19,15 @@ export const EDICION = {
   sinClase: "27 de marzo",
   semanas: 12,
   encuentros: 12,
-  maxPersonas: 10,
+  maxPersonas: 12,
 
   // Grabaciones
   grabacionesMeses: 3,
   grabacionesHasta: "10 de julio de 2027",
 
   // Mínimo de personas (pregunta frecuente)
-  minPersonas: 4,
-  fechaMinimo: "8 de enero",
+  minPersonas: 5,
+  cierreInscripcion: "12 de enero",
+  confirmacionMinimo: "13 de enero",
   inicioAlternativo: "30 de enero",
 }

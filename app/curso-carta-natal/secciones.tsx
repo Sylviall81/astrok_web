@@ -14,7 +14,7 @@ import {
   Users,
   Video,
 } from "lucide-react"
-import { Pendiente, SCROLL_ANCLA, SeccionCielo } from "./marcadores"
+import { SCROLL_ANCLA, SeccionCielo } from "./marcadores"
 import CartaEnCapas from "./carta-en-capas"
 import ClaseAbiertaBoton from "./clase-abierta-boton"
 import { EDICION } from "./edicion"
@@ -497,56 +497,21 @@ export function Fechas() {
   )
 }
 
-/* 7. Precio: cielo estrellado suave con tres tarjetas blancas iguales */
+/* 7. Inscripciones: cielo estrellado suave, sin precios hasta que se abran (van primero a la lista) */
 export function Precio() {
-  const precios = [
-    { nombre: "Apoyo", texto: "Si ahora no puedes pagar el precio estándar. Plazas limitadas." },
-    { nombre: "Estándar", texto: "El precio del curso." },
-    { nombre: "Solidario", texto: "Tu aportación ayuda a cubrir parte de una plaza de apoyo." },
-  ]
-
   return (
     <SeccionCielo id="precio" className={SCROLL_ANCLA}>
-      <div className="text-center mb-12">
-        {/* ETIQUETA NUEVA (por revisar) */}
-        <p className={`${ETIQUETA} !text-dorado mb-3`}>Escala consciente</p>
-        <h2 className={`${TITULO} !text-white mb-4`}>Precio</h2>
-        <p className="font-lato italic text-2xl text-white/90 max-w-2xl mx-auto">
-          Hay tres precios. Elige el que puedas sostener ahora: no te pido justificantes.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        {precios.map(({ nombre, texto }) => (
-          <div
-            key={nombre}
-            className={`${TARJETA_BLANCA} rounded-2xl p-8 md:p-10 shadow-md flex flex-col dark:border dark:border-white/10`}
-          >
-            <h3 className={`${SUBTITULO} text-3xl mb-4`}>{nombre}</h3>
-            {/* TODO: cifras después de la cita del PAE (3/11), según el curso lleve IVA o no */}
-            <div className="mb-5">
-              <Pendiente>Cifra</Pendiente>
-            </div>
-            <p className="text-body text-lg leading-relaxed">{texto}</p>
-            {nombre === "Apoyo" && (
-              // TODO: número de plazas de apoyo
-              <div className="mt-3">
-                <Pendiente>Número de plazas de apoyo</Pendiente>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
       <div className="text-center">
-        <p className="text-white text-lg mb-8">
-          Las inscripciones se abrirán próximamente. Déjame tus datos y te escribo cuando abran.
+        <p className={`${ETIQUETA} !text-dorado mb-3`}>Inscripciones</p>
+        <h2 className={`${TITULO} !text-white mb-4`}>Abrimos en diciembre</h2>
+        <p className="font-lato italic text-2xl text-white/90 max-w-2xl mx-auto mb-8">
+          Quienes se apunten a la lista recibirán antes que nadie la información del curso y la oferta de lanzamiento.
         </p>
         <a
           href="#preinscripcion"
           className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-4"
         >
-          Me interesa el curso
+          Apuntarme a la lista
         </a>
       </div>
     </SeccionCielo>
@@ -658,32 +623,32 @@ export function Testimonios() {
     {
       texto:
         "He descubierto tu blog recientemente y me ha inspirado mucha confianza. […] Rigor, empatía y una intuición genuina es la combinación que ofrece. La lectura me ha dado herramientas y abierto nuevas vías para continuar con la auto-exploración, integración de partes y evolución hacia una mayor consciencia.",
-      origen: "Gloria D.",
+      origen: "Gloria D. · Carta natal online",
     },
     {
       texto:
         "Muchas gracias por la sesión, tu manera de explicar tan agradable y tu comprensión. Me he sentido muy cómoda. Es increíble todo lo que puedes ver en la carta sobre mí y lo que he vivido.",
-      origen: "Raquel B.",
+      origen: "Raquel B. · Carta natal presencial",
     },
     {
       texto:
         "Me ponía delante cosas que, de alguna manera, estaba evitando pero que sabía que estaban ahí. La sesión contigo me dio fuerza y claridad.",
-      origen: "Miriam C.",
+      origen: "Miriam C. · Sesión online",
     },
     {
       texto:
         "Gracias a ti por inspirarme y por darme herramientas evolutivas para este nuevo año solar que me espera. Estoy con ganas de fijar mis cositas, descansar disfrutando, poner mis manos en la tierra y aprovechar el trabajo intenso que me pide mi luna. Gracias, preciosa, se nota que te apasiona tu trabajo.",
-      origen: "Alejandra S.",
+      origen: "Alejandra S. · Revolución solar presencial",
     },
     {
       texto:
         "Me hice una lectura de vínculos con Sylvia, y me ha encantado todo su trabajo y entrega. Mucho material para conocerme y seguir creciendo.",
-      origen: "Jesús A.",
+      origen: "Jesús A. · Sinastría online",
     },
     {
       texto:
         "Es una maravilla todo el trabajo que te tomas en contármelo detalladamente y con palabras tan acertadas, de verdad que es un gusto y estoy muy agradecida. Me lo he leído todo y subrayado algunas cosas que me resuenan en el momento actual, aunque seguro que cuando vuelva dentro de unos meses, encontraré cosas nuevas.",
-      origen: "Amaia P.",
+      origen: "Amaia P. · Sesión integral online",
     },
   ]
 
@@ -732,21 +697,25 @@ export function PreguntasFrecuentes() {
     {
       pregunta: "¿Qué pasa si no se llega al mínimo de personas?",
       respuesta:
-        `Para que el grupo funcione hacen falta al menos ${EDICION.minPersonas} personas. Si el ${EDICION.fechaMinimo} no hemos llegado, el curso empieza el ${EDICION.inicioAlternativo}. Si esa fecha no te va bien, o si tampoco llegamos entonces, te devuelvo el dinero entero o te guardo la plaza para la siguiente edición, como prefieras.`,
+        `Para que el grupo funcione hacen falta al menos ${EDICION.minPersonas} personas. Las inscripciones cierran el ${EDICION.cierreInscripcion} y el ${EDICION.confirmacionMinimo} te confirmo si hemos llegado. Si no, el curso empieza el ${EDICION.inicioAlternativo}. Si esa fecha no te va bien, o si tampoco llegamos entonces, te devuelvo el dinero entero o te guardo la plaza para la siguiente edición, como prefieras.`,
     },
     {
       pregunta: "¿Puedo hacerlo desde fuera de España?",
       respuesta: "Sí, es online. El horario es el de Barcelona: comprueba a qué hora es en tu zona.",
     },
     {
+      pregunta: "¿Cuánto cuesta?",
+      respuesta:
+        "El precio y la oferta de lanzamiento se comunican al abrir las inscripciones, en diciembre. Quienes estén en la lista los reciben antes que nadie.",
+    },
+    {
       pregunta: "¿Puedo pagar a plazos?",
-      // TODO: segundo pago manual, sin confirmar
-      respuesta: <Pendiente>Pago a plazos</Pendiente>,
+      respuesta: "Sí, en dos pagos iguales y sin recargo.",
     },
     {
       pregunta: "¿Puedo pedir la devolución?",
-      // TODO: se pregunta en el PAE (derecho de desistimiento de 14 días en compras online)
-      respuesta: <Pendiente>Devoluciones</Pendiente>,
+      respuesta:
+        "Tienes 14 días naturales desde que te inscribes para desistir y recuperar tu dinero, sin dar explicaciones. Si dentro de ese plazo ya han empezado las clases, descuento la parte proporcional de las que hayas recibido. Una vez extinguido el derecho de desistimiento, pasados esos 14 días naturales que prevé la ley, no se aceptan devoluciones, salvo que sea yo quien no pueda dar el curso o lo cambie de fecha y no te encaje (lo explico en «¿Qué pasa si no se llega al mínimo?»).",
     },
     {
       pregunta: "¿Dejar mis datos me reserva la plaza?",
@@ -789,7 +758,7 @@ export function Preinscripcion() {
         <div className={`${TARJETA} ${TARJETA_BLANCA} max-w-3xl mx-auto p-6 md:p-14`}>
           <Encabezado
             titulo="¿Te interesa? Cuéntame"
-            subtitulo="Déjame tus datos y te escribo cuando abran las inscripciones. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso y sin pagar nada."
+            subtitulo="Déjame tus datos y recibirás antes que nadie la información del curso y la oferta de lanzamiento. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso y sin pagar nada."
             centrado
           />
           <PreinscripcionForm />
