@@ -89,7 +89,7 @@ export function Cabecera() {
   const datos = [
     { icono: CalendarDays, texto: `${EDICION.encuentros} encuentros en directo` },
     { icono: BookOpen, texto: "Práctica con tu propia carta natal" },
-    { icono: History, texto: `Grabaciones disponibles hasta ${EDICION.grabacionesMeses} meses después de la última clase` },
+    { icono: History, texto: "Acceso a las clases grabadas" },
   ]
 
   return (
@@ -108,7 +108,8 @@ export function Cabecera() {
             Edición {EDICION.anio} · Plazas reducidas
           </p>
           <h1 className="text-[2.6rem] md:text-6xl lg:text-[4.25rem] text-white mb-4 md:mb-6 leading-[1.1] md:leading-tight">
-            Tu carta natal: <span className="not-italic font-semibold text-dorado">de las partes al todo</span>
+            Tu carta natal:
+            <span className="block not-italic font-semibold text-dorado">de las partes al todo</span>
           </h1>
           <p className="font-lato italic text-xl md:text-3xl text-white/90 mb-6 md:mb-10">
             Curso vivencial de iniciación a la astrología psicológica
@@ -125,14 +126,14 @@ export function Cabecera() {
             ))}
           </ul>
           <p className="max-w-2xl mx-auto text-base md:text-lg text-white/90 leading-relaxed mb-7 md:mb-10">
-            Las inscripciones se abrirán próximamente. Déjame tus datos, sin compromiso y sin pagar nada, y te aviso
-            cuando puedas reservar tu plaza.
+            Abrimos inscripciones en diciembre. Apúntate a la lista y recibirás antes que nadie la información del
+            curso y la oferta de lanzamiento. Sin compromiso.
           </p>
           <a
             href="#preinscripcion"
             className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-3.5 md:py-4 shadow-md"
           >
-            Me interesa el curso
+            Apúntame
           </a>
           <p className="mt-6 md:mt-8 text-sm text-white/75">
             ¿Quieres ver antes cómo trabajo?{" "}
@@ -273,8 +274,8 @@ export function PartesAlTodo() {
             <p className={`${ETIQUETA} mb-3`}>Avance progresivo</p>
             <h2 className={`${TITULO} mb-6`}>De las partes al todo</h2>
             <p className="text-body text-lg leading-relaxed">
-              Una carta natal contiene muchísima información. Por eso vamos parte por parte: entendemos cada pieza,
-              vemos cómo se relacionan entre ellas y, al final, armamos el todo. Sin memorizar: comprendiendo la lógica de cada símbolo.
+              Una carta natal contiene muchísima información. Por eso vamos pieza a pieza, entendiendo cada una en profundidad
+              y como parte del sistema. Al final, armamos el todo, comprendiendo la lógica de cada símbolo y sin memorizar nada.
             </p>
           </div>
           {/* En escritorio el marco se estira hasta abajo de las tarjetas y la carta queda centrada dentro */}
@@ -502,8 +503,8 @@ export function Precio() {
   return (
     <SeccionCielo id="precio" className={SCROLL_ANCLA}>
       <div className="text-center">
-        <p className={`${ETIQUETA} !text-dorado mb-3`}>Inscripciones</p>
-        <h2 className={`${TITULO} !text-white mb-4`}>Abrimos en diciembre</h2>
+        <p className={`${ETIQUETA} !text-dorado mb-3`}>Próximamente</p>
+        <h2 className={`${TITULO} !text-white mb-4`}>Abrimos inscripciones en diciembre</h2>
         <p className="font-lato italic text-2xl text-white/90 max-w-2xl mx-auto mb-8">
           Quienes se apunten a la lista recibirán antes que nadie la información del curso y la oferta de lanzamiento.
         </p>
@@ -511,7 +512,7 @@ export function Precio() {
           href="#preinscripcion"
           className="inline-block bg-white text-primary rounded-lg font-lora font-semibold transition-all hover:bg-accent hover:text-white text-lg px-10 py-4"
         >
-          Apuntarme a la lista
+          Apúntame
         </a>
       </div>
     </SeccionCielo>
@@ -758,7 +759,7 @@ export function Preinscripcion() {
         <div className={`${TARJETA} ${TARJETA_BLANCA} max-w-3xl mx-auto p-6 md:p-14`}>
           <Encabezado
             titulo="¿Te interesa? Cuéntame"
-            subtitulo="Déjame tus datos y recibirás antes que nadie la información del curso y la oferta de lanzamiento. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso y sin pagar nada."
+            subtitulo="Déjame tus datos y recibirás antes que nadie la información del curso y la oferta de lanzamiento. Si marcas la casilla, te apunto también a la clase abierta. Sin compromiso."
             centrado
           />
           <PreinscripcionForm />
