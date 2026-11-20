@@ -100,7 +100,7 @@ function Glifo({ d, x, y, tam, fill }: { d: string; x: number; y: number; tam: n
   return <path d={d} transform={`translate(${x} ${y}) scale(${tam / 100})`} fill={fill} fillRule="evenodd" />
 }
 
-export default function CartaEnCapas() {
+export default function CartaEnCapas({ className = "" }: { className?: string }) {
   const contenedor = useRef<HTMLDivElement>(null)
   const palabra = useRef<HTMLSpanElement>(null)
   const [capas, setCapas] = useState([true, true, true, true, true])
@@ -239,7 +239,7 @@ export default function CartaEnCapas() {
 
   return (
     <div
-      className={`${sinTransicion ? "[&_*]:!transition-none" : ""} rounded-2xl border border-black/5 bg-[var(--carta-bg)] p-4 shadow-sm [--carta-bg:#F6F5EF] [--carta-linea:#4A3F74] dark:border-white/10 dark:[--carta-bg:hsl(var(--muted))] dark:[--carta-linea:#F6F5EF] md:p-6`}
+      className={`${sinTransicion ? "[&_*]:!transition-none" : ""} ${className} rounded-2xl border border-black/5 bg-[var(--carta-bg)] p-4 shadow-sm [--carta-bg:#F6F5EF] [--carta-linea:#4A3F74] dark:border-white/10 dark:[--carta-bg:hsl(var(--muted))] dark:[--carta-linea:#F6F5EF] md:p-6`}
     >
       <div ref={contenedor} className="relative mx-auto w-full max-w-[520px]">
         <svg

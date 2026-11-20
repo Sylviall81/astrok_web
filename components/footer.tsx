@@ -8,8 +8,9 @@ import SocialLinks from "@/components/common/social-links"
 export function Footer() {
    //const { theme, setTheme } = useTheme()
 
+   // Raya arriba en modo oscuro: sin ella el footer se funde con la sección anterior
    return (
-    <footer className="section-alt py-12">
+    <footer className="section-alt py-12 dark:border-t dark:border-white/10">
       <div className="containermax-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-1">

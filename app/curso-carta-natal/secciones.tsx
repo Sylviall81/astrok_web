@@ -7,7 +7,6 @@ import {
   ChevronDown,
   Clock,
   Compass,
-  Eye,
   History,
   PenLine,
   Sparkles,
@@ -90,7 +89,7 @@ export function Cabecera() {
   const datos = [
     { icono: CalendarDays, texto: `${EDICION.encuentros} encuentros en directo` },
     { icono: BookOpen, texto: "Práctica con tu propia carta natal" },
-    { icono: History, texto: `Grabaciones disponibles durante ${EDICION.grabacionesMeses} meses` },
+    { icono: History, texto: `Grabaciones disponibles hasta ${EDICION.grabacionesMeses} meses después de la última clase` },
   ]
 
   return (
@@ -153,7 +152,7 @@ export function Cabecera() {
 /* Ficha rápida: tarjeta blanca que se monta sobre el final de la cabecera */
 export function FichaRapida() {
   const ficha = [
-    { etiqueta: "Duración", dato: `${EDICION.semanas} semanas` },
+    { etiqueta: "Duración", dato: `${EDICION.semanas} sesiones` },
     { etiqueta: "Formato", dato: "En directo por Zoom" },
     { etiqueta: "Grupo", dato: `${EDICION.maxPersonas} personas como máximo` },
     { etiqueta: "Requisitos", dato: "Sin conocimientos previos" },
@@ -185,16 +184,16 @@ export function FichaRapida() {
 export function ParaQuien() {
   const vias = [
     {
-      etiqueta: "Vía exploratoria", // ETIQUETA NUEVA (por revisar)
+      etiqueta: "Disfrute y comunidad", // etiqueta revisada con Sylvia (18/11)
       icono: Compass,
       texto:
-        "Para ti, si tienes curiosidad, quieres acercarte al lenguaje simbólico y te apetece un espacio donde hablar de espiritualidad, misticismo o trascendencia sin tener que justificarte, para encontrarte con personas que te entienden y comparten tus inquietudes. Disfrutar aprendiendo es más que suficiente.",
+        "Para ti, si quieres acercarte al lenguaje simbólico con curiosidad y tener un espacio donde hablar de espiritualidad, misticismo o trascendencia sin tener que justificarte. Para encontrarte con personas que te entienden y comparten tus inquietudes. Disfrutar aprendiendo es más que suficiente.",
     },
     {
-      etiqueta: "Vía introspectiva", // ETIQUETA NUEVA (por revisar)
+      etiqueta: "Autoconocimiento e indagación", // etiqueta revisada con Sylvia (18/11)
       icono: Brain,
       texto:
-        "Y para ti, si quieres mirarte por dentro. Si te interesa (re)conocer todas tus partes, escuchar qué necesitan y darles un lugar.",
+        "Y para ti, si quieres actualizar tu idea de quién eres. Si te interesa (re)conocer todas tus partes, escuchar qué necesitan y darles un lugar, y mirarte a ti y a tu mapa natal con curiosidad y compasión, sin juicio.",
     },
   ]
 
@@ -223,7 +222,7 @@ export function ParaQuien() {
             className="absolute -right-16 -bottom-16 h-64 w-64 bg-[url('/curso/sriyantra-dorado.svg')] bg-contain bg-no-repeat opacity-15"
           />
           <blockquote className="relative mx-auto max-w-4xl text-center font-lato italic text-2xl md:text-3xl leading-snug text-crema">
-            A lo mejor te has visto en las dos. Suele ser la misma persona en dos momentos distintos. Todas tus
+            A lo mejor te has visto en las dos. Todas tus
             versiones son bienvenidas. No hace falta saber nada de astrología antes de empezar.
           </blockquote>
         </div>
@@ -231,13 +230,13 @@ export function ParaQuien() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 md:gap-0 rounded-2xl bg-dorado/10 dark:bg-white/5 p-8 md:p-12">
           <div className={`md:border-r ${LINEA} md:pr-10 flex flex-col justify-center`}>
             {/* ETIQUETA NUEVA (por revisar) */}
-            <p className={`${ETIQUETA} mb-2`}>Acompañamiento abierto</p>
-            <h3 className={`${SUBTITULO} text-2xl md:text-3xl`}>Lo que puede pasar por el camino</h3>
+            <p className={`${ETIQUETA} mb-2`}>Tu proceso, tu ritmo</p>
+            <h3 className={`${SUBTITULO} text-2xl md:text-3xl`}>Todo lo que surja es bienvenido</h3>
           </div>
           <p className="text-body text-lg leading-relaxed md:pl-10">
-            Mirarte a ti y a tu carta con curiosidad, paciencia y compasión durante doce semanas casi siempre mueve
-            cosas. Puede que veas una tendencia tuya con otros ojos y te preguntes qué conservar y qué quieres cambiar
-            de sitio o de narrativa. Si pasa, tendrá su espacio en el curso. Si no pasa, también está bien: vamos a tu
+            Mirar tu carta semana a semana te permitirá 
+            observarte con compasión y desapego. Comprender el origen y función de muchos hábitos y conductas, en qué contextos son funcionales 
+            y cuándo no. Decidir qué hacer con ellos. Y, a veces, también pueden aparecer cambios de narrativaa mi . Si pasa, te ofrezco un espacio respetuoso para mirarlo. Si no pasa, también está bien: vamos a tu
             ritmo y no hay nada que conseguir.
           </p>
         </div>
@@ -246,15 +245,16 @@ export function ParaQuien() {
   )
 }
 
-/* 3. De las partes al todo: carta natal animada por capas y cuatro tarjetas numeradas unidas por una línea fina */
+/* 3. De las partes al todo: en escritorio, texto y cuatro tarjetas en 2 × 2 a la izquierda y la carta animada
+   a la derecha, a la misma altura. En móvil: texto, carta y tarjetas */
 export function PartesAlTodo() {
   const partes = [
     {
       titulo: "Estructura y elementos",
       texto:
-        "El clima de fondo de tu carta: hacia dónde tiende tu energía, más hacia fuera o más hacia dentro, cuál abunda y cuál echas en falta.",
+        "La base de tu carta, sobre la que se apoya todo lo demás. Miraremos si algún elemento abunda o escasea, cómo se reparten los planetas entre hemisferios y cuadrantes y sus implicaciones.",
     },
-    { titulo: "Signos", texto: "El vestuario con el que cada planeta sale a escena." },
+    { titulo: "Signos", texto: "El vestuario con el que cada planeta sale a escena: su estilo, su tono, su manera de moverse." },
     { titulo: "Planetas", texto: "Los personajes de tu carta. Cada uno tiene una función y unas necesidades." },
     { titulo: "Casas", texto: "Los escenarios de tu vida, dónde ocurre cada cosa." },
   ]
@@ -266,36 +266,34 @@ export function PartesAlTodo() {
         className="absolute -right-10 bottom-6 h-40 w-40 bg-sri-yantra-pattern bg-contain bg-no-repeat opacity-10"
       />
       <div className="container-custom relative">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-12">
-          <div>
-            {/* ETIQUETA NUEVA (por revisar) */}
-            <p className={`${ETIQUETA} mb-3`}>Metodología caleidoscópica</p>
+        {/* La carta ocupa las dos filas de la derecha: arriba alinea con la etiqueta y abajo con las tarjetas */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-8">
+          <div className="lg:col-start-1 lg:row-start-1">
+            {/* etiqueta revisada con Sylvia (18/11) */}
+            <p className={`${ETIQUETA} mb-3`}>Avance progresivo</p>
             <h2 className={`${TITULO} mb-6`}>De las partes al todo</h2>
             <p className="text-body text-lg leading-relaxed">
               Una carta natal contiene muchísima información. Por eso vamos parte por parte: entendemos cada pieza,
-              vemos cómo se relacionan entre ellas y, al final, armamos el todo.
+              vemos cómo se relacionan entre ellas y, al final, armamos el todo. Sin memorizar: comprendiendo la lógica de cada símbolo.
             </p>
           </div>
-          <CartaEnCapas />
-        </div>
+          {/* En escritorio el marco se estira hasta abajo de las tarjetas y la carta queda centrada dentro */}
+          <CartaEnCapas className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:flex lg:flex-col lg:justify-center" />
 
-        <div className="relative">
-          {/* Línea que une las tarjetas: solo se ve en los huecos entre ellas */}
-          <div aria-hidden="true" className="absolute left-0 right-0 top-[3.25rem] hidden h-px bg-dorado/60 lg:block" />
-          <ol className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <ol className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-start-1 lg:row-start-2">
             {partes.map(({ titulo, texto }, i) => (
               // La carta animada pone data-oculta hasta que sale su capa y data-resaltado un momento al salir
               <li
                 key={titulo}
-                className={`group ${TARJETA} ${TARJETA_CREMA} p-6 transition-[border-color,box-shadow,opacity,transform] duration-700 ease-in-out data-[oculta]:translate-y-3 data-[oculta]:opacity-0 data-[resaltado]:border-primary data-[resaltado]:shadow-md motion-reduce:transition-none dark:data-[resaltado]:border-accent`}
+                className={`group ${TARJETA} ${TARJETA_CREMA} p-5 transition-[border-color,box-shadow,opacity,transform] duration-700 ease-in-out data-[oculta]:translate-y-3 data-[oculta]:opacity-0 data-[resaltado]:border-primary data-[resaltado]:shadow-md motion-reduce:transition-none dark:data-[resaltado]:border-accent`}
               >
-                <span
-                  aria-hidden="true"
-                  className="mb-5 flex h-14 w-14 items-center justify-center rounded-lg border-2 border-primary bg-white font-lato text-2xl font-semibold text-primary dark:border-accent dark:bg-transparent dark:text-accent"
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className={`${SUBTITULO} text-2xl mb-2`}>
+                <h3 className={`${SUBTITULO} mb-2 flex items-center gap-3 text-xl`}>
+                  <span
+                    aria-hidden="true"
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border-2 border-primary bg-white text-base font-semibold [font-variant-numeric:lining-nums] dark:border-accent dark:bg-transparent"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                   {/* La carta animada busca la tarjeta por data-capa-titulo. Al resaltarla: algo más grande y línea dorada debajo */}
                   <span
                     data-capa-titulo={i + 1}
@@ -318,16 +316,27 @@ export function PartesAlTodo() {
 export function ComoSeVive() {
   const tarjetas = [
     {
-      icono: Eye,
-      titulo: "Tu carta desde el primer día",
+      icono: Users,
+      titulo: "Clases participativas",
       texto:
-        "Cada concepto lo buscas en tu carta. Te llevas una tabla de palabras clave por signo para empezar a leer sin memorizar.",
+        "Partimos de ejemplos de tu vida para ver cómo se expresa en tu carta lo que vamos aprendiendo. La teoría se vuelve vivencia.",
     },
-    { icono: Sparkles, titulo: "Visualizaciones", texto: "Para que los símbolos no se queden solo en la cabeza." },
+    {
+      icono: Sparkles,
+      titulo: "Visualizaciones guiadas",
+      texto:
+        "Meditaciones para conectar con la imagen de cada planeta o signo, para que los símbolos no se queden solo en la cabeza.",
+    },
     {
       icono: PenLine,
-      titulo: "Ejercicios de integración",
-      texto: "Recomendaciones prácticas para llevar lo que ves en la carta a tu vida.",
+      titulo: "Prácticas de integración",
+      texto: "Ejercicios sencillos para llevar lo que ves en la carta a tu día a día.",
+    },
+    {
+      icono: BookOpen,
+      titulo: "Herramientas y recursos",
+      texto:
+        "Para orientarte en tus primeros pasos: guías sacadas de lo que preparo para las clases y bibliografía de referencia.",
     },
   ]
 
@@ -345,18 +354,18 @@ export function ComoSeVive() {
             />
           </div>
           <div>
-            {/* ETIQUETA NUEVA (por revisar) */}
-            <p className={`${ETIQUETA} mb-3`}>Experiencia de aprendizaje</p>
-            <h2 className={`${TITULO} mb-6`}>Cómo se vive</h2>
+            {/* etiqueta y título revisados con Sylvia (18/11) */}
+            <p className={`${ETIQUETA} mb-3`}>Teoría y práctica</p>
+            <h2 className={`${TITULO} mb-6`}>Aprendizaje vivencial</h2>
             <p className="font-lato italic text-2xl leading-snug text-primary/90 dark:text-accent/90">
-              Desde la primera clase lees parte de tu propia carta. Las clases combinan teoría y práctica. Además de ver
-              tus tendencias, nos preguntamos desde dónde haces lo que haces y qué necesidad hay detrás, también de lo
+              Todo lo que aprendas lo miramos en tu propia carta natal desde el día uno. Además de identificar
+              tus tendencias, indagamos desde dónde haces lo que haces y qué necesidad hay detrás, también de lo
               que no haces.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {tarjetas.map(({ icono, titulo, texto }) => (
             <div key={titulo} className={`${TARJETA} ${TARJETA_BLANCA} p-8 md:p-10`}>
               <div className="mb-6">
@@ -367,6 +376,12 @@ export function ComoSeVive() {
             </div>
           ))}
         </div>
+
+        {/* Línea de fuentes: nombres elegidos con Sylvia (18/11), por confirmar que son los que más usa */}
+        <p className="mx-auto mt-10 max-w-3xl text-center text-body leading-relaxed">
+          Me apoyo en autores de referencia de la astrología psicológica y humanista, como Stephen Arroyo, Liz Greene,
+          Howard Sasportas, Karen Hamaker-Zondag, Dane Rudhyar o Eugenio Carutti.
+        </p>
       </div>
     </section>
   )
@@ -377,25 +392,25 @@ export function Recorrido() {
   // "Bloque" y "Semanas" vienen de la referencia: ETIQUETA NUEVA (por revisar), sin comprobar con el temario
   const bloques = [
     {
-      semanas: "Semanas 1 - 3",
-      titulo: "Orientarte en tu carta",
+      semanas: "Sesiones 1 - 2",
+      titulo: "El lenguaje y el mapa",
       texto:
-        "Qué estás viendo cuando abres una carta natal. Ubicas tu Sol, tu Luna y tu Ascendente, y empiezas a reconocer cómo se reparten los planetas en hemisferios y cuadrantes.",
+        "Qué estás viendo cuando abres una carta natal: el lenguaje de los símbolos y las tres capas del mapa, planetas, signos y casas. Ubicas tu Sol, tu Luna y tu Ascendente, te familiarizas con el gráfico y reconoces cómo se reparten los planetas en hemisferios y cuadrantes.",
     },
     {
-      semanas: "Semanas 4 - 6",
+      semanas: "Sesiones 3 - 4",
       titulo: "Polaridades, elementos y modalidades",
       texto:
-        "Fuego, tierra, aire y agua: los cuatro temperamentos. Ves cómo aparecen en tu carta, y conoces las tres maneras de moverse por la vida: arrancar, sostener, adaptar.",
+        "Dos polaridades, activa y receptiva, y cuatro elementos: fuego, tierra, aire y agua. Aprendemos a calcular el balance de elementos de tu carta y vemos si hay excesos o carencias. Y conoces las tres modalidades, tres momentos de un mismo flujo energético: iniciar (cardinal), sostener (fijo) y adaptarse (mutable).",
     },
     {
-      semanas: "Semanas 7 - 9",
-      titulo: "Los doce signos",
+      semanas: "Sesiones 5 - 8",
+      titulo: "Los doce signos y sus ejes polares",
       texto:
-        "Los recorremos uno a uno, con ejemplos y visualizaciones. Los vas ubicando en tu carta, más allá de tu signo solar.",
+        "Recorremos la rueda zodiacal, los doce signos de cuatro en cuatro, de acuerdo con su lógica evolutiva, con ejemplos y visualizaciones. Empiezas a reconocerlos en tu carta y en tu expresión, más allá de tu signo solar. Comprendemos por qué los doce signos forman seis ejes de signos opuestos y complementarios.",
     },
     {
-      semanas: "Semanas 10 - 12",
+      semanas: "Sesiones 9 - 12",
       titulo: "Planetas, casas y primeras lecturas",
       texto:
         "Los planetas como personajes de tu carta y las casas como los escenarios de tu vida. Practicamos la combinación básica (planeta, signo y casa) y hacemos una primera lectura guiada de posiciones de tu carta.",
@@ -428,10 +443,16 @@ export function Recorrido() {
           etiqueta="Estructura del programa"
           titulo="Recorrido"
           linea
-          lateral={<p className="text-sm font-medium text-muted-foreground">{EDICION.semanas} semanas · 4 bloques progresivos</p>}
+          lateral={<p className="text-sm font-medium text-muted-foreground">{EDICION.semanas} sesiones · 4 bloques progresivos</p>}
         />
 
         <ol className="space-y-4">{bloques.map((b, i) => fila(b, i))}</ol>
+
+        {/* Nota de programa orientativo (redactada con Sylvia el 18/11) */}
+        <p className="mx-auto mt-8 max-w-3xl text-center text-body leading-relaxed">
+          El programa es orientativo: es la estructura que pienso seguir a grandes rasgos y tiene un orden lógico, pero
+          puede cambiar según el ritmo de aprendizaje y las necesidades del grupo. Cualquier cambio lo hablaremos en clase.
+        </p>
       </div>
     </section>
   )
@@ -441,22 +462,22 @@ export function Recorrido() {
 export function Fechas() {
   // Rótulos de cada caja: ETIQUETA NUEVA (por revisar)
   const fechas = [
-    { icono: CalendarDays, rotulo: "Calendario", texto: `Del ${EDICION.inicio} al ${EDICION.fin}` },
+    { icono: CalendarDays, rotulo: "Calendario", texto: `Una sesión por semana, del ${EDICION.inicio} al ${EDICION.fin}` },
     {
       icono: Clock,
       rotulo: "Horario",
       texto: `${EDICION.horario}, sin clase el ${EDICION.sinClase}`,
     },
-    { icono: Video, rotulo: "Canal", texto: "En directo por Zoom" },
-    { icono: Users, rotulo: "Grupo", texto: `Grupo de ${EDICION.maxPersonas} personas como máximo` },
-    { icono: History, rotulo: "Grabaciones", texto: `Grabaciones disponibles hasta el ${EDICION.grabacionesHasta}` },
+    { icono: Video, rotulo: "Dónde", texto: "Online, en directo por Zoom" },
+    { icono: Users, rotulo: "Grupo", texto: `${EDICION.maxPersonas} personas como máximo` },
+    { icono: History, rotulo: "Grabaciones", texto: `Disponibles hasta ${EDICION.grabacionesMeses} meses después de la última clase` },
   ]
 
   return (
     <section className={`py-16 md:py-24 ${FONDO_CREMA}`}>
       <div className="container-custom">
         {/* ETIQUETA NUEVA (por revisar) */}
-        <Encabezado etiqueta="Coordenadas del encuentro" titulo="Fechas y formato" centrado />
+        <Encabezado etiqueta="Detalles prácticos" titulo="Cuándo y cómo" centrado />
         <ul className={`${TARJETA} ${TARJETA_BLANCA} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 p-4 md:p-8`}>
           {fechas.map(({ icono, rotulo, texto }) => (
             <li
@@ -549,17 +570,31 @@ export function ClaseAbierta() {
               <Ticket aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
               Encuentro abierto y gratuito
             </p>
-            <h2 className={`${TITULO} mb-2`}>¿Quieres probar antes?</h2>
-            <p className="font-lato italic text-2xl text-primary/80 dark:text-accent/90 mb-5">
-              Clase abierta y gratuita, el {EDICION.claseAbierta.dia} {EDICION.claseAbierta.fecha}.
+            <h2 className={`${TITULO} mb-3`}>¿Quieres probar antes?</h2>
+            <h3 className={`${SUBTITULO} text-2xl md:text-3xl mb-2`}>{EDICION.claseAbierta.nombre}</h3>
+            <p className="font-medium text-primary dark:text-accent mb-5">
+              Online, el {EDICION.claseAbierta.dia} {EDICION.claseAbierta.fecha}, de {EDICION.claseAbierta.hora} (hora
+              de Barcelona).
             </p>
             <div aria-hidden="true" className="w-16 h-px bg-dorado mb-5" />
-            {/* TODO: hora de la clase abierta */}
-            {/* TODO: qué se hace en la clase abierta, en una frase */}
-            <div className="flex flex-wrap gap-2">
-              <Pendiente>Hora</Pendiente>
-              <Pendiente>Qué se hace en la clase, en una frase</Pendiente>
+            {/* Descripción decidida el 17/11/2026 (contenido_landing.md, sección 8): usar tal cual */}
+            <div className="space-y-4 text-body text-lg leading-relaxed">
+              <p>
+                Hay una parte de ti que se muestra primero cuando alguien te conoce, otra que busca expresarse y una
+                tercera que necesita sentirse segura.
+              </p>
+              <p>
+                En este encuentro exploraremos cómo el lenguaje simbólico de la astrología psicológica
+                entiende el Sol, la Luna y el Ascendente en el contexto de la carta natal.
+              </p>
+              <p>
+                Será también una oportunidad para conocernos: podrás ver cómo abordo la astrología, preguntarme por el
+                curso y decidir con tranquilidad si este recorrido te interesa.
+              </p>
             </div>
+            <p className="mt-6 font-lato italic text-2xl text-primary/80 dark:text-accent/90">
+              Apúntate a esta clase introductoria: es gratis y sin compromiso.
+            </p>
           </div>
           <div className="w-full shrink-0 md:w-auto">
             <ClaseAbiertaBoton />
@@ -588,19 +623,27 @@ export function QuienSoy() {
             />
           </div>
           <div>
-            {/* ETIQUETA NUEVA (por revisar) */}
-            <p className={`${ETIQUETA} mb-3`}>Acompañamiento y rigor</p>
+            {/* etiqueta revisada con Sylvia (18/11) */}
+            <p className={`${ETIQUETA} mb-3`}>Imparte y acompaña</p>
             <h2 className={`${TITULO} mb-5`}>Quién soy</h2>
             <div aria-hidden="true" className="w-12 h-px bg-dorado mb-6" />
             <p className="text-body text-lg leading-relaxed mb-6">
-              Soy Sylvia. Llevo más de diez años acompañando a personas a mirar su carta natal desde la astrología
-              psicológica. Soy doctora en Ciencias Políticas, y eso se nota en cómo explico: con estructura y con
-              fuentes. Acompaño con perspectiva de género y de forma informada en trauma, respetando el ritmo y las
-              necesidades de cada persona. Cuido que el grupo sea un espacio seguro e inclusivo, sin juicios.
+              Soy Sylvia, mujer, migrante y neurodivergente. Tengo más de diez años de experiencia en consulta utilizando la astrología psicológica y
+              humanista como herramienta de integración terapéutica.
+            </p>
+            <p className="text-body text-lg leading-relaxed mb-6">
+              Mi trayectoria previa en la investigación (soy doctora en Ciencias Políticas) me dio estructura y
+              disciplina, y mi formación en astrología me enseñó a escuchar y acompañar. En mi práctica combino rigor y
+              cercanía.
+            </p>
+            <p className="text-body text-lg leading-relaxed mb-6">
+              La conciencia social, la perspectiva de género y el enfoque informado en trauma
+              (<em>trauma-informed care</em>) son los principios que orientan mi trabajo. Ofrezco un espacio seguro,
+              compasivo e inclusivo, sin juicios ni jerarquías. No hay recetas ni fórmulas: tú conoces tu experiencia
+              mejor que nadie. Desde la escucha y la validación de tus necesidades, avanzamos a la par.
             </p>
             <p className="text-body leading-relaxed">
-              No soy psicóloga clínica. Uso la astrología como una puerta y una herramienta para conocerte, nunca como
-              sustituto de un diagnóstico.
+              No soy psicóloga clínica, y la astrología no sustituye un diagnóstico.
             </p>
           </div>
         </div>
@@ -614,31 +657,40 @@ export function Testimonios() {
   const testimonios = [
     {
       texto:
-        "Rigor, empatía y una intuición genuina es la combinación que ofrece. La lectura me ha dado herramientas y abierto nuevas vías para continuar con la auto-exploración, integración de partes y evolución hacia una mayor consciencia.",
-      origen: "Consultante · sesión online",
+        "He descubierto tu blog recientemente y me ha inspirado mucha confianza. […] Rigor, empatía y una intuición genuina es la combinación que ofrece. La lectura me ha dado herramientas y abierto nuevas vías para continuar con la auto-exploración, integración de partes y evolución hacia una mayor consciencia.",
+      origen: "Gloria D.",
     },
     {
       texto:
         "Muchas gracias por la sesión, tu manera de explicar tan agradable y tu comprensión. Me he sentido muy cómoda. Es increíble todo lo que puedes ver en la carta sobre mí y lo que he vivido.",
-      origen: "Consultante · sesión online",
+      origen: "Raquel B.",
     },
     {
       texto:
         "Me ponía delante cosas que, de alguna manera, estaba evitando pero que sabía que estaban ahí. La sesión contigo me dio fuerza y claridad.",
-      origen: "Consultante · sesión online",
+      origen: "Miriam C.",
     },
     {
       texto:
-        "Llevo bastante tiempo interesándome por la astrología y últimamente estoy leyendo mucho e investigando al respecto. Sigo sobre todo la escuela de Carutti y recientemente también a la gente de Cosmograma. De hecho, me planteo hacer alguna formación, aunque en un primer momento con comprender mi carta natal ya tengo bastante. He descubierto tu blog hoy mismo y me ha inspirado mucha confianza.",
-      origen: "Consultante · lectora del blog",
+        "Gracias a ti por inspirarme y por darme herramientas evolutivas para este nuevo año solar que me espera. Estoy con ganas de fijar mis cositas, descansar disfrutando, poner mis manos en la tierra y aprovechar el trabajo intenso que me pide mi luna. Gracias, preciosa, se nota que te apasiona tu trabajo.",
+      origen: "Alejandra S.",
+    },
+    {
+      texto:
+        "Me hice una lectura de vínculos con Sylvia, y me ha encantado todo su trabajo y entrega. Mucho material para conocerme y seguir creciendo.",
+      origen: "Jesús A.",
+    },
+    {
+      texto:
+        "Es una maravilla todo el trabajo que te tomas en contármelo detalladamente y con palabras tan acertadas, de verdad que es un gusto y estoy muy agradecida. Me lo he leído todo y subrayado algunas cosas que me resuenan en el momento actual, aunque seguro que cuando vuelva dentro de unos meses, encontraré cosas nuevas.",
+      origen: "Amaia P.",
     },
   ]
 
   return (
     <section className={`py-16 md:py-24 ${FONDO_CREMA}`}>
       <div className="container-custom">
-        {/* ETIQUETA NUEVA (por revisar) */}
-        <Encabezado etiqueta="Voces y testimonios" titulo="Lo que dicen de mi trabajo" linea />
+        <Encabezado etiqueta="Testimonios" titulo="Lo que dicen mis consultantes" linea />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {testimonios.map(({ texto, origen }) => (
             <figure key={texto} className={`${TARJETA} ${TARJETA_BLANCA} p-8 md:p-10 flex flex-col`}>
@@ -670,7 +722,7 @@ export function PreguntasFrecuentes() {
     {
       pregunta: "¿Y si no puedo conectarme el día de la clase?",
       respuesta:
-        `Todas las clases se graban. Las subo durante la semana siguiente a cada clase y las tienes hasta el ${EDICION.grabacionesHasta}.`,
+        `Todas las clases se graban. Las subo durante la semana siguiente a cada clase y las tienes hasta ${EDICION.grabacionesMeses} meses después de la última clase.`,
     },
     {
       pregunta: "¿Para qué usas mis datos de nacimiento?",

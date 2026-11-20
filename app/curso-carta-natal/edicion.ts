@@ -4,10 +4,12 @@
 export const EDICION = {
   anio: "2027",
 
-  // Clase abierta y gratuita (la hora sigue pendiente en la landing)
+  // Clase abierta y gratuita
   claseAbierta: {
+    nombre: "Tres maneras de ser tú: Sol, Luna y Ascendente",
     dia: "sábado",
     fecha: "12 de diciembre",
+    hora: "11:00 a 12:00",
   },
 
   // Curso
