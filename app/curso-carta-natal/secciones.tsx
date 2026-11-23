@@ -93,7 +93,7 @@ export function Cabecera() {
   ]
 
   return (
-    <section className="relative overflow-hidden bg-primary pt-8 pb-28 md:pt-24 md:pb-44">
+    <section className="relative overflow-hidden bg-primary pt-8 pb-28 md:pt-14 md:pb-36">
       {/* Sri Yantra en SVG (vectorizado de KALEIDOSCOPE_sriyantra_real_dorado.png), nítido a cualquier tamaño.
           Con margen: el dibujo llega al borde y, a sangre, se veía cortado */}
       <div
@@ -107,11 +107,11 @@ export function Cabecera() {
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
             Edición {EDICION.anio} · Plazas reducidas
           </p>
-          <h1 className="text-[2.6rem] md:text-6xl lg:text-[4.25rem] text-white mb-4 md:mb-6 leading-[1.1] md:leading-tight">
+          <h1 className="text-[2.6rem] md:text-5xl lg:text-[3.25rem] text-white mb-4 md:mb-6 leading-[1.1] md:leading-tight">
             Tu carta natal:
             <span className="block not-italic font-semibold text-dorado">de las partes al todo</span>
           </h1>
-          <p className="font-lato italic text-xl md:text-3xl text-white/90 mb-6 md:mb-10">
+          <p className="font-lato italic text-xl md:text-2xl text-white/90 mb-6 md:mb-10">
             Curso vivencial de iniciación a la astrología psicológica
           </p>
           <ul className="flex flex-wrap lg:flex-nowrap justify-center gap-2 md:gap-3 mb-6 md:mb-8">
