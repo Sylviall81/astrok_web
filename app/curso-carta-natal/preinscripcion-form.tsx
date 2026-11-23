@@ -18,17 +18,15 @@ const ESTADO_INICIAL = {
   claseAbierta: false,
   privacidad: false,
   newsletter: false,
+  // Trampa antispam: las personas no lo ven, los bots lo rellenan (se descarta en /api/preinscripcion)
+  sitioweb: "",
 }
 
 const ERROR_ENVIO =
   "No se han podido guardar tus datos. Tus respuestas siguen en el formulario: vuelve a intentarlo en unos minutos o escríbeme a hola@astrokaleido.com."
 
-// Mensaje al enviar, según si viene a la clase abierta y si le interesa el curso
-const mensajeEnviado = (claseAbierta: boolean, motivo: string) => {
-  if (!claseAbierta) return "¡Gracias! Te escribo cuando abran las inscripciones."
-  if (motivo === "no") return "¡Ya tienes tu plaza en la clase abierta! Unos días antes te mando el enlace de Zoom."
-  return "¡Gracias! Te he apuntado a la clase abierta. Unos días antes te mando el enlace de Zoom, y te escribo cuando abran las inscripciones."
-}
+// Un solo mensaje para todas las respuestas: lo que cada persona recibe lo detalla el correo de confirmación
+const MENSAJE_ENVIADO = "¡Gracias! Tus datos se han guardado correctamente."
 
 const inputClass =
   "w-full min-h-11 px-4 py-3 bg-crema border border-black/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary dark:bg-muted dark:border-white/15 dark:text-white dark:placeholder:text-white/50 dark:focus:ring-accent"
@@ -146,7 +144,7 @@ export default function PreinscripcionForm() {
 
       setStatus({
         type: "success",
-        message: mensajeEnviado(form.claseAbierta, form.motivo),
+        message: MENSAJE_ENVIADO,
       })
       setForm(ESTADO_INICIAL)
     } catch {
@@ -159,6 +157,19 @@ export default function PreinscripcionForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="pre-sitioweb">Sitio web (déjalo vacío)</label>
+        <input
+          type="text"
+          id="pre-sitioweb"
+          name="sitioweb"
+          value={form.sitioweb}
+          onChange={(e) => set("sitioweb", e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       <div>
         <label htmlFor="pre-nombre" className={labelClass}>
           Nombre

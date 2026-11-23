@@ -16,8 +16,8 @@ export const EXPERIENCIA: Opcion[] = [
 ]
 
 export const HORARIOS: Opcion[] = [
-  { valor: "entre-semana-tarde", texto: "Entre semana por la tarde" },
-  { valor: "entre-semana-noche", texto: "Entre semana por la noche" },
+  { valor: "entre-semana-tarde", texto: "Entre semana por la tarde (16h a 19h)" },
+  { valor: "entre-semana-noche", texto: "Entre semana por la noche (a partir de las 19h)" },
   { valor: "otro", texto: "Otro" },
 ]
 

@@ -35,6 +35,12 @@ export async function POST(req: Request) {
   const data = await req.json().catch(() => null)
   if (!data) return json({ message: "Datos no válidos." }, 400)
 
+  // Antispam: el campo oculto "sitioweb" solo lo rellenan los bots. Se responde como si todo
+  // hubiera ido bien, sin guardar nada ni enviar correos, para que no sepan que los hemos detectado
+  if (typeof data.sitioweb === "string" && data.sitioweb.trim() !== "") {
+    return json({ success: true }, 201)
+  }
+
   const nombre = typeof data.nombre === "string" ? data.nombre.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : ""
   const motivo = textoDe(MOTIVOS, data.motivo)
