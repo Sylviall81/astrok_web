@@ -12,7 +12,7 @@ export default function TestimonialsSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1))
-    }, 5000)
+    }, 10000)
 
     return () => clearInterval(interval)
   }, [])
