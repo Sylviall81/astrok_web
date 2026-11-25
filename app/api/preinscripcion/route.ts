@@ -44,14 +44,13 @@ export async function POST(req: Request) {
   const nombre = typeof data.nombre === "string" ? data.nombre.trim() : ""
   const email = typeof data.email === "string" ? data.email.trim().toLowerCase() : ""
   const motivo = textoDe(MOTIVOS, data.motivo)
-  // El horario solo se pregunta con "Sí" o "Me lo estoy pensando". Con "De momento, no"
-  // no se muestra: se ignora lo que llegue y se guarda vacío
-  const sinCurso = data.motivo === "no"
+  // El horario se pregunta a todo el mundo (también a "De momento, no"): quien no puede los sábados
+  // puede contestar "De momento, no" y es justo a quien interesa saber qué horario le iría mejor
   const nivel = textoDe(EXPERIENCIA, data.experiencia)
-  const horarios = !sinCurso && Array.isArray(data.horarios)
+  const horarios = Array.isArray(data.horarios)
     ? HORARIOS.filter((h) => data.horarios.includes(h.valor)).map((h) => h.texto)
     : []
-  const marcaOtro = !sinCurso && Array.isArray(data.horarios) && data.horarios.includes("otro")
+  const marcaOtro = Array.isArray(data.horarios) && data.horarios.includes("otro")
   const horarioOtro = marcaOtro && typeof data.horarioOtro === "string" ? data.horarioOtro.trim().slice(0, 200) : ""
 
   if (nombre.length < 2 || nombre.length > 100 || !EMAIL_RE.test(email) || email.length > 254 || !motivo || !nivel) {
