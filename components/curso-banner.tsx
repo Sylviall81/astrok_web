@@ -46,7 +46,7 @@ export default function CursoBanner() {
               href="/curso-carta-natal"
               className="text-base text-white/85 underline decoration-white/40 underline-offset-4 transition-colors hover:text-white hover:decoration-white md:text-lg"
             >
-              Ver el programa →
+              Quiero saber más →
             </Link>
           </div>
         </div>
