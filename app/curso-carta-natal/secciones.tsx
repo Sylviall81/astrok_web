@@ -25,7 +25,7 @@ export { NavegacionCurso } from "./navegacion-curso"
 // Textos: contenido_landing.md (versión del 28/10/2026). No añadir textos que no estén allí.
 // Excepción: las etiquetas pequeñas sobre los títulos, los rótulos de las cajas de Fechas y los
 // "Bloque · Semanas" de Recorrido vienen del diseño de referencia (Stitch). Van marcados con
-// "ETIQUETA NUEVA (por revisar)" y están pendientes de aprobar.
+// "ETIQUETA NUEVA (aprobada)" y las aprobó Sylvia el 25/11/2026.
 
 // Estilo común de la landing, tomado del diseño de referencia.
 // Modo oscuro, con el criterio del resto de la web: secciones claras → fondo de la página,
@@ -102,7 +102,7 @@ export function Cabecera() {
       />
       <div className="container-custom relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          {/* ETIQUETA NUEVA (por revisar) */}
+          {/* ETIQUETA NUEVA (aprobada) */}
           <p className="mb-5 md:mb-8 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 md:px-4 py-1 md:py-1.5 text-[0.65rem] md:text-xs font-semibold uppercase tracking-[0.12em] md:tracking-[0.15em] text-white/90 backdrop-blur-sm">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
             Edición {EDICION.anio} · Plazas reducidas
@@ -201,7 +201,7 @@ export function ParaQuien() {
   return (
     <section id="para-quien" className={`${FONDO_CREMA} py-16 md:py-24 ${SCROLL_ANCLA}`}>
       <div className="container-custom">
-        {/* ETIQUETA NUEVA (por revisar) */}
+        {/* ETIQUETA NUEVA (aprobada) */}
         <Encabezado etiqueta="El punto de partida" titulo="Para quién es" linea />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -230,7 +230,7 @@ export function ParaQuien() {
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-6 md:gap-0 rounded-2xl bg-dorado/10 dark:bg-white/5 p-8 md:p-12">
           <div className={`md:border-r ${LINEA} md:pr-10 flex flex-col justify-center`}>
-            {/* ETIQUETA NUEVA (por revisar) */}
+            {/* ETIQUETA NUEVA (aprobada) */}
             <p className={`${ETIQUETA} mb-2`}>Tu proceso, tu ritmo</p>
             <h3 className={`${SUBTITULO} text-2xl md:text-3xl`}>Todo lo que surja es bienvenido</h3>
           </div>
@@ -390,7 +390,7 @@ export function ComoSeVive() {
 
 /* 5. Recorrido: filas a todo el ancho */
 export function Recorrido() {
-  // "Bloque" y "Semanas" vienen de la referencia: ETIQUETA NUEVA (por revisar), sin comprobar con el temario
+  // "Bloque" y "Semanas" vienen de la referencia: ETIQUETA NUEVA (aprobada)
   const bloques = [
     {
       semanas: "Sesiones 1 - 2",
@@ -439,7 +439,7 @@ export function Recorrido() {
   return (
     <section id="recorrido" className={`py-16 md:py-24 ${FONDO_BLANCO} ${SCROLL_ANCLA}`}>
       <div className="container-custom">
-        {/* ETIQUETA NUEVA (por revisar): etiqueta y texto lateral */}
+        {/* ETIQUETA NUEVA (aprobada): etiqueta y texto lateral */}
         <Encabezado
           etiqueta="Estructura del programa"
           titulo="Recorrido"
@@ -461,7 +461,7 @@ export function Recorrido() {
 
 /* 6. Fechas y formato: cajas en horizontal con icono */
 export function Fechas() {
-  // Rótulos de cada caja: ETIQUETA NUEVA (por revisar)
+  // Rótulos de cada caja: ETIQUETA NUEVA (aprobada)
   const fechas = [
     { icono: CalendarDays, rotulo: "Calendario", texto: `Una sesión por semana, del ${EDICION.inicio} al ${EDICION.fin}` },
     {
@@ -477,7 +477,7 @@ export function Fechas() {
   return (
     <section className={`py-16 md:py-24 ${FONDO_CREMA}`}>
       <div className="container-custom">
-        {/* ETIQUETA NUEVA (por revisar) */}
+        {/* ETIQUETA NUEVA (aprobada) */}
         <Encabezado etiqueta="Detalles prácticos" titulo="Cuándo y cómo" centrado />
         <ul className={`${TARJETA} ${TARJETA_BLANCA} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 p-4 md:p-8`}>
           {fechas.map(({ icono, rotulo, texto }) => (
@@ -528,13 +528,13 @@ export function ClaseAbierta() {
           className={`${TARJETA} ${TARJETA_BLANCA} p-8 md:p-14 flex flex-col gap-8 md:flex-row md:items-center md:justify-between`}
         >
           <div className="max-w-2xl">
-            {/* ETIQUETA NUEVA (por revisar) */}
+            {/* ETIQUETA NUEVA (aprobada) */}
             {/* Si en móvil ocupa dos líneas, la pastilla pasa a esquinas redondeadas para envolverlas bien */}
             <p
               className={`${ETIQUETA} mb-4 inline-flex max-w-full items-center gap-2 rounded-xl bg-crema px-3 py-1.5 leading-snug dark:bg-white/10 md:rounded-full`}
             >
               <Ticket aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
-              Encuentro abierto y gratuito
+              Clase abierta y gratuita
             </p>
             <h2 className={`${TITULO} mb-3`}>¿Quieres probar antes?</h2>
             <h3 className={`${SUBTITULO} text-2xl md:text-3xl mb-2`}>{EDICION.claseAbierta.nombre}</h3>
@@ -729,7 +729,7 @@ export function PreguntasFrecuentes() {
     <section id="preguntas" className={`py-16 md:py-24 ${FONDO_BLANCO} ${SCROLL_ANCLA}`}>
       <div className="container-custom">
         <div className="max-w-4xl mx-auto">
-          {/* ETIQUETA NUEVA (por revisar) */}
+          {/* ETIQUETA NUEVA (aprobada) */}
           <Encabezado etiqueta="Claridad y dudas" titulo="Preguntas frecuentes" centrado />
           <div className="space-y-4">
             {preguntas.map(({ pregunta, respuesta }) => (
