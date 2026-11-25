@@ -33,9 +33,10 @@ export default function AboutPage() {
 
   <p>
     Soy doctora en Ciencias Políticas, y eso se nota en cómo explico: con estructura, investigación,
-    fuentes y actualización constante. De ahí vienen también mi conciencia social, de clase y de raza,
-    y mi perspectiva de género. Integro la espiritualidad con la realidad social, para no cargar a
-    cada persona con malestares que muchas veces son sistémicos.
+    fuentes y actualización constante. De ahí viene también mi perspectiva de género. En mis sesiones
+    tengo en cuenta el contexto social de cada persona, cómo se cruzan distintas formas de discriminación
+    y cómo las jerarquías de poder generan opresión. Integro la espiritualidad con la realidad social,
+    para no cargar a cada persona con malestares que muchas veces son sistémicos.
   </p>
 
   <p>
