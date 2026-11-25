@@ -747,7 +747,7 @@ export function Testimonios() {
           cómoda. Es increíble todo lo que puedes ver en la carta sobre mí y lo que he vivido.
         </>
       ),
-      origen: "Raquel B. · Carta natal presencial",
+      origen: "Ingrid D. · Carta natal presencial",
     },
     {
       texto: (
