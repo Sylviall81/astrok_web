@@ -9,7 +9,7 @@ export default function CursoBanner() {
     <section className="relative overflow-hidden bg-primary py-12 md:py-16" aria-labelledby="curso-banner-titulo">
       <div
         aria-hidden="true"
-        className="absolute inset-x-4 inset-y-6 bg-[url('/curso/sriyantra-dorado.svg')] bg-contain bg-center bg-no-repeat opacity-25"
+        className="absolute inset-0 bg-[url('/curso/sriyantra-dorado.svg')] bg-cover bg-center bg-no-repeat opacity-[0.14]"
       />
       <div className="container-custom relative z-10">
         <div className="mx-auto max-w-4xl text-center">
@@ -18,6 +18,7 @@ export default function CursoBanner() {
             Edición {EDICION.anio} · Plazas reducidas
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
           </p>
+          <p className="mb-2 font-lato text-2xl font-bold italic text-white md:text-3xl">Curso vivencial</p>
           <h2
             id="curso-banner-titulo"
             className="mb-2 font-lato text-4xl font-semibold leading-[1.1] text-white md:text-5xl"
@@ -26,7 +27,7 @@ export default function CursoBanner() {
             <span className="block font-semibold text-dorado">de las partes al todo</span>
           </h2>
           <p className="mb-5 font-lato text-xl italic text-white/90 md:text-2xl">
-            Curso vivencial de iniciación a la astrología psicológica
+            Iniciación a la astrología psicológica
           </p>
           <p className="mb-6 text-sm text-white/85 md:text-base">
             Online y en directo · {EDICION.semanas} sábados desde el {EDICION.inicio} · Sin conocimientos previos
@@ -34,7 +35,7 @@ export default function CursoBanner() {
           <p className="mb-6 font-lato text-xl font-semibold text-white md:text-2xl">
             Apertura de inscripciones en diciembre
           </p>
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="flex flex-col items-center justify-center gap-4">
             <Link
               href="/curso-carta-natal#preinscripcion"
               className="inline-block rounded-lg bg-white px-10 py-3.5 font-lora text-lg font-semibold text-primary shadow-md transition-all hover:bg-accent hover:text-white"
