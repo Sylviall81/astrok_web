@@ -15,7 +15,7 @@ export default function CursoBanner() {
         <div className="mx-auto max-w-4xl text-center">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-white/90 backdrop-blur-sm md:text-sm">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
-            Edición {EDICION.anio} · Plazas reducidas
+            Edición {EDICION.anio} · Plazas limitadas
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
           </p>
           <p className="mb-2 font-lato text-2xl font-bold italic text-white md:text-3xl">Curso vivencial</p>

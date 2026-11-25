@@ -111,7 +111,7 @@ export function Cabecera() {
           {/* ETIQUETA NUEVA (aprobada) */}
           <p className="mb-3 md:mb-3 inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 md:px-4 py-1 md:py-1.5 text-[0.65rem] md:text-xs font-semibold uppercase tracking-[0.12em] md:tracking-[0.15em] text-white/90 backdrop-blur-sm">
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
-            Edición {EDICION.anio} · Plazas reducidas
+            Edición {EDICION.anio} · Plazas limitadas
             <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-dorado" />
           </p>
           <h1 className="text-[2.6rem] md:text-5xl lg:text-[3.25rem] text-white mb-2 md:mb-2 leading-[1.05] md:leading-[1.08]">
