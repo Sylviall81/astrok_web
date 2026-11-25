@@ -29,8 +29,22 @@ export const metadata: Metadata = {
     url: "/curso-carta-natal",
     type: "website",
     locale: "es_ES",
-    // La imagen general de la web (app/opengraph-image.png); al definir openGraph aquí hay que indicarla otra vez
-    images: [{ url: "/opengraph-image.png", width: 751, height: 505 }],
+    // Imagen propia de la landing (1200 × 630): la que sale al compartir el enlace por WhatsApp, redes, etc.
+    images: [
+      {
+        url: "/curso/og-curso.png",
+        width: 1200,
+        height: 630,
+        alt: "Curso vivencial: Tu carta natal, de las partes al todo. Iniciación a la astrología psicológica",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Curso de iniciación a la carta natal online | Astrokaleido",
+    description:
+      "Curso online en directo de iniciación a la carta natal: 12 sábados desde el 16 de enero de 2027, sin conocimientos previos y practicando con tu propia carta.",
+    images: ["/curso/og-curso.png"],
   },
   alternates: {
     canonical: "/curso-carta-natal",
