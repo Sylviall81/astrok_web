@@ -53,6 +53,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/curso-carta-natal" className="text-body hover:text-primary transition-colors">
+                  Curso de carta natal
+                </Link>
+              </li>
+              <li>
                 <Link href="/sobre-mi" className="text-body hover:text-primary transition-colors">
                   Sobre Mí
                 </Link>
