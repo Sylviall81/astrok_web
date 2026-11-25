@@ -743,8 +743,9 @@ export function Testimonios() {
     {
       texto: (
         <>
-          Muchas gracias por la sesión, <N>tu manera de explicar tan agradable y tu comprensión</N>. Me he sentido muy
-          cómoda. Es increíble todo lo que puedes ver en la carta sobre mí y lo que he vivido.
+          Ante todo muchas gracias por la sesión, <N>tu manera de explicar tan agradable y tu comprensión</N>. Me ha
+          gustado mucho la sesión y me he sentido muy cómoda. Es increíble todo lo que puedes ver en la carta sobre mí
+          y lo que he vivido...
         </>
       ),
       origen: "Ingrid D. · Carta natal presencial",
