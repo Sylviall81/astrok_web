@@ -31,6 +31,8 @@ const config: Config = {
         accent: "#AA9CB8", // Lila suave
         "neutral-light": "#f2f2f2", // Gris claro
         "neutral-dark": "#000309", // Casi negro
+        crema: "#F6F5EF", // Fondo de secciones claras y círculos de iconos
+        dorado: "#B09A7B", // Solo accesorio: ornamentos y líneas finas
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -100,6 +102,7 @@ const config: Config = {
        },
       backgroundImage: {
         "sri-yantra-pattern": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_1200/v1792509645/KALEIDOSCOPE_sriyantra_real_violeta_1_qcumzv.png')",
+        "sri-yantra-dorado": "url('https://res.cloudinary.com/dgtuiirc7/image/upload/f_auto,q_auto,w_1600/v1793218516/KALEIDOSCOPE_sriyantra_real_dorado_1_vxk6oj.png')",
       },
     },
   },

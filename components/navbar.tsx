@@ -7,12 +7,15 @@ import { Menu, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CartDrawer } from "@/components/cart/cart-drawer"
 import { useTheme } from "next-themes"
+import { usePathname } from "next/navigation"
 //import { useRouter } from "next/navigation"
 
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  // resolvedTheme y no theme: con el tema del sistema, theme vale "system" aunque se vea oscuro
+  const { resolvedTheme: theme, setTheme } = useTheme()
+  const pathname = usePathname()
   //const router = useRouter()
 
   const [mounted, setMounted] = useState(false)
@@ -22,6 +25,9 @@ useEffect(() => {
 }, [])
 
 if (!mounted) return null
+
+// La landing del curso lleva su propia barra (app/curso-carta-natal/navegacion-curso.tsx)
+if (pathname?.startsWith("/curso-carta-natal")) return null
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -36,8 +42,9 @@ if (!mounted) return null
           <Link href="/" className="flex items-center gap-2 ">
           <Image
               src={theme === 'dark' 
-                ? 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1776253747/logoBlanco_gs6lzj.png' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
+                ? '/logo-blanco.svg' : 'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'}
               alt="Logotipo Kaleidoscope"
+              unoptimized={theme === 'dark'}
               width={400}
               height={100}
               className="h-10 w-auto object-contain"

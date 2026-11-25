@@ -8,18 +8,28 @@ import SocialLinks from "@/components/common/social-links"
 export function Footer() {
    //const { theme, setTheme } = useTheme()
 
+   // Raya arriba en modo oscuro: sin ella el footer se funde con la sección anterior
    return (
-    <footer className="section-alt py-12">
+    <footer className="section-alt py-12 dark:border-t dark:border-white/10">
       <div className="containermax-w-7xl mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-10 md:gap-12">
           <div className="col-span-1 md:col-span-1">
-              <Link href="/" className="flex items-center gap-2 ">
+              <Link href="/" className="mb-4 block max-w-[300px]">
+            {/* Negro en modo claro y blanco en oscuro, por CSS: el footer se renderiza en el servidor */}
             <Image
                         src=  'https://res.cloudinary.com/dgtuiirc7/image/upload/v1742251136/logonegro_snez0h.png'
                         alt="Logotipo Kaleidoscope"
+                        width={1010}
+                        height={132}
+                        className="h-auto w-full dark:hidden"
+                      />
+            <Image
+                        src="/logo-blanco.svg"
+                        alt="Logotipo Kaleidoscope"
+                        unoptimized
                         width={400}
-                        height={200}
-                        className="h-10 w-auto"
+                        height={51}
+                        className="hidden h-auto w-full dark:block"
                       /></Link> 
             <p className="text-body mb-4 max-w-md">
               Astrología psicológica como guía para el autodescubrimiento, la claridad y el propósito.
@@ -40,6 +50,11 @@ export function Footer() {
               <li>
                 <Link href="/servicios" className="text-body hover:text-primary transition-colors">
                   Servicios
+                </Link>
+              </li>
+              <li>
+                <Link href="/curso-carta-natal" className="text-body hover:text-primary transition-colors">
+                  Curso de carta natal
                 </Link>
               </li>
               <li>

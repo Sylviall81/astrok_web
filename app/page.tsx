@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import type { Metadata } from "next"
 import HeroSection from "@/components/hero-section"
 import AboutSection from "@/components/about-section"
+import CursoBanner from "@/components/curso-banner"
 import ServicesSection from "@/components/services-section"
 import TestimonialsSection from "@/components/testimonials-section"
 import BlogSection from "@/components/blog-section"
@@ -25,6 +26,7 @@ export default function Home() {
     <>
       <HeroSection />
       <AboutSection />
+      <CursoBanner />
       <ServicesSection />
       <TestimonialsSection />
       <FeaturedProductsSection />

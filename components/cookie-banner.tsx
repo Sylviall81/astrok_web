@@ -37,11 +37,12 @@ export function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6">
-      <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-200 dark:border-slate-700 rounded-xl shadow-xl p-5 md:p-6">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
+    // Compacto: en móvil, texto pequeño y los dos botones en una fila, iguales (rechazar tan fácil como aceptar)
+    <div className="fixed bottom-0 left-0 right-0 z-50 p-2 md:p-6">
+      <div className="max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border border-gray-200 dark:border-slate-700 rounded-xl shadow-xl p-3 md:p-5">
+        <div className="flex flex-col md:flex-row md:items-center gap-2.5 md:gap-4">
           <div className="flex-1">
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-xs md:text-sm text-muted-foreground leading-snug md:leading-relaxed">
               Usamos cookies propias y de terceros para el funcionamiento del sitio (carrito, pagos) y mejorar tu experiencia. Puedes aceptar todas o usar solo las estrictamente necesarias.{" "}
               <Link href="/politica-cookies" className="underline hover:text-foreground">
                 Política de cookies
@@ -49,17 +50,17 @@ export function CookieBanner() {
               .
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+          <div className="grid grid-cols-2 gap-2 shrink-0">
             <Button
               size="sm"
-              className="bg-primary text-white hover:bg-primary/90"
+              className="w-full bg-primary text-white hover:bg-primary/90"
               onClick={essential}
             >
               Solo esenciales
             </Button>
             <Button
               size="sm"
-              className="bg-primary text-white hover:bg-primary/90"
+              className="w-full bg-primary text-white hover:bg-primary/90"
               onClick={accept}
             >
               Aceptar todas

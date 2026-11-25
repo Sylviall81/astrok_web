@@ -1,0 +1,25 @@
+// Opciones del formulario de preinscripción. Las usan el formulario (lo que ve la persona) y
+// /api/preinscripcion (lo que se guarda en Brevo, con el mismo texto que se ve).
+
+export type Opcion = { valor: string; texto: string }
+
+export const MOTIVOS: Opcion[] = [
+  { valor: "si", texto: "Sí" },
+  { valor: "pensando", texto: "Me lo estoy pensando" },
+  { valor: "no", texto: "De momento, no" },
+]
+
+export const EXPERIENCIA: Opcion[] = [
+  { valor: "nada", texto: "Nada" },
+  { valor: "algo", texto: "Algo" },
+  { valor: "bastante", texto: "Bastante" },
+]
+
+export const HORARIOS: Opcion[] = [
+  { valor: "entre-semana-tarde", texto: "Entre semana por la tarde (16h a 19h)" },
+  { valor: "entre-semana-noche", texto: "Entre semana por la noche (a partir de las 19h)" },
+  { valor: "otro", texto: "Otro" },
+]
+
+// Texto de una opción a partir de su valor (undefined si el valor no es válido)
+export const textoDe = (opciones: Opcion[], valor: unknown) => opciones.find((o) => o.valor === valor)?.texto
