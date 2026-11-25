@@ -112,7 +112,7 @@ export async function POST(req: Request) {
           <li>Email: ${escapeHtml(email)}</li>
           <li>¿Le interesa el curso?: ${motivo}</li>
           <li>Astrología antes: ${nivel}</li>
-          <li>Otro horario: ${horarios.join(", ") || "—"}${horarioOtro ? ` (${escapeHtml(horarioOtro)})` : ""}</li>
+          <li>Horario que le iría mejor: ${horarios.join(", ") || "—"}${horarioOtro ? ` (${escapeHtml(horarioOtro)})` : ""}</li>
           <li>Clase abierta: ${claseAbierta ? "sí" : "no"}</li>
           <li>Newsletter: ${newsletter ? "sí" : "no"}</li>
         </ul>`,
