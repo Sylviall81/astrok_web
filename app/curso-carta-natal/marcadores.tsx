@@ -48,7 +48,7 @@ export function SeccionCielo({
   return (
     <section
       id={id}
-      className={`relative overflow-hidden bg-primary bg-cover bg-center py-16 md:py-24 ${className}`}
+      className={`relative overflow-hidden bg-primary bg-cover bg-center py-10 md:py-14 ${className}`}
       style={{ backgroundImage: `url('${CIELO_URL}')` }}
     >
       <div aria-hidden="true" className="absolute inset-0 bg-primary/80" />

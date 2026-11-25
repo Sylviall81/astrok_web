@@ -54,7 +54,7 @@ export function NavegacionCurso() {
             aria-label="Ir a la página de inicio"
             className="flex h-10 w-8 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10 lg:w-9"
           >
-            <Home className="h-5 w-5" />
+            <Home className="h-5 w-5 stroke-[1.5]" />
           </Link>
         </div>
 
@@ -73,7 +73,7 @@ export function NavegacionCurso() {
             onClick={() => setTheme(oscuro ? "light" : "dark")}
             className="flex h-10 w-8 items-center justify-center rounded-md text-primary transition-colors hover:bg-crema dark:text-white dark:hover:bg-white/10 lg:w-9"
           >
-            {oscuro ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {oscuro ? <Sun className="h-5 w-5 stroke-[1.5]" /> : <Moon className="h-5 w-5 stroke-[1.5]" />}
           </button>
           <a
             href="#preinscripcion"

@@ -109,14 +109,8 @@ export default function PreinscripcionForm() {
   const toggleHorario = (valor: string) =>
     setForm((prev) => ({
       ...prev,
-      horarios: prev.horarios.includes(valor)
-        ? prev.horarios.filter((h) => h !== valor)
-        : [...prev.horarios, valor],
+      horarios: prev.horarios.includes(valor) ? prev.horarios.filter((h) => h !== valor) : [...prev.horarios, valor],
     }))
-
-  // El horario solo se pregunta con "Sí" o "Me lo estoy pensando". Oculto no se envía,
-  // pero se recuerda lo marcado por si vuelve a cambiar de respuesta
-  const preguntasCurso = form.motivo === "si" || form.motivo === "pensando"
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -129,8 +123,8 @@ export default function PreinscripcionForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
-          horarios: preguntasCurso ? form.horarios : [],
-          horarioOtro: preguntasCurso && form.horarios.includes("otro") ? form.horarioOtro : "",
+          horarios: form.horarios,
+          horarioOtro: form.horarios.includes("otro") ? form.horarioOtro : "",
         }),
       })
 
@@ -156,7 +150,7 @@ export default function PreinscripcionForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label htmlFor="pre-sitioweb">Sitio web (déjalo vacío)</label>
         <input
@@ -170,37 +164,39 @@ export default function PreinscripcionForm() {
         />
       </div>
 
-      <div>
-        <label htmlFor="pre-nombre" className={labelClass}>
-          Nombre
-        </label>
-        <input
-          type="text"
-          id="pre-nombre"
-          value={form.nombre}
-          onChange={(e) => set("nombre", e.target.value)}
-          required
-          minLength={2}
-          maxLength={100}
-          autoComplete="given-name"
-          className={inputClass}
-        />
-      </div>
+      <div className="grid gap-5 md:grid-cols-2">
+        <div>
+          <label htmlFor="pre-nombre" className={labelClass}>
+            Nombre
+          </label>
+          <input
+            type="text"
+            id="pre-nombre"
+            value={form.nombre}
+            onChange={(e) => set("nombre", e.target.value)}
+            required
+            minLength={2}
+            maxLength={100}
+            autoComplete="given-name"
+            className={inputClass}
+          />
+        </div>
 
-      <div>
-        <label htmlFor="pre-email" className={labelClass}>
-          Correo electrónico
-        </label>
-        <input
-          type="email"
-          id="pre-email"
-          value={form.email}
-          onChange={(e) => set("email", e.target.value)}
-          required
-          maxLength={254}
-          autoComplete="email"
-          className={inputClass}
-        />
+        <div>
+          <label htmlFor="pre-email" className={labelClass}>
+            Correo electrónico
+          </label>
+          <input
+            type="email"
+            id="pre-email"
+            value={form.email}
+            onChange={(e) => set("email", e.target.value)}
+            required
+            maxLength={254}
+            autoComplete="email"
+            className={inputClass}
+          />
+        </div>
       </div>
 
       <label className="flex min-h-11 lg:min-h-0 items-start gap-2 text-body cursor-pointer">
@@ -213,54 +209,54 @@ export default function PreinscripcionForm() {
         Quiero ir a la clase abierta del {EDICION.claseAbierta.fecha}
       </label>
 
-      <GrupoRadio
-        nombre="experiencia"
-        leyenda="¿Has estudiado astrología antes?"
-        opciones={EXPERIENCIA}
-        valor={form.experiencia}
-        onChange={(v) => set("experiencia", v)}
-        disposicion="fila"
-      />
+      <div className="grid gap-5 md:grid-cols-2">
+        <GrupoRadio
+          nombre="experiencia"
+          leyenda="¿Has estudiado astrología antes?"
+          opciones={EXPERIENCIA}
+          valor={form.experiencia}
+          onChange={(v) => set("experiencia", v)}
+          disposicion="fila"
+        />
 
-      <GrupoRadio
-        nombre="motivo"
-        leyenda="¿Te interesa hacer el curso?"
-        opciones={MOTIVOS}
-        valor={form.motivo}
-        onChange={(v) => set("motivo", v)}
-      />
+        <GrupoRadio
+          nombre="motivo"
+          leyenda="¿Te interesa hacer el curso?"
+          opciones={MOTIVOS}
+          valor={form.motivo}
+          onChange={(v) => set("motivo", v)}
+        />
+      </div>
 
-      {preguntasCurso && (
-        <>
-          <fieldset>
-            <legend className={legendClass}>¿Te iría mejor otro horario? (opcional)</legend>
-            <div className="lg:space-y-2">
-              {HORARIOS.map((opcion) => (
-                <label key={opcion.valor} className={opcionClass}>
-                  <input
-                    type="checkbox"
-                    checked={form.horarios.includes(opcion.valor)}
-                    onChange={() => toggleHorario(opcion.valor)}
-                    className={checkClass}
-                  />
-                  {opcion.texto}
-                </label>
-              ))}
-            </div>
-            {form.horarios.includes("otro") && (
+      <fieldset>
+        <legend className={legendClass}>
+          Si los {EDICION.horarioClase.toLowerCase()} no te encajan, ¿qué día y horario te irían mejor? (opcional)
+        </legend>
+        <div className="lg:space-y-2">
+          {HORARIOS.map((opcion) => (
+            <label key={opcion.valor} className={opcionClass}>
               <input
-                type="text"
-                aria-label="Otro horario"
-                value={form.horarioOtro}
-                onChange={(e) => set("horarioOtro", e.target.value)}
-                maxLength={200}
-                className={`${inputClass} mt-3`}
+                type="checkbox"
+                checked={form.horarios.includes(opcion.valor)}
+                onChange={() => toggleHorario(opcion.valor)}
+                className={checkClass}
               />
-            )}
-            <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a planificar las próximas ediciones.</p>
-          </fieldset>
-        </>
-      )}
+              {opcion.texto}
+            </label>
+          ))}
+        </div>
+        {form.horarios.includes("otro") && (
+          <input
+            type="text"
+            aria-label="Otro horario"
+            value={form.horarioOtro}
+            onChange={(e) => set("horarioOtro", e.target.value)}
+            maxLength={200}
+            className={`${inputClass} mt-3`}
+          />
+        )}
+        <p className="mt-2 lg:text-sm text-muted-foreground">Me ayuda a valorar abrir un grupo en otro horario.</p>
+      </fieldset>
 
       <div className="border-t border-neutral-light dark:border-white/10 pt-4 lg:pt-6 lg:space-y-3">
         <label className="flex min-h-11 lg:min-h-0 items-start gap-2 py-2.5 lg:py-0 text-body cursor-pointer">

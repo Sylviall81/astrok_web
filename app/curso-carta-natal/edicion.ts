@@ -15,7 +15,9 @@ export const EDICION = {
   // Curso
   inicio: "16 de enero",
   fin: "10 de abril de 2027",
-  horario: "Sábados de 10:30 a 12:30, hora de Barcelona",
+  horario: "Sábados de 11:00 a 13:00, hora de Barcelona",
+  horarioClase: "Sábados de 11:00 a 13:00",
+  ciudadHorario: "Barcelona",
   sinClase: "27 de marzo",
   semanas: 12,
   encuentros: 12,
