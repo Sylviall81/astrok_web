@@ -372,7 +372,7 @@ export function ComoSeVive() {
     {
       icono: PenLine,
       titulo: "Prácticas de integración",
-      texto: "Ejercicios sencillos para llevar lo que ves en tu carta a tu día a día.",
+      texto: "Ejercicios sencillos para llevar lo que ves en tu carta al día a día.",
     },
     {
       icono: BookOpen,
