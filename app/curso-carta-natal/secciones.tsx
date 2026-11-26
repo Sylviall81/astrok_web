@@ -267,7 +267,8 @@ export function ParaQuien() {
             </p>
             <p>
               Si algo te conmueve o te interpela, te ofrezco un espacio seguro y respetuoso para mirarlo. Si no, también
-              está bien: iremos a tu ritmo y no hay nada que conseguir.
+              está bien: iremos a tu ritmo, sin urgencia y sin tener que buscar una versión mejorada de ti; sin pretender
+              nada más que cultivar una relación más honesta y amable con lo que ya eres.
             </p>
           </div>
         </div>
@@ -371,7 +372,7 @@ export function ComoSeVive() {
     {
       icono: PenLine,
       titulo: "Prácticas de integración",
-      texto: "Ejercicios sencillos para llevar lo que ves en la carta a tu día a día.",
+      texto: "Ejercicios sencillos para llevar lo que ves en tu carta a tu día a día.",
     },
     {
       icono: BookOpen,
