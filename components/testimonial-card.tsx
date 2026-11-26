@@ -1,31 +1,26 @@
-import Image from "next/image"
-import { Star } from "lucide-react"
-
 interface TestimonialCardProps {
   name: string
-  text: string
-  image?: string
-  rating: number
+  text: React.ReactNode
+  servicio?: string
 }
 
-export default function TestimonialCard({ name, text, image, rating }: TestimonialCardProps) {
+export default function TestimonialCard({ name, text, servicio }: TestimonialCardProps) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex items-center mb-4">
-        <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4">
-          <Image src={image || "https://res.cloudinary.com/dgtuiirc7/image/upload/v1743017765/profile_bcarey.webp"} alt={name} fill className="object-cover" />
-        </div>
+        {/* Círculo lila con la inicial y aro dorado, igual que en la landing del curso */}
+        <span
+          aria-hidden="true"
+          className="mr-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent/25 font-lato text-xl font-semibold text-primary ring-1 ring-dorado/70"
+        >
+          {name.charAt(0)}
+        </span>
         <div>
-          <h4 className="font-lato font-semibold text-primary">{name}</h4>
-          <div className="flex">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} className={`h-4 w-4 ${i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`} />
-            ))}
-          </div>
+          <h4 className="font-lato text-lg font-bold text-primary">{name}</h4>
+          {servicio && <p className="text-sm text-muted-foreground">{servicio}</p>}
         </div>
       </div>
       <p className="text-body line-clamp-4">{text}</p>
     </div>
   )
 }
-

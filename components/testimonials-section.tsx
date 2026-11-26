@@ -35,7 +35,7 @@ export default function TestimonialsSection() {
             >
               {testimonials.map((testimonial, index) => (
                 <div key={index} className="w-full flex-shrink-0 px-2 md:px-4">
-                  <TestimonialCard name={testimonial.name} text={testimonial.text} rating={testimonial.rating} />
+                  <TestimonialCard name={testimonial.name} text={testimonial.text} servicio={testimonial.servicio} />
                 </div>
               ))}
             </div>
