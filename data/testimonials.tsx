@@ -10,7 +10,7 @@ export const testimonials = [
       rating: 5,
     },
     {
-      name: "Ingrid",
+      name: "Ingrid D.",
       text: "Ante todo muchas gracias por la sesión, tu manera de explicar tan agradable y tu comprensión. Me ha gustado mucho la sesión y me he sentido muy cómoda. Es increíble todo lo que puedes ver en la carta sobre mí y lo que he vivido...",
       rating: 4,
     },
