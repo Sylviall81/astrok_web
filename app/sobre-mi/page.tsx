@@ -20,7 +20,7 @@ export default function AboutPage() {
             <h1 className="text-4xl md:text-5xl font-lato font-bold text-primary mb-8">Sobre Mí</h1>
 
             <div className="relative h-[400px] rounded-lg overflow-hidden mb-10">
-              <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1742253022/IMG_9559_vsqupe.jpg" alt="Foto de perfil" fill className="object-cover" />
+              <Image src="https://res.cloudinary.com/dgtuiirc7/image/upload/v1795706187/IMG_9559_mejorada_nyovye.jpg" alt="Foto de perfil" fill className="object-cover" />
             </div>
 
             
